@@ -165,52 +165,78 @@ createWidget('discourse-poll-standard-results', {
       const voters = poll.get('voters');
       const isPublic = poll.get('public');
 
-      const ordered = _.clone(options).sort((a, b) => {
-        if (a.votes < b.votes) {
-          return 1;
-        } else if (a.votes === b.votes) {
-          if (a.html < b.html) {
-            return -1;
-          } else {
-            return 1;
-          }
-        } else {
-          return -1;
-        }
-      });
+      // const ordered = _.clone(options).sort((a, b) => {
+      //   if (a.votes < b.votes) {
+      //     return 1;
+      //   } else if (a.votes === b.votes) {
+      //     if (a.html < b.html) {
+      //       return -1;
+      //     } else {
+      //       return 1;
+      //     }
+      //   } else {
+      //     return -1;
+      //   }
+      // });
 
-      const percentages = voters === 0 ?
-        Array(ordered.length).fill(0) :
-        ordered.map(o => 100 * o.votes / voters);
 
-      const rounded = attrs.isMultiple ? percentages.map(Math.floor) : evenRound(percentages);
+      // console.log(options.length)
+      // console.log(voters)
+
+      var percentages = {};
+      var rounded = {};
+      for (var k in voters) {
+        // console.log("voter:");
+        // console.log(k); // k is the group id
+        // console.log(voters[k]);
+        percentages[k] = voters[k] === 0 ?
+          Array(options.length).fill(0) :
+          options.map(o => k in o.votes ? 100 * o.votes[k] / voters[k] : 0);
+
+        rounded[k] = attrs.isMultiple ? percentages[k].map(Math.floor) : evenRound(percentages[k]);
+      }
+
+      // console.log("percentages");
+      // console.log(percentages);
 
       if (isPublic) this.fetchVoters();
 
-      return ordered.map((option, idx) => {
+      return options.map((option, idx) => {
         const contents = [];
-        const per = rounded[idx].toString();
         const chosen = (attrs.vote || []).includes(option.id);
+        // console.log(attrs.vote);
+        contents.push(h('div.option', optionHtml(option)));
+        for (var k in voters) {
+          // console.log("k");
+          // console.log(k);
+          // console.log("option");
+          // console.log(option);
+          // console.log("rounded");
+          // console.log(rounded);
+          const per = rounded[k][idx].toString();
+          contents.push(h('div.option',
+                         h('p', [ h('span.percentage', `${per}%`), "Group " + k ])
+                       ));
 
-        contents.push(h('div.option',
-                       h('p', [ h('span.percentage', `${per}%`), optionHtml(option) ])
-                     ));
+          contents.push(h('div.bar-back',
+                         h('div.bar', { attributes: { style: `width:${per}%` }})
+                       ));
 
-        contents.push(h('div.bar-back',
-                       h('div.bar', { attributes: { style: `width:${per}%` }})
-                     ));
+          // TODO fix this (votes & voters)
+          if (isPublic) {
+            contents.push(this.attach('discourse-poll-voters', {
+              id: () => `poll-voters-${option.id}`,
+              postId: attrs.post.id,
+              optionId: option.id,
+              pollName: poll.get('name'),
+              totalVotes: option.votes,
+              pollVoters: (state.voters && state.voters[option.id]) || []
+            }));
+          }
 
-        if (isPublic) {
-          contents.push(this.attach('discourse-poll-voters', {
-            id: () => `poll-voters-${option.id}`,
-            postId: attrs.post.id,
-            optionId: option.id,
-            pollName: poll.get('name'),
-            totalVotes: option.votes,
-            pollVoters: (state.voters && state.voters[option.id]) || []
-          }));
         }
 
+        // TODO fix only show blue bar when it's current user's group
         return h('li', { className: `${chosen ? 'chosen' : ''}` }, contents);
       });
     }
@@ -293,6 +319,49 @@ createWidget('discourse-poll-container', {
         });
       }));
     }
+
+    // TODO finish
+    // TODO implement logic of when to show this
+    // TODO get list of groups of current user
+    // const voterGroups = [1, 2];
+    // return h('ul', voterGroups.map(group => {
+    //   return this.attach('discourse-poll-voter-group', {
+    //     group
+    //   });
+    // }));
+  }
+});
+
+
+    // results.push(this.attach('button', {
+    //   className: 'btn toggle-results',
+    //   label: 'poll.hide-results.label',
+    //   title: 'poll.hide-results.title',
+    //   icon: 'eye-slash',
+    //   disabled: hideResultsDisabled,
+    //   action: 'toggleResults'
+    // }));
+
+// TODO finish
+createWidget('discourse-poll-voter-group', {
+  tagName: 'div.poll-voter-group',
+
+  html(attrs) {
+    const result = [];
+
+    const { group } = attrs;
+
+    result.push(iconNode('circle-o'));
+    result.push(' ');
+    result.push("Group " + group);
+
+    return result;
+  },
+
+  click(e) {
+    if ($(e.target).closest("a").length === 0) {
+      this.sendWidgetAction('toggleOption', this.attrs.group);
+    }
   }
 });
 
@@ -319,29 +388,64 @@ createWidget('discourse-poll-info', {
 
   html(attrs) {
     const { poll } = attrs;
-    const count = poll.get('voters');
-    const result = [h('p', [
-                     h('span.info-number', count.toString()),
-                     h('span.info-text', I18n.t('poll.voters', { count }))
-                   ])];
+    const voters = poll.get('voters');
+    console.log("voters");
+    console.log(voters);
+    const result = [];
+    for (var k in voters) {
+      const count = voters[k];
+      result.push(h('p', [h('span.info-group', "Group " + k)]));
+      result.push(h('p', [
+                       h('span.info-number', count.toString()),
+                       h('span.info-text', I18n.t('poll.voters', { count }))
+                     ]));
 
-    if (attrs.isMultiple) {
-      if (attrs.showResults) {
-        const totalVotes = poll.get('options').reduce((total, o) => {
-          return total + parseInt(o.votes, 10);
-        }, 0);
+      if (attrs.isMultiple) {
+        if (attrs.showResults) {
+          const options = poll.get('options');
+          console.log("options");
+          console.log(options);
+          const totalVotes = poll.get('options').reduce((total, o) => {
+            return total + (k in o.votes ? parseInt(o.votes[k], 10) : 0);
+          }, 0);
 
-        result.push(h('p', [
-                      h('span.info-number', totalVotes.toString()),
-                      h('span.info-text', I18n.t("poll.total_votes", { count: totalVotes }))
-                    ]));
-      } else {
-        const help = this.multipleHelpText(attrs.min, attrs.max, poll.get('options.length'));
-        if (help) {
-          result.push(new RawHtml({ html: `<span>${help}</span>` }));
+          result.push(h('p', [
+                        h('span.info-number', totalVotes.toString()),
+                        h('span.info-text', I18n.t("poll.total_votes", { count: totalVotes }))
+                      ]));
         }
       }
     }
+
+    if (attrs.isMultiple && !attrs.showResults) {
+      const help = this.multipleHelpText(attrs.min, attrs.max, poll.get('options.length'));
+      if (help) {
+        result.push(new RawHtml({ html: `<span>${help}</span>` }));
+      }
+    }
+    // const count = poll.get('voters');
+    // const result = [h('p', [
+    //                  h('span.info-number', count.toString()),
+    //                  h('span.info-text', I18n.t('poll.voters', { count }))
+    //                ])];
+
+    // if (attrs.isMultiple) {
+    //   if (attrs.showResults) {
+    //     const totalVotes = poll.get('options').reduce((total, o) => {
+    //       return total + parseInt(o.votes, 10);
+    //     }, 0);
+
+    //     result.push(h('p', [
+    //                   h('span.info-number', totalVotes.toString()),
+    //                   h('span.info-text', I18n.t("poll.total_votes", { count: totalVotes }))
+    //                 ]));
+    //   } else {
+    //     const help = this.multipleHelpText(attrs.min, attrs.max, poll.get('options.length'));
+    //     if (help) {
+    //       result.push(new RawHtml({ html: `<span>${help}</span>` }));
+    //     }
+    //   }
+    // }
 
     if (!attrs.showResults && attrs.poll.get('public')) {
       result.push(h('p', I18n.t('poll.public.title')));

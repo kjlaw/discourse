@@ -19,6 +19,8 @@ after_initialize do
     DEFAULT_POLL_NAME ||= "poll".freeze
     POLLS_CUSTOM_FIELD ||= "polls".freeze
     VOTES_CUSTOM_FIELD ||= "polls-votes".freeze
+    GROUP_ID_CUSTOM_FIELD ||= "user-group-id".freeze
+
 
     autoload :PollsValidator, "#{Rails.root}/plugins/poll/lib/polls_validator"
     autoload :PollsUpdater, "#{Rails.root}/plugins/poll/lib/polls_updater"
@@ -34,6 +36,8 @@ after_initialize do
 
       def vote(post_id, poll_name, options, user)
         DistributedMutex.synchronize("#{PLUGIN_NAME}-#{post_id}") do
+          puts "vote function called"
+
           user_id = user.id
           post = Post.find_by(id: post_id)
 
@@ -63,22 +67,49 @@ after_initialize do
 
           raise StandardError.new I18n.t("poll.requires_at_least_1_valid_option") if options.empty?
 
-          poll["voters"] = poll["anonymous_voters"] || 0
-          all_options = Hash.new(0)
+          # poll["voters"] = poll["anonymous_voters"] || 0
+          poll["voters"] = Hash.new(0)
+
+          all_options = Hash.new { |h, k| h[k] = Hash.new(0) }
 
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD] ||= {}
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"] ||= {}
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name] = options
 
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].each do |_, user_votes|
+          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].each do |user_id, user_votes|
+            # only want to look at votes within this post for this poll
             next unless votes = user_votes[poll_name]
-            votes.each { |option| all_options[option] += 1 }
-            poll["voters"] += 1 if (available_options & votes.to_set).size > 0
+
+            puts "user_id is #{user_id}"
+            user = User.find_by(id: user_id)
+            # group_id = user.custom_fields[DiscoursePoll::GROUP_ID_CUSTOM_FIELD]
+
+            # TODO remove -- temporarily set random group id for user
+            # TODO change this to be a list of groups the user can vote as
+            group_id = rand(4)
+            puts "group id is #{group_id}"
+
+            votes.each do |option|
+              # iterates through all the options the user has voted on
+              # ends up with a map of all options that have been voted on?
+              puts "option is #{option}"
+
+              # all_options[option] += 1
+
+              all_options[option][group_id] += 1
+            end
+
+            poll["voters"][group_id] += 1 if (available_options & votes.to_set).size > 0
           end
 
+          puts "all_options = #{all_options}"
+
           poll["options"].each do |option|
-            anonymous_votes = option["anonymous_votes"] || 0
-            option["votes"] = all_options[option["id"]] + anonymous_votes
+            # TODO what are anonymous votes? ignoring for now
+            # (looks like something for backward compatibility? see polls_updater.rb) 
+            # anonymous_votes = option["anonymous_votes"] || 0
+            # option["votes"] = all_options[option["id"]] + anonymous_votes
+            option["votes"] = all_options[option["id"]]
 
             if public_poll
               option["voter_ids"] ||= []
@@ -142,7 +173,9 @@ after_initialize do
         end
       end
 
+      # TODO fix votes & voters??
       def extract(raw, topic_id, user_id = nil)
+        puts "extract function called"
         # TODO: we should fix the callback mess so that the cooked version is available
         # in the validators instead of cooking twice
         cooked = PrettyText.cook(raw, topic_id: topic_id, user_id: user_id)
