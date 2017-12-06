@@ -19,6 +19,9 @@ en:
     poll_enabled: "Allow users to create polls?"
     poll_maximum_options: "Maximum number of options allowed in a poll."
     poll_edit_window_mins: "Number of minutes after post creation during which polls can be edited."
+    poll_voter_group_names: "List of voter group names."
+    poll_voter_info_endpoint: "Endpoint to request information about what voter group a user is in."
+    poll_voter_group_json_property: "JSON property names corresponding to voter groups. Property value will be true if voter is in that group and false otherwise."
 
   poll:
     multiple_polls_without_name: "There are multiple polls without a name. Use the '<code>name</code>' attribute to uniquely identify your polls."

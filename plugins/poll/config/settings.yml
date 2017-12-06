@@ -7,3 +7,14 @@ plugins:
     client: true
   poll_edit_window_mins:
     default: 5
+  poll_voter_group_names:
+    default: 'Voters'
+    type: list
+    client: true
+  poll_voter_info_endpoint:
+    default: ''
+    client: true
+  poll_voter_group_json_property:
+    default: ''
+    type: list
+    client: true

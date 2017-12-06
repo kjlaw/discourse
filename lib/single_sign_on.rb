@@ -34,6 +34,10 @@ class SingleSignOn
     decoded = Base64.decode64(parsed["sso"])
     decoded_hash = Rack::Utils.parse_query(decoded)
 
+    puts "decoded_hash"
+    puts decoded_hash
+    puts 
+
     ACCESSORS.each do |k|
       val = decoded_hash[k.to_s]
       val = val.to_i if FIXNUMS.include? k

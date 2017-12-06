@@ -7,6 +7,7 @@ import evenRound from "discourse/plugins/poll/lib/even-round";
 import { avatarFor } from 'discourse/widgets/post';
 import round from "discourse/lib/round";
 
+
 function optionHtml(option) {
   return new RawHtml({ html: `<span>${option.html}</span>` });
 }
@@ -18,6 +19,16 @@ function fetchVoters(payload) {
   }).catch(() => {
     bootbox.alert(I18n.t('poll.error_while_fetching_voters'));
   });
+}
+
+function getVoterGroupName(groupId) {
+  if (groupId == 0) {
+    return "Requester";
+  } else if (groupId == 1) {
+    return "Worker";
+  } else {
+    return "Unknown Voter";
+  }
 }
 
 createWidget('discourse-poll-option', {
@@ -46,6 +57,25 @@ createWidget('discourse-poll-option', {
   click(e) {
     if ($(e.target).closest("a").length === 0) {
       this.sendWidgetAction('toggleOption', this.attrs.option);
+    }
+  }
+});
+
+createWidget('discourse-poll-voter-group', {
+  tagName: 'div.poll-voter-group-item',
+
+  html(attrs) {
+    const result = [];
+
+    const { groupId } = attrs;
+
+    return getVoterGroupName(groupId);
+  },
+
+  click(e) {
+    if ($(e.target).closest("a").length === 0) {
+      console.log(this.attrs.group);
+      this.sendWidgetAction('selectVoterGroup', this.attrs.groupId);
     }
   }
 });
@@ -215,7 +245,7 @@ createWidget('discourse-poll-standard-results', {
           // console.log(rounded);
           const per = rounded[k][idx].toString();
           contents.push(h('div.option',
-                         h('p', [ h('span.percentage', `${per}%`), "Group " + k ])
+                         h('p', [ h('span.percentage', `${per}%`), getVoterGroupName(k) ])
                        ));
 
           contents.push(h('div.bar-back',
@@ -307,6 +337,18 @@ createWidget('discourse-poll-container', {
     if (attrs.showResults) {
       const type = poll.get('type') === 'number' ? 'number' : 'standard';
       return this.attach(`discourse-poll-${type}-results`, attrs);
+    } else if (attrs.voterGroupId == -1) {
+      // TODO !!!!!
+      console.log(attrs.voterGroupId);
+      const voterGroups = [0, 1];
+      const contents = [];
+      contents.push(h('p', 'Choose group to vote as:'));
+      contents.push(h('div', voterGroups.map(groupId => {
+        return this.attach('discourse-poll-voter-group', {
+          groupId
+        });
+      })));
+      return contents;
     }
 
     const options = poll.get('options');
@@ -318,49 +360,6 @@ createWidget('discourse-poll-container', {
           vote: attrs.vote
         });
       }));
-    }
-
-    // TODO finish
-    // TODO implement logic of when to show this
-    // TODO get list of groups of current user
-    // const voterGroups = [1, 2];
-    // return h('ul', voterGroups.map(group => {
-    //   return this.attach('discourse-poll-voter-group', {
-    //     group
-    //   });
-    // }));
-  }
-});
-
-
-    // results.push(this.attach('button', {
-    //   className: 'btn toggle-results',
-    //   label: 'poll.hide-results.label',
-    //   title: 'poll.hide-results.title',
-    //   icon: 'eye-slash',
-    //   disabled: hideResultsDisabled,
-    //   action: 'toggleResults'
-    // }));
-
-// TODO finish
-createWidget('discourse-poll-voter-group', {
-  tagName: 'div.poll-voter-group',
-
-  html(attrs) {
-    const result = [];
-
-    const { group } = attrs;
-
-    result.push(iconNode('circle-o'));
-    result.push(' ');
-    result.push("Group " + group);
-
-    return result;
-  },
-
-  click(e) {
-    if ($(e.target).closest("a").length === 0) {
-      this.sendWidgetAction('toggleOption', this.attrs.group);
     }
   }
 });
@@ -391,10 +390,11 @@ createWidget('discourse-poll-info', {
     const voters = poll.get('voters');
     console.log("voters");
     console.log(voters);
+    console.log(this.siteSettings.poll_maximum_options)
     const result = [];
     for (var k in voters) {
       const count = voters[k];
-      result.push(h('p', [h('span.info-group', "Group " + k)]));
+      result.push(h('p', [h('span.info-group', getVoterGroupName(k))]));
       result.push(h('p', [
                        h('span.info-number', count.toString()),
                        h('span.info-text', I18n.t('poll.voters', { count }))
@@ -542,14 +542,31 @@ export default createWidget('discourse-poll', {
 
   defaultState(attrs) {
     const { poll, post } = attrs;
+
+    // console.log("customFields")
+    console.log(this.currentUser)
+    // console.log(this.currentUser.custom_fields["is_requester"])
+    console.log(this.currentUser.custom_fields["is_worker"])
+    
+    var groupId = -1;
+    if (this.currentUser.custom_fields) {
+      if (this.currentUser.custom_fields["is_requester"] && !this.currentUser.custom_fields["is_worker"]) {
+        groupId = 0;
+      } else if (!this.currentUser.custom_fields["is_requester"] && this.currentUser.custom_fields["is_worker"]) {
+        groupId = 1;
+      }
+    }
+
     return { loading: false,
-             showResults: poll.get('isClosed') || post.get('topic.archived') };
+             showResults: poll.get('isClosed') || post.get('topic.archived'),
+             voterGroupId: groupId };
   },
 
   html(attrs, state) {
-    const { showResults } = state;
+    const { showResults, voterGroupId } = state;
     const newAttrs = jQuery.extend({}, attrs, {
       showResults,
+      voterGroupId,
       canCastVotes: this.canCastVotes(),
       min: this.min(),
       max: this.max()
@@ -579,10 +596,34 @@ export default createWidget('discourse-poll', {
   },
 
   canCastVotes() {
+    console.log("canCastVotes");
     const { state, attrs } = this;
     if (this.isClosed() || state.showResults || state.loading) {
       return false;
     }
+
+    // TODO 
+    state.loading = true;
+
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8000/api/profile/',
+        xhrFields: {
+          withCredentials: true
+        },
+        complete: function(result){
+           console.log(result);
+        }
+     });
+    // ajax("http://localhost.com:8000/api/profile/", {
+    //   type: "get"
+    // }).then(result => {
+    //   console.log(result)
+    // }).catch(() => {
+    //   bootbox.alert(I18n.t("poll.error_while_fetching_voter_group"));
+    // }).finally(() => {
+    //   state.loading = false;
+    // });
 
     const selectedOptionCount = attrs.vote.length;
     if (attrs.isMultiple) {
@@ -670,7 +711,8 @@ export default createWidget('discourse-poll', {
       data: {
         post_id: attrs.post.id,
         poll_name: attrs.poll.name,
-        options: attrs.vote
+        options: attrs.vote,
+        voter_group_id: state.voterGroupId,
       }
     }).then(() => {
       state.showResults = true;
@@ -679,5 +721,11 @@ export default createWidget('discourse-poll', {
     }).finally(() => {
       state.loading = false;
     });
+  },
+
+  selectVoterGroup(groupId) {
+    const { state } = this;
+
+    state.voterGroupId = groupId
   }
 });

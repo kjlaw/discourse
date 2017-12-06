@@ -89,6 +89,22 @@ div.poll {
     text-align: center;
   }
 
+  .poll-voter-group-item {
+    width: 40%;
+    height: 40px;
+    line-height: 40px;
+    margin: 10px;
+    float: left;
+    cursor: pointer;
+    text-align: center;
+    background: dark-light-diff($primary, $secondary, 90%, -65%);
+
+    &:hover {
+      background: dark-light-diff($primary, $secondary, 65%, -75%);
+      color: #fff;
+    }
+  }
+
   .results {
 
     .option {

@@ -13,14 +13,18 @@ PLUGIN_NAME ||= "discourse_poll".freeze
 
 DATA_PREFIX ||= "data-poll-".freeze
 
+DiscoursePluginRegistry.serialized_current_user_fields << "is_requester"
+DiscoursePluginRegistry.serialized_current_user_fields << "is_worker"
+
 after_initialize do
+
+  User.register_custom_field_type('is_requester', :boolean)
+  User.register_custom_field_type('is_worker', :boolean)
 
   module ::DiscoursePoll
     DEFAULT_POLL_NAME ||= "poll".freeze
     POLLS_CUSTOM_FIELD ||= "polls".freeze
     VOTES_CUSTOM_FIELD ||= "polls-votes".freeze
-    GROUP_ID_CUSTOM_FIELD ||= "user-group-id".freeze
-
 
     autoload :PollsValidator, "#{Rails.root}/plugins/poll/lib/polls_validator"
     autoload :PollsUpdater, "#{Rails.root}/plugins/poll/lib/polls_updater"
@@ -34,7 +38,7 @@ after_initialize do
   class DiscoursePoll::Poll
     class << self
 
-      def vote(post_id, poll_name, options, user)
+      def vote(post_id, poll_name, options, voter_group_id, user)
         DistributedMutex.synchronize("#{PLUGIN_NAME}-#{post_id}") do
           puts "vote function called"
 
@@ -81,13 +85,11 @@ after_initialize do
             next unless votes = user_votes[poll_name]
 
             puts "user_id is #{user_id}"
+            puts "voter_group_id is #{voter_group_id}"
             user = User.find_by(id: user_id)
-            # group_id = user.custom_fields[DiscoursePoll::GROUP_ID_CUSTOM_FIELD]
 
-            # TODO remove -- temporarily set random group id for user
-            # TODO change this to be a list of groups the user can vote as
-            group_id = rand(4)
-            puts "group id is #{group_id}"
+            # example of how to access site settings from here
+            puts SiteSetting.poll_maximum_options
 
             votes.each do |option|
               # iterates through all the options the user has voted on
@@ -96,10 +98,10 @@ after_initialize do
 
               # all_options[option] += 1
 
-              all_options[option][group_id] += 1
+              all_options[option][voter_group_id] += 1
             end
 
-            poll["voters"][group_id] += 1 if (available_options & votes.to_set).size > 0
+            poll["voters"][voter_group_id] += 1 if (available_options & votes.to_set).size > 0
           end
 
           puts "all_options = #{all_options}"
@@ -220,9 +222,10 @@ after_initialize do
       post_id   = params.require(:post_id)
       poll_name = params.require(:poll_name)
       options   = params.require(:options)
+      voter_group_id = params.require(:voter_group_id)
 
       begin
-        poll, options = DiscoursePoll::Poll.vote(post_id, poll_name, options, current_user)
+        poll, options = DiscoursePoll::Poll.vote(post_id, poll_name, options, voter_group_id, current_user)
         render json: { poll: poll, vote: options }
       rescue StandardError => e
         render_json_error e.message
