@@ -9,7 +9,7 @@ function initializePolls(api) {
   api.modifyClass('controller:topic', {
     subscribe(){
       this._super();
-      this.messageBus.subscribe("/polls/" + this.get("model.id"), msg => {
+      this.messageBus.subscribe("/daemo_polls/" + this.get("model.id"), msg => {
         const post = this.get('model.postStream').findLoadedPost(msg.post_id);
         if (post) {
           post.set('polls', msg.polls);
@@ -17,7 +17,7 @@ function initializePolls(api) {
       });
     },
     unsubscribe(){
-      this.messageBus.unsubscribe('/polls/*');
+      this.messageBus.unsubscribe('/daemo_polls/*');
       this._super();
     }
   });

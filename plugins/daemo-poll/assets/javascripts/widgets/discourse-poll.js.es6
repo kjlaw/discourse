@@ -13,7 +13,7 @@ function optionHtml(option) {
 }
 
 function fetchVoters(payload) {
-  return ajax("/polls/voters.json", {
+  return ajax("/daemo_polls/voters.json", {
     type: "get",
     data: payload
   }).catch((error) => {
@@ -591,7 +591,7 @@ export default createWidget('discourse-poll', {
           state.loading = true;
 
           const status = isClosed ? "open" : "closed";
-          ajax("/polls/toggle_status", {
+          ajax("/daemo_polls/toggle_status", {
             type: "PUT",
             data: {
               post_id: attrs.post.get('id'),
@@ -655,7 +655,7 @@ export default createWidget('discourse-poll', {
 
     state.loading = true;
 
-    return ajax("/polls/vote", {
+    return ajax("/daemo_polls/vote", {
       type: "PUT",
       data: {
         post_id: attrs.post.id,

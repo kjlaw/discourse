@@ -107,7 +107,7 @@ after_initialize do
             payload.merge!(user: UserNameSerializer.new(user).serializable_hash)
           end
 
-          MessageBus.publish("/polls/#{post.topic_id}", payload)
+          MessageBus.publish("/daemo_polls/#{post.topic_id}", payload)
 
           return [poll, options]
         end
@@ -143,7 +143,7 @@ after_initialize do
 
           post.save_custom_fields(true)
 
-          MessageBus.publish("/polls/#{post.topic_id}", post_id: post.id, polls: polls)
+          MessageBus.publish("/daemo_polls/#{post.topic_id}", post_id: post.id, polls: polls)
 
           polls[poll_name]
         end
@@ -297,7 +297,7 @@ after_initialize do
   end
 
   Discourse::Application.routes.append do
-    mount ::DaemoPoll::Engine, at: "/polls"
+    mount ::DaemoPoll::Engine, at: "/daemo_polls"
   end
 
   Post.class_eval do
@@ -384,7 +384,7 @@ after_initialize do
   # tells the front-end we have a poll for that post
   on(:post_created) do |post|
     next if post.is_first_post? || post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD].blank?
-    MessageBus.publish("/polls/#{post.topic_id}",                          post_id: post.id,
+    MessageBus.publish("/daemo_polls/#{post.topic_id}",                          post_id: post.id,
                                                                            polls: post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD])
   end
 
