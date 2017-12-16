@@ -32,12 +32,8 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    showAgreeFlagModal() {
-      this._spawnModal('admin-agree-flag', this.get('flaggedPost'), 'agree-flag-modal');
-    },
-
-    showDeleteFlagModal() {
-      this._spawnModal('admin-delete-flag', this.get('flaggedPost'), 'delete-flag-modal');
+    removeAfter(promise) {
+      this.removeAfter(promise);
     },
 
     disagree() {
@@ -51,6 +47,13 @@ export default Ember.Component.extend({
     expand() {
       this.get('flaggedPost').expandHidden().then(() => {
         this.set('expanded', true);
+      });
+    },
+
+    showModerationHistory() {
+      this.get('adminTools').showModerationHistory({
+        filter: 'post',
+        post_id: this.get('flaggedPost.id')
       });
     },
 

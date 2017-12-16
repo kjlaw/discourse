@@ -1,5 +1,5 @@
 // Customise area
-.customize {
+.admin-customize {
   h1 {
     margin-bottom: 10px;
     input {
@@ -35,7 +35,7 @@
   .select2-chosen, .color-schemes li {
     .fa {
       margin-right: 6px;
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
     }
   }
   .show-current-style {
@@ -88,21 +88,27 @@
     }
 
     .nav.target {
+      margin-top: 15px;
+
       li {
         position: relative;
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
       }
-      margin-top: 15px;
+
       .fa {
-        margin-left: 3px;
+        margin-left: 8px;
       }
-      li.mobile a {
-        padding-right: 25px;
-      }
+
       .d-icon-mobile {
-        position: absolute;
-        right: 10px;
-        top: 3px;
+        position: relative;
+        top: -3px;
         font-size: 1.5em;
+        max-height: 20px;
       }
     }
 
@@ -173,7 +179,7 @@
     td.actions     { width: 200px; }
     .hex-input     { width: 80px; margin-bottom: 0; }
     .hex           { text-align: center; }
-    .description   { color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%)); }
+    .description   { color: dark-light-choose($primary-medium, $secondary-medium); }
 
     .invalid .hex input {
       background-color: white;

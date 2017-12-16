@@ -540,6 +540,26 @@ componentTest("quote button - empty lines", {
   }
 });
 
+componentTest("quote button - selecting empty lines", {
+  template: '{{d-editor value=value composerEvents=true}}',
+  beforeEach() {
+    this.set('value', "one\n\n\n\ntwo");
+  },
+  test(assert) {
+    const textarea = jumpEnd(this.$('textarea.d-editor-input')[0]);
+
+    andThen(() => {
+      textarea.selectionStart = 6;
+      textarea.selectionEnd = 10;
+    });
+
+    click('button.quote');
+    andThen(() => {
+      assert.equal(this.get('value'), "one\n\n\n> \n> two");
+    });
+  }
+});
+
 testCase('quote button', function(assert, textarea) {
 
   andThen(() => {
@@ -689,66 +709,6 @@ testCase(`list button with line sequence`, function(assert, textarea) {
     assert.equal(this.get('value'), "Hello\n\nWorld\n\nEvil");
     assert.equal(textarea.selectionStart, 0);
     assert.equal(textarea.selectionEnd, 18);
-  });
-});
-
-testCase(`heading button with no selection`, function(assert, textarea) {
-  const example = I18n.t('composer.heading_text');
-
-  click(`button.heading`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello world.\n\n## ${example}`);
-    assert.equal(textarea.selectionStart, 14);
-    assert.equal(textarea.selectionEnd, 17 + example.length);
-  });
-
-  textarea.selectionStart = 30;
-  textarea.selectionEnd = 30;
-  click(`button.heading`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello world.\n\n${example}`);
-    assert.equal(textarea.selectionStart, 14);
-    assert.equal(textarea.selectionEnd, 14 + example.length);
-  });
-});
-
-testCase(`rule between things`, function(assert, textarea) {
-  textarea.selectionStart = 5;
-  textarea.selectionEnd = 5;
-
-  click(`button.rule`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello\n\n----------\n world.`);
-    assert.equal(textarea.selectionStart, 18);
-    assert.equal(textarea.selectionEnd, 18);
-  });
-});
-
-testCase(`rule with no selection`, function(assert, textarea) {
-  click(`button.rule`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello world.\n\n----------\n`);
-    assert.equal(textarea.selectionStart, 25);
-    assert.equal(textarea.selectionEnd, 25);
-  });
-
-  click(`button.rule`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello world.\n\n----------\n\n\n----------\n`);
-    assert.equal(textarea.selectionStart, 38);
-    assert.equal(textarea.selectionEnd, 38);
-  });
-});
-
-testCase(`rule with a selection`, function(assert, textarea) {
-  textarea.selectionStart = 6;
-  textarea.selectionEnd = 11;
-
-  click(`button.rule`);
-  andThen(() => {
-    assert.equal(this.get('value'), `hello \n\n----------\n.`);
-    assert.equal(textarea.selectionStart, 19);
-    assert.equal(textarea.selectionEnd, 19);
   });
 });
 

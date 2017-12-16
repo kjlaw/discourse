@@ -6,7 +6,7 @@ import { transformBasicPost } from 'discourse/lib/transform-post';
 import { h } from 'virtual-dom';
 import DiscourseURL from 'discourse/lib/url';
 import { dateNode } from 'discourse/helpers/node';
-import { translateSize, avatarUrl } from 'discourse/lib/utilities';
+import { translateSize, avatarUrl, formatUsername } from 'discourse/lib/utilities';
 
 export function avatarImg(wanted, attrs) {
   const size = translateSize(wanted);
@@ -14,7 +14,7 @@ export function avatarImg(wanted, attrs) {
 
   // We won't render an invalid url
   if (!url || url.length === 0) { return; }
-  const title = attrs.username;
+  const title = formatUsername(attrs.username);
 
   const properties = {
     attributes: { alt: '', width: size, height: size, src: Discourse.getURLWithCDN(url), title },
@@ -37,15 +37,31 @@ createWidget('select-post', {
   html(attrs) {
     const buttons = [];
 
-    if (attrs.replyCount > 0 && !attrs.selected) {
-      buttons.push(this.attach('button', { label: 'topic.multi_select.select_replies', action: 'selectReplies' }));
+    if (!attrs.selected && attrs.post_number > 1) {
+      if (attrs.replyCount > 0) {
+        buttons.push(this.attach('button', {
+          label: 'topic.multi_select.select_replies.label',
+          title: 'topic.multi_select.select_replies.title',
+          action: 'selectReplies',
+          className: 'select-replies'
+        }));
+      }
+      buttons.push(this.attach('button', {
+        label: 'topic.multi_select.select_below.label',
+        title: 'topic.multi_select.select_below.title',
+        action: 'selectBelow',
+        className: 'select-below'
+      }));
     }
 
-    const selectPostKey = attrs.selected ? 'topic.multi_select.selected' : 'topic.multi_select.select';
-    buttons.push(this.attach('button', { className: 'select-post',
-                                         label: selectPostKey,
-                                         labelOptions: { count: attrs.selectedPostsCount },
-                                         action: 'selectPost' }));
+    const key = `topic.multi_select.${attrs.selected ? 'selected' : 'select' }_post`;
+    buttons.push(this.attach('button', {
+      label: key + ".label",
+      title: key + ".title",
+      action: 'togglePostSelection',
+      className: 'select-post'
+    }));
+
     return buttons;
   }
 });
@@ -68,7 +84,7 @@ createWidget('reply-to-tab', {
               username: attrs.replyToUsername
             }),
             ' ',
-            h('span', attrs.replyToUsername)];
+            h('span', formatUsername(attrs.replyToUsername))];
   },
 
   click() {

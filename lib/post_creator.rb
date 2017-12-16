@@ -109,10 +109,20 @@ class PostCreator
       # Make sure none of the users have muted the creator
       users = User.where(username: names).pluck(:id, :username).to_h
 
-      MutedUser.where(user_id: users.keys, muted_user_id: @user.id).pluck(:user_id).each do |m|
+      User
+        .joins("LEFT JOIN user_options ON user_options.user_id = users.id")
+        .joins("LEFT JOIN muted_users ON muted_users.muted_user_id = #{@user.id.to_i}")
+        .where("user_options.user_id IS NOT NULL")
+        .where("
+          (user_options.user_id IN (:user_ids) AND NOT user_options.allow_private_messages) OR
+          muted_users.user_id IN (:user_ids)
+        ", user_ids: users.keys)
+        .pluck(:id).each do |m|
+
         errors[:base] << I18n.t(:not_accepting_pms, username: users[m])
-        return false
       end
+
+      return false if errors[:base].present?
     end
 
     if new_topic?
@@ -402,7 +412,8 @@ class PostCreator
       attrs[:word_count] = (@topic.word_count || 0) + @post.word_count
       attrs[:excerpt] = @post.excerpt(220, strip_links: true) if new_topic?
       attrs[:bumped_at] = @post.created_at unless @post.no_bump
-      @topic.update_attributes(attrs)
+      attrs[:updated_at] = 'now()'
+      @topic.update_columns(attrs)
     end
   end
 
@@ -463,7 +474,7 @@ class PostCreator
     end
 
     unless @post.topic.private_message?
-      @user.user_stat.post_count += 1
+      @user.user_stat.post_count += 1 if @post.post_type == Post.types[:regular] && !@post.is_first_post?
       @user.user_stat.topic_count += 1 if @post.is_first_post?
     end
 

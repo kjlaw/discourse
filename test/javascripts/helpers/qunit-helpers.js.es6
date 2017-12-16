@@ -1,7 +1,6 @@
-/* global QUnit, fixtures */
+/* global QUnit, resetSite */
 
 import sessionFixtures from 'fixtures/session-fixtures';
-import siteFixtures from 'fixtures/site-fixtures';
 import HeaderComponent from 'discourse/components/site-header';
 import { forceMobile, resetMobile } from 'discourse/lib/mobile';
 import { resetPluginApi } from 'discourse/lib/plugin-api';
@@ -9,7 +8,6 @@ import { clearCache as clearOutletCache, resetExtraClasses } from 'discourse/lib
 import { clearHTMLCache } from 'discourse/helpers/custom-html';
 import { flushMap } from 'discourse/models/store';
 import { clearRewrites } from 'discourse/lib/url';
-
 
 export function currentUser() {
   return Discourse.User.create(sessionFixtures['/session/current.json'].current_user);
@@ -60,7 +58,6 @@ export function acceptance(name, options) {
       HeaderComponent.reopen({examineDockHeader: function() { }});
 
       resetExtraClasses();
-      const siteJson = siteFixtures['site.json'].site;
       if (options.beforeEach) {
         options.beforeEach.call(this);
       }
@@ -78,7 +75,7 @@ export function acceptance(name, options) {
       }
 
       if (options.site) {
-        Discourse.Site.resetCurrent(Discourse.Site.create(jQuery.extend(true, {}, siteJson, options.site)));
+        resetSite(Discourse.SiteSettings, options.site);
       }
 
       clearOutletCache();
@@ -92,9 +89,9 @@ export function acceptance(name, options) {
         options.afterEach.call(this);
       }
       flushMap();
+      localStorage.clear();
       Discourse.User.resetCurrent();
-      Discourse.Site.resetCurrent(Discourse.Site.create(jQuery.extend(true, {}, fixtures['site.json'].site)));
-
+      resetSite(Discourse.SiteSettings);
       resetExtraClasses();
       clearOutletCache();
       clearHTMLCache();

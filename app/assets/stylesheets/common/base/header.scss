@@ -51,7 +51,7 @@
   }
 }
 
-.header-dropdown-toggle, .drop-down {
+.header-dropdown-toggle, .drop-down, .panel-body {
   .flagged-posts, .queued-posts {
     background: $danger;
   }
@@ -151,7 +151,7 @@
   .unread-notifications {
     left: auto;
     right: 0;
-    background-color: scale-color($tertiary, $lightness: 50%);
+    background-color: dark-light-choose($tertiary-medium, $tertiary);
   }
   .unread-private-messages, .ring {
     left: auto;

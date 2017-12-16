@@ -18,9 +18,8 @@ function initializeDetails(api) {
           "\n" + `[details="${I18n.t("composer.details_title")}"]` + "\n",
           "\n[/details]\n",
           "details_text",
-          { multiline: true }
+          { multiline: false }
         );
-        this.set('optionsVisible', false);
       }
     }
   });

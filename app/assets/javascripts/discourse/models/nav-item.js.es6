@@ -111,6 +111,7 @@ NavItem.reopenClass({
     opts = opts || {};
 
     if (anonymous && !Discourse.Site.currentProp('anonymous_top_menu_items').includes(testName)) return null;
+
     if (!Discourse.Category.list() && testName === "categories") return null;
     if (!Discourse.Site.currentProp('top_menu_items').includes(testName)) return null;
 
@@ -122,7 +123,7 @@ NavItem.reopenClass({
       _.merge(args, extra);
     });
 
-    const store = Discourse.__container__.lookup('store:main');
+    const store = Discourse.__container__.lookup('service:store');
     return store.createRecord('nav-item', args);
   },
 

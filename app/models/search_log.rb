@@ -10,6 +10,15 @@ class SearchLog < ActiveRecord::Base
     )
   end
 
+  def self.search_result_types
+    @search_result_types ||= Enum.new(
+      topic: 1,
+      user: 2,
+      category: 3,
+      tag: 4
+    )
+  end
+
   def self.log(term:, search_type:, ip_address:, user_id: nil)
 
     search_type = search_types[search_type]
@@ -48,6 +57,33 @@ class SearchLog < ActiveRecord::Base
     end
   end
 
+  def self.trending(period = :all, search_type = :all)
+    result = SearchLog.select("term,
+       COUNT(*) AS searches,
+       SUM(CASE
+               WHEN search_result_id IS NOT NULL THEN 1
+               ELSE 0
+           END) AS click_through,
+       COUNT(DISTINCT ip_address) AS unique")
+      .where('created_at > ?', start_of(period))
+
+    result = result.where('search_type = ?', search_types[search_type]) unless search_type == :all
+    result = result.group(:term)
+      .order('COUNT(DISTINCT ip_address) DESC, COUNT(*) DESC')
+      .limit(100).to_a
+  end
+
+  def self.start_of(period)
+    case period
+    when :yearly    then 1.year.ago
+    when :monthly   then 1.month.ago
+    when :quarterly then 3.months.ago
+    when :weekly    then 1.week.ago
+    when :daily     then 1.day.ago
+    else 1000.years.ago
+    end
+  end
+
   def self.clean_up
     search_id = SearchLog.order(:id).offset(SiteSetting.search_query_log_max_size).limit(1).pluck(:id)
     if search_id.present?
@@ -60,11 +96,12 @@ end
 #
 # Table name: search_logs
 #
-#  id               :integer          not null, primary key
-#  term             :string           not null
-#  user_id          :integer
-#  ip_address       :inet             not null
-#  clicked_topic_id :integer
-#  search_type      :integer          not null
-#  created_at       :datetime         not null
+#  id                 :integer          not null, primary key
+#  term               :string           not null
+#  user_id            :integer
+#  ip_address         :inet             not null
+#  search_result_id   :integer
+#  search_type        :integer          not null
+#  created_at         :datetime         not null
+#  search_result_type :integer
 #

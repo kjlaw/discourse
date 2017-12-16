@@ -1,27 +1,3 @@
-.gap {
-  /* may not need this */
-}
-
-.small-action {
-  border-top: 1px solid $primary-low;
-  color: lighten($primary, 50%);
-  padding-bottom: 3px;
-  text-transform: uppercase;
-  font-weight: bold;
-
-  .topic-avatar {
-    margin-top: 5px;
-  }
-
-  .small-action-desc {
-    padding-top: 1em;
-
-    button {
-      padding-top: 0px;
-    }
-  }
-}
-
 /* hide the reply border above the time gap notices */
 .time-gap + .topic-post article {
   border-top: none;
@@ -36,7 +12,6 @@
   padding-bottom: 30px;
 }
 
-
 span.badge-posts {
   margin-right: 5px;
 }
@@ -45,45 +20,49 @@ span.badge-posts {
   display: none;
 }
 
-nav.post-controls {
-  clear: both;
-  .d-icon {
-    opacity: 1.0;
-  }
-}
-
 .who-liked {
   margin-left: 10px;
 }
 
 .topic-post {
-  button {
-    border: none;
-    font-size: 1.214em;
-    padding: 8px 10px;
-    vertical-align: top;
-    background: transparent;
-    color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
-    float: left;
-    &.hidden {
-      display: none;
+  nav.post-controls {
+    clear: both;
+    color: dark-light-choose($primary-low-mid, $secondary-high);        
+    .d-icon {
+      opacity: 1.0;
     }
-    &.admin {
-      position: relative;
+    button {
+      border: none;
+      font-size: 1.214em;
+      padding: 8px 10px;
+      vertical-align: top;
+      background: transparent;
+      float: left;
+      &.hidden {
+        display: none;
+      }
+      &.admin {
+        position: relative;
+      }
+      &.expand-post {
+        margin:10px 0 10px 0;
+      }
+      &.reply {
+        float: right;
+        color: $primary-high;        
+      }
+      &.has-like {
+        color: $love;
+      }
+      &.bookmarked {
+        color: $tertiary;
+      }
     }
-    &.expand-post {
-      margin:10px 0 10px 0;
-    }
-    &.has-like {color: $love;}
 
-    &.bookmarked {
-      color: $tertiary;
+    button.like-count {
+      font-size: 1em;
+      padding: 8px 4px;
     }
-  }
-
-  button.like-count {
-    font-size: 1em;
-    padding: 8px 4px;
   }
 }
 
@@ -91,7 +70,7 @@ nav.post-controls {
 /* shift post reply button to the right and make it black */
 .post-controls button.create {
   float: right;
-  color: dark-light-choose(scale-color($primary, $lightness: 20%), scale-color($secondary, $lightness: 80%));
+  color: dark-light-choose($primary-high, $secondary-low);
 }
 
 
@@ -153,8 +132,7 @@ a.reply-to-tab {
   position: absolute;
   z-index: 400;
   right: 80px;
-  color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
-  span { display: none; }
+  color: dark-light-choose($primary-medium, $secondary-medium);
 }
 
 a.star {
@@ -181,7 +159,7 @@ a.star {
   h3 {
     margin-bottom: 4px;
     margin-top: 0;
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     line-height: 23px;
     font-weight: normal;
     font-size: 1em;
@@ -189,7 +167,7 @@ a.star {
 
   h4 {
     margin: 0 0 3px 0;
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     font-weight: normal;
     font-size: 0.857em;
     line-height: 15px;
@@ -246,7 +224,7 @@ a.star {
       line-height: 20px;
     }
     .number, i {
-      color: dark-light-choose(scale-color($primary, $lightness: 20%), scale-color($secondary, $lightness: 80%));
+      color: dark-light-choose($primary-high, $secondary-low);
       font-size: 110%;
     }
 
@@ -269,7 +247,7 @@ a.star {
   }
 
   .domain {
-    color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+    color: dark-light-choose($primary-low-mid, $secondary-high);
   }
 
   .topic-links {
@@ -288,7 +266,7 @@ a.star {
     .btn {
       border: 0;
       padding: 0 15px;
-      color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
+      color: dark-light-choose($primary-medium, $secondary-high);
       background: blend-primary-secondary(5%);
       border-left: 1px solid $primary-low;
       border-top: 1px solid $primary-low;
@@ -301,7 +279,7 @@ a.star {
   }
 
   .link-summary .btn {
-    color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
+    color: dark-light-choose($primary-medium, $secondary-high);
     background: blend-primary-secondary(5%);
     width: 100%;
   }
@@ -324,7 +302,7 @@ a.star {
 #topic-footer-buttons p {
   clear: both; /* this is to force the drop-down notification state description para below the button */
   margin: 0;
-  color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+  color: dark-light-choose($primary-medium, $secondary-medium);
 }
 
 #topic-footer-button {
@@ -381,10 +359,6 @@ span.post-count {
   line-height: $base-line-height + 2; /* bump up line height to match increased font */
 }
 
-.moderator .topic-body {
-  background-color: $highlight-low;
-}
-
 .quote-button.visible {
   display: block;
   z-index: 936;
@@ -410,7 +384,7 @@ iframe {
     padding-top: 1px;
   }
   span {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
   }
   span.title {
     color: $primary;
@@ -495,7 +469,7 @@ blockquote {
 .posts-wrapper {  position: relative; }
 
 span.highlighted {
-  background-color: dark-light-choose(scale-color($highlight, $lightness: 70%), $highlight);
+  background-color: dark-light-choose($highlight-low, $highlight);
 }
 
 .topic-avatar {
@@ -509,9 +483,6 @@ span.highlighted {
   .names {
     margin: 5px 0 0 5px;
     line-height: 17px;
-    span.full-name, span.user-title, span.username {
-      display: block;
-    }
 
     .poster-icon {
       float: right;
@@ -526,7 +497,7 @@ span.highlighted {
 }
 
 .username.new-user a {
-  color: dark-light-choose(scale-color($primary, $lightness: 70%), scale-color($secondary, $lightness: 30%));
+  color: dark-light-choose($primary-low-mid, $secondary-high);
 }
 
 .user-title {

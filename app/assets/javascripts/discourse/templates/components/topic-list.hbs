@@ -14,8 +14,21 @@
       bulkSelectEnabled=bulkSelectEnabled}}
   </thead>
 {{/unless}}
+
+{{plugin-outlet
+  name="before-topic-list-body"
+  args=(hash
+    topics=topics
+    selected=selected
+    bulkSelectEnabled=bulkSelectEnabled
+    lastVisitedTopic=lastVisitedTopic
+    discoveryList=discoveryList
+    hideCategory=hideCategory)
+  tagName=""
+  connectorTagName=""}}
+
 <tbody>
-  {{#each topics as |topic|}}
+  {{#each filteredTopics as |topic|}}
     {{topic-list-item topic=topic
                       bulkSelectEnabled=bulkSelectEnabled
                       showTopicPostBadges=showTopicPostBadges

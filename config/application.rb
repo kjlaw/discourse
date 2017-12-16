@@ -82,12 +82,20 @@ module Discourse
     end]
 
     config.assets.precompile += %w{
-                                 vendor.js admin.js preload-store.js
-                                 browser-update.js break_string.js ember_jquery.js
-                                 pretty-text-bundle.js wizard-application.js
-                                 wizard-vendor.js plugin.js plugin-third-party.js
-                                 markdown-it-bundle.js
-                                 }
+      vendor.js
+      admin.js
+      preload-store.js
+      browser-update.js
+      break_string.js
+      ember_jquery.js
+      pretty-text-bundle.js
+      wizard-application.js
+      wizard-vendor.js
+      plugin.js
+      plugin-third-party.js
+      markdown-it-bundle.js
+      service-worker.js
+    }
 
     # Precompile all available locales
     Dir.glob("#{config.root}/app/assets/javascripts/locales/*.js.erb").each do |file|
@@ -209,6 +217,9 @@ module Discourse
 
       # Load plugins
       Discourse.plugins.each(&:notify_after_initialize)
+
+      # we got to clear the pool in case plugins connect
+      ActiveRecord::Base.connection_handler.clear_active_connections!
 
       # This nasty hack is required for not precompiling QUnit assets
       # in test mode. see: https://github.com/rails/sprockets-rails/issues/299#issuecomment-167701012

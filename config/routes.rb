@@ -93,6 +93,8 @@ Discourse::Application.routes.draw do
     get "groups/:type" => "groups#show", constraints: AdminConstraint.new
     get "groups/:type/:id" => "groups#show", constraints: AdminConstraint.new
 
+    get "moderation_history" => "moderation_history#index"
+
     resources :users, id: USERNAME_ROUTE_FORMAT, except: [:show] do
       collection do
         get "list" => "users#index"
@@ -117,8 +119,8 @@ Discourse::Application.routes.draw do
       post "log_out", constraints: AdminConstraint.new
       put "activate"
       put "deactivate"
-      put "block"
-      put "unblock"
+      put "silence"
+      put "unsilence"
       put "trust_level"
       put "trust_level_lock"
       put "primary_group"
@@ -174,6 +176,7 @@ Discourse::Application.routes.draw do
         end
       end
       post "watched_words/upload" => "watched_words#upload"
+      resources :search_logs,           only: [:index]
     end
 
     get "/logs" => "staff_action_logs#index"
@@ -300,6 +303,7 @@ Discourse::Application.routes.draw do
   get "session/current" => "session#current"
   get "session/csrf" => "session#csrf"
   get "composer_messages" => "composer_messages#index"
+  post "composer/parse_html" => "composer#parse_html"
 
   resources :static
   post "login" => "static#enter", constraints: { format: /(json|html)/ }
@@ -390,7 +394,7 @@ Discourse::Application.routes.draw do
     get "#{root_path}/:username/activity.rss" => "posts#user_posts_feed", format: :rss, constraints: { username: USERNAME_ROUTE_FORMAT }
     get "#{root_path}/:username/activity" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
     get "#{root_path}/:username/activity/:filter" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
-    get "#{root_path}/:username/badges" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
+    get "#{root_path}/:username/badges" => "users#badges", constraints: { username: USERNAME_ROUTE_FORMAT }
     get "#{root_path}/:username/notifications" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
     get "#{root_path}/:username/notifications/:filter" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
     get "#{root_path}/:username/activity/pending" => "users#show", constraints: { username: USERNAME_ROUTE_FORMAT }
@@ -430,6 +434,7 @@ Discourse::Application.routes.draw do
   get "private-posts" => "posts#latest", id: "private_posts"
   get "posts/by_number/:topic_id/:post_number" => "posts#by_number"
   get "posts/:id/reply-history" => "posts#reply_history"
+  get "posts/:id/reply-ids"     => "posts#reply_ids"
   get "posts/:username/deleted" => "posts#deleted_posts", constraints: { username: USERNAME_ROUTE_FORMAT }
   get "posts/:username/flagged" => "posts#flagged_posts", constraints: { username: USERNAME_ROUTE_FORMAT }
 
@@ -686,12 +691,15 @@ Discourse::Application.routes.draw do
   post "draft" => "draft#update"
   delete "draft" => "draft#destroy"
 
+  get "service-worker" => "static#service_worker_asset", format: :js
+
   get "cdn_asset/:site/*path" => "static#cdn_asset", format: false
   get "brotli_asset/*path" => "static#brotli_asset", format: false
 
   get "favicon/proxied" => "static#favicon", format: false
 
   get "robots.txt" => "robots_txt#index"
+  get "offline.html" => "offline#index"
   get "manifest.json" => "metadata#manifest", as: :manifest
   get "opensearch" => "metadata#opensearch", format: :xml
 

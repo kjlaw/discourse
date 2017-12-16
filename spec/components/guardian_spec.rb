@@ -75,12 +75,12 @@ describe Guardian do
       expect(Guardian.new(user).post_can_act?(post, :notify_moderators)).to be_falsey
     end
 
-    it "returns false for notify_user if private messages are enabled but threshold not met" do
+    it "returns false for notify_user and notify_moderators if private messages are enabled but threshold not met" do
       SiteSetting.enable_private_messages = true
       SiteSetting.min_trust_to_send_messages = 2
       user.trust_level = TrustLevel[1]
       expect(Guardian.new(user).post_can_act?(post, :notify_user)).to be_falsey
-      expect(Guardian.new(user).post_can_act?(post, :notify_moderators)).to be_truthy
+      expect(Guardian.new(user).post_can_act?(post, :notify_moderators)).to be_falsey
     end
 
     describe "trust levels" do
@@ -193,9 +193,9 @@ describe Guardian do
       end
     end
 
-    context "author is blocked" do
+    context "author is silenced" do
       before do
-        user.blocked = true
+        user.silenced_till = 1.year.from_now
         user.save
       end
 
@@ -211,8 +211,47 @@ describe Guardian do
       it "returns true if target is a staff group" do
         Group::STAFF_GROUPS.each do |name|
           g = Group[name]
-          g.messageable_level = Group::ALIAS_LEVELS[:everyone]
+          g.update!(messageable_level: Group::ALIAS_LEVELS[:everyone])
           expect(Guardian.new(user).can_send_private_message?(g)).to be_truthy
+        end
+      end
+    end
+
+    it "respects the group's messageable_level" do
+      group = Fabricate(:group)
+
+      Group::ALIAS_LEVELS.each do |level, _|
+        group.update!(messageable_level: Group::ALIAS_LEVELS[level])
+        output = level == :everyone ? true : false
+
+        expect(Guardian.new(user).can_send_private_message?(group)).to eq(output)
+      end
+
+      admin = Fabricate(:admin)
+
+      Group::ALIAS_LEVELS.each do |level, _|
+        group.update!(messageable_level: Group::ALIAS_LEVELS[level])
+        expect(Guardian.new(admin).can_send_private_message?(group)).to eq(true)
+      end
+    end
+
+    context 'target user has private message disabled' do
+      before do
+        another_user.user_option.update!(allow_private_messages: false)
+      end
+
+      context 'for a normal user' do
+        it 'should return false' do
+          expect(Guardian.new(user).can_send_private_message?(another_user)).to eq(false)
+        end
+      end
+
+      context 'for a staff user' do
+        it 'should return true' do
+          [admin, moderator].each do |staff_user|
+            expect(Guardian.new(staff_user).can_send_private_message?(another_user))
+              .to eq(true)
+          end
         end
       end
     end
@@ -831,14 +870,14 @@ describe Guardian do
           expect(Guardian.new(user).can_create?(Post, private_message)).to be_falsey
         end
 
-        it "allows new posts from blocked users included in the pm" do
-          user.update_attribute(:blocked, true)
+        it "allows new posts from silenced users included in the pm" do
+          user.update_attribute(:silenced_till, 1.year.from_now)
           private_message.topic_allowed_users.create!(user_id: user.id)
           expect(Guardian.new(user).can_create?(Post, private_message)).to be_truthy
         end
 
-        it "doesn't allow new posts from blocked users not invited to the pm" do
-          user.update_attribute(:blocked, true)
+        it "doesn't allow new posts from silenced users not invited to the pm" do
+          user.update_attribute(:silenced_till, 1.year.from_now)
           expect(Guardian.new(user).can_create?(Post, private_message)).to be_falsey
         end
       end
@@ -1353,9 +1392,9 @@ describe Guardian do
       expect(Guardian.new(user).can_moderate?(nil)).to be_falsey
     end
 
-    context 'when user is blocked' do
+    context 'when user is silenced' do
       it 'returns false' do
-        user.toggle!(:blocked)
+        user.update_column(:silenced_till, 1.year.from_now)
         expect(Guardian.new(user).can_moderate?(post)).to be(false)
         expect(Guardian.new(user).can_moderate?(topic)).to be(false)
       end
@@ -2572,6 +2611,62 @@ describe Guardian do
 
       it "staff can see suspensions" do
         expect(Guardian.new(moderator).can_see_suspension_reason?(user)).to eq(true)
+      end
+    end
+  end
+
+  describe '#can_remove_allowed_users?' do
+    context 'staff users' do
+      it 'should be true' do
+        expect(Guardian.new(moderator).can_remove_allowed_users?(topic))
+          .to eq(true)
+      end
+    end
+
+    context 'normal user' do
+      let(:topic) { Fabricate(:topic, user: Fabricate(:user)) }
+      let(:another_user) { Fabricate(:user) }
+
+      before do
+        topic.allowed_users << user
+        topic.allowed_users << another_user
+      end
+
+      it 'should be false' do
+        expect(Guardian.new(user).can_remove_allowed_users?(topic))
+          .to eq(false)
+      end
+
+      describe 'target_user is the user' do
+        describe 'when user is in a pm with another user' do
+          it 'should return true' do
+            expect(Guardian.new(user).can_remove_allowed_users?(topic, user))
+              .to eq(true)
+          end
+        end
+
+        describe 'when user is the creator of the topic' do
+          it 'should return false' do
+            expect(Guardian.new(topic.user).can_remove_allowed_users?(topic, topic.user))
+              .to eq(false)
+          end
+        end
+
+        describe 'when user is the only user in the topic' do
+          it 'should return false' do
+            topic.remove_allowed_user(Discourse.system_user, another_user.username)
+
+            expect(Guardian.new(user).can_remove_allowed_users?(topic, user))
+              .to eq(false)
+          end
+        end
+      end
+
+      describe 'target_user is not the user' do
+        it 'should return false' do
+          expect(Guardian.new(user).can_remove_allowed_users?(topic, moderator))
+            .to eq(false)
+        end
       end
     end
   end

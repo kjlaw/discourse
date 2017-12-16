@@ -17,19 +17,6 @@ header {
   height: 100%;
 }
 
-.grippie {
-  cursor: row-resize;
-  padding: 4px 0px;
-
-  &:before {
-    content: '';
-    display: block;
-    width: 27px;
-    margin: auto;
-    border-top: 3px double dark-light-choose(scale-color($primary, $lightness: 70%), scale-color($secondary, $lightness: 50%));
-  }
-}
-
 .topic-statuses {
   float: left;
   padding: 0;
@@ -64,36 +51,6 @@ pre {
   font-family: Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
 }
 
-/* page not found styles */
-h1.page-not-found {
-  line-height: 30px;
-}
-
-.page-not-found {
-  margin: 20px 0 40px 0;
-
-  &-search {
-    margin-top: 20px;
-  }
-
-  &-topics .span8 {
-    line-height: 1.5em;
-    margin-right: 20px;
-  }
-}
-
-.popular-topics-title,
-.recent-topics-title {
-  margin-bottom: 10px;
-}
-
-.not-found-topic {
-  > a {
-    margin-right: 10px;
-    line-height: 2;
-  }
-}
-
 // this removes the unwanted top margin on a paragraph under a heading
 h1,
 h2,
@@ -115,44 +72,9 @@ input,
 button,
 select,
 textarea {
-  font-size: 0.929em;
+  font-size: 1em;
   font-weight: normal;
   line-height: 18px;
-}
-
-input,
-button,
-select,
-textarea {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-input,
-select,
-textarea {
-  color: $primary;
-
-  &[class*="span"] {
-    float: none;
-    margin-left: 0;
-  }
-
-  &[disabled],
-  &[readonly] {
-    cursor: not-allowed;
-    background-color: $primary-low;
-    border-color: $primary-low;
-  }
-
-  &:focus:required:invalid {
-    color: $danger;
-    border-color: $danger;
-  }
-
-  &:focus:required:invalid:focus {
-    border-color: $danger;
-    box-shadow: 0 0 6px $danger;
-  }
 }
 
 select,
@@ -160,61 +82,13 @@ textarea {
   display: inline-block;
   padding: 4px;
   margin-bottom: 9px;
-  font-size: 0.929em;
+  font-size: 1em;
   line-height: 18px;
   color: $primary;
 }
 
-input {
+input, textarea {
   width: 210px;
-
-  &[type="text"],
-  &[type="password"],
-  &[type="datetime"],
-  &[type="datetime-local"],
-  &[type="date"],
-  &[type="month"],
-  &[type="time"],
-  &[type="week"],
-  &[type="number"],
-  &[type="email"],
-  &[type="url"],
-  &[type="search"],
-  &[type="tel"],
-  &[type="color"] {
-    display: inline-block;
-    height: 18px;
-    padding: 4px;
-    margin-bottom: 9px;
-    font-size: 0.929em;
-    line-height: 18px;
-    color: $primary;
-    background-color: $secondary;
-    border: 1px solid $primary-low;
-    border-radius: 3px;
-    box-shadow: inset 0 1px 1px rgba(0,0,0, .3);
-
-    &:focus {
-      border-color: $tertiary;
-      outline: 0;
-      box-shadow: inset 0 1px 1px rgba(0,0,0, .3), 0 0 8px $tertiary;
-    }
-  }
-}
-
-textarea {
-  width: 210px;
-  height: auto;
-  background-color:$secondary;
-  border: 1px solid $primary-low;
-  border-radius: 3px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0, .3);
-
-  &:focus {
-    border-color: $tertiary;
-    outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0,0,0, .3), 0 0 8px $tertiary;
-  }
 }
 
 select,
@@ -224,8 +98,6 @@ input[type="file"] {
 
 select {
   width: 220px;
-  border: 1px solid $primary-low;
-
   &[multiple],
   &[size] {
     height: auto;
@@ -265,7 +137,6 @@ input {
       position: relative;
       margin-bottom: 0;
       vertical-align: middle;
-      border-radius: 0 3px 3px 0;
 
       &:focus {
         z-index: 2;
@@ -293,7 +164,7 @@ input {
     }
 
     .active {
-      background-color: scale-color($danger, $lightness: 30%);
+      background-color: $danger-medium;
       border-color: $danger;
     }
   }
@@ -328,6 +199,8 @@ input {
   input,
   select {
     border-radius: 0;
+    background-color: $primary-low;
+    border-color: $primary-low;
   }
 
   .add-on,
@@ -392,7 +265,7 @@ input {
     .input-append {
       .add-on {
         color: $danger;
-        background-color: scale-color($danger, $lightness: 30%);
+        background-color: $danger-medium;
         border-color: scale-color($danger, $lightness: -20%);
       }
     }
@@ -421,7 +294,7 @@ input {
     .input-append {
       .add-on {
         color: $success;
-        background-color:  scale-color($success, $lightness: 90%);
+        background-color:  $success-low;
         border-color: $success;
       }
     }

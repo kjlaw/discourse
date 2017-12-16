@@ -12,6 +12,7 @@ export function buildOptions(state) {
     siteSettings,
     getURL,
     lookupAvatar,
+    lookupPrimaryUserGroup,
     getTopicInfo,
     topicId,
     categoryHashtagLookup,
@@ -19,12 +20,15 @@ export function buildOptions(state) {
     getCurrentUser,
     currentUser,
     lookupAvatarByPostNumber,
+    lookupPrimaryUserGroupByPostNumber,
+    formatUsername,
     emojiUnicodeReplacer,
     lookupInlineOnebox,
     lookupImageUrls,
     previewing,
     linkify,
-    censoredWords
+    censoredWords,
+    mentionLookup
   } = state;
 
   let features = {
@@ -49,6 +53,7 @@ export function buildOptions(state) {
     getURL,
     features,
     lookupAvatar,
+    lookupPrimaryUserGroup,
     getTopicInfo,
     topicId,
     categoryHashtagLookup,
@@ -56,7 +61,9 @@ export function buildOptions(state) {
     getCurrentUser,
     currentUser,
     lookupAvatarByPostNumber,
-    mentionLookup: state.mentionLookup,
+    lookupPrimaryUserGroupByPostNumber,
+    formatUsername,
+    mentionLookup,
     emojiUnicodeReplacer,
     lookupInlineOnebox,
     lookupImageUrls,
@@ -64,6 +71,7 @@ export function buildOptions(state) {
     allowedHrefSchemes: siteSettings.allowed_href_schemes ? siteSettings.allowed_href_schemes.split('|') : null,
     allowedIframes: siteSettings.allowed_iframes ? siteSettings.allowed_iframes.split('|') : [],
     markdownIt: true,
+    injectLineNumbersToPreview: siteSettings.enable_advanced_editor_preview_sync,
     previewing
   };
 

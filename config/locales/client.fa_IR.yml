@@ -83,7 +83,6 @@ fa_IR:
           other: "%{count} سال بعد"
       previous_month: 'ماه قبل'
       next_month: 'ماه بعد'
-      placeholder: انتخاب تاریخ
     share:
       topic: 'پیوندی به این موضوع را به اشتراک بگذارید'
       post: 'ارسال #%{postNumber}'
@@ -141,6 +140,7 @@ fa_IR:
         eu_west_2: "اروپا (لندن)"
         sa_east_1: "آمریکای جنوبی (سائوپائولو)"
         us_east_1: "شرق ایالات متحده (ویرجینیا شمالی)"
+        us_east_2: "شرق ایالات متحده (اوهایو)"
         us_gov_west_1: "AWS GovCloud (ایالات متحده)"
         us_west_1: "غرب ایالات متحده (کالیفرنیا شمالی)"
         us_west_2: "غرب ایالات متحده  (اورگان)"
@@ -337,10 +337,14 @@ fa_IR:
       join: "پیوستن به گروه"
       leave: "ترک گروه"
       request: "درخواست پیوستن به گروه"
+      message: "پیام"
       automatic_group: گروه خودکار
       closed_group: گروه بسته شده
       is_group_user: "شما عضو این گروه هستید"
       allow_membership_requests: "اجازه ارسال درخواست عضویت در گروه به کاربران"
+      membership_request:
+        submit: "ارسال درخواست"
+        title: "درخواست پیوستن به @%{group_name}"
       membership: "عضویت"
       name: "نام"
       user_count: "تعداد اعضا"
@@ -350,6 +354,8 @@ fa_IR:
       index:
         title: "گروه‌ها"
         empty: "هیچ گروه قابل نمایشی وجود ندارد."
+      title:
+        other: "گروه ها"
       activity: "فعالیت"
       members: "اعضا"
       topics: "موضوعات"
@@ -361,7 +367,7 @@ fa_IR:
         title: "چه کسی می‌تواند این گروه را ببیند؟"
         public: "همه"
         members: "صاحبان گروه، اعضا، و مدیران"
-        staff: "صاحبان گروه، و کارکنان"
+        staff: "صاحبان گروه و کارکنان"
         owners: "صاحبان گروه و مدیران"
       alias_levels:
         nobody: "هیچ‌کس"
@@ -495,8 +501,8 @@ fa_IR:
       admin: "{{user}} یک مدیر ارشد است"
       moderator_tooltip: "این کاربر یک مدیر است"
       admin_tooltip: "این کاربر یک ادمین است"
-      blocked_tooltip: "این کاربر مسدود شده است"
       suspended_notice: "این کاربر تا {{date}} در وضعیت معلق است."
+      suspended_permanently: "این کاربر معلق شده."
       suspended_reason: "دلیل: "
       github_profile: "Github"
       email_activity_summary: "چکیده‌ی فعالیت"
@@ -755,10 +761,6 @@ fa_IR:
           other: "موضوعات ساخته شدند"
         post_count:
           other: "نوشته‌ها ساخته شدند"
-        likes_given:
-          other: "<i class='fa fa-heart'></i> داده"
-        likes_received:
-          other: "<i class='fa fa-heart'></i> دریافت کرده"
         days_visited:
           other: "روز‌هایی که بازدید شده"
         posts_read:
@@ -846,7 +848,6 @@ fa_IR:
     first_post: نوشته نخست
     mute: بی صدا
     unmute: صدادار
-    last_post: آخرین نوشته
     last_reply_lowercase: آخرین پاسخ
     replies_lowercase:
       other: 'پاسخ‌ها '
@@ -974,12 +975,22 @@ fa_IR:
       shift: 'Shift'
       ctrl: 'Ctrl'
       alt: 'Alt'
+    emoji_picker:
+      people: مردم
+      nature: طبیعت
+      food: غذا
+      activity: فعالیت
+      travel: سفر
+      objects: اشیا
+      celebration: جشن
+      recent: اخیرا استفاده شده
     composer:
       emoji: "شکلک :)"
       more_emoji: "بیشتر..."
       options: "گزینه‌ها"
       whisper: "زمزمه"
       unlist: "از فهرست  پاک شده"
+      blockquote_text: "نقل‌قول"
       add_warning: "این یک هشدار رسمی است."
       toggle_whisper: "تغییر وضعیت زمزمه"
       toggle_unlisted: "تغییر وضعیت از لیست خارج شده"
@@ -1046,12 +1057,7 @@ fa_IR:
       olist_title: "فهرست شماره گذاری شده"
       ulist_title: "فهرست نقطه‌ای"
       list_item: "فهرست موارد"
-      heading_label: "H"
-      heading_title: "عنوان"
-      heading_text: "عنوان"
-      hr_title: "خط‌کش افقی"
       help: "راهنمای ویرایش با Markdown"
-      toggler: "مخفی‌سازی یا نمایش پنل نوشتن"
       modal_ok: "تایید"
       modal_cancel: "لغو"
       cant_send_pm: "متاسفانه , شما نمیتوانید به %{username}  پیام بفرستید."
@@ -1117,7 +1123,6 @@ fa_IR:
       no_more_results: "نتایجی بیشتری یافت نشد."
       searching: "در حال جستجو..."
       post_format: "#{{post_number}} توسط {{username}}"
-      results_page: "نتایج جستجو"
       context:
         user: "جستجوی نوشته‌ها با @{{username}}"
         category: "جستجوی دسته‌بندی #{{category}}"
@@ -1127,26 +1132,18 @@ fa_IR:
         title: جستجوی پیشرفته
         posted_by:
           label: فرستنده
-        in_category:
-          label: در دسته‌بندی
         in_group:
           label: در گروه
         with_badge:
           label: با نشان
-        with_tags:
-          label: با برچسب
         filters:
-          label: فقط موضوعات/نوشته‌هایی را برگردان که...
           likes: پسندیدم
           posted: نوشته ارسال کردم در
           watching: در حال مشاهده هستم
           tracking: در حال پیگیری هستم
-          private: در پیام‌های من هستند
-          bookmarks: نشانک گذاری کردم
           first: اولین نوشته هستند
           pinned: سنجاق شدند
           unpinned: سنجاق نشدند
-          seen: خواندم
           unseen: نخواندم
           wiki: دانشنامه هستند
         statuses:
@@ -1251,7 +1248,7 @@ fa_IR:
         login_required: "برای مشاهده‌ی موضوع باید وارد سیستم شوید."
       server_error:
         title: "بارگذاری موضوع ناموفق بود"
-        description: "متأسفیم، نتوانستیم موضوع را بار‌گیری کنیم، احتمالا دلیل آن مشکل اتصال اینترنت است. لطفاً دوباره تلاش کنید. اگر مشکل پابرجا بود، ما به ما اطلاع دهید."
+        description: "متأسفیم، نتوانستیم موضوع را بار‌گیری کنیم، احتمالا دلیل آن مشکل اتصال اینترنت است. لطفاً دوباره تلاش کنید. اگر مشکل پابرجا بود، به ما اطلاع دهید."
       not_found:
         title: "موضوع پیدا نشد"
         description: "متأسفیم، نتوانستیم آن موضوع را پیدا کنیم. شاید یکی از همکاران آن را پاک کرده؟"
@@ -1277,7 +1274,6 @@ fa_IR:
       jump_reply_down: رفتن به پاسخ بعدی
       deleted: "موضوع پاک شده است"
       topic_status_update:
-        title: "تنظیم زمان‌سنج موضوع"
         save: "تنظیم زمان‌سنج"
         num_of_hours: "تعداد ساعت:"
         remove: "حذف زمان‌سنج"
@@ -1518,7 +1514,6 @@ fa_IR:
       reply: "<i class='fa fa-mail-forward'></i> {{replyAvatar}} {{usernameLink}}"
       reply_topic: "<i class='fa fa-mail-forward'></i> {{link}}"
       quote_reply: "نقل‌قول"
-      edit: "در حال ویرایش {{link}} {{replyAvatar}} {{username}}"
       edit_reason: "دلیل:"
       post_number: "نوشته {{number}}"
       wiki_last_edited_on: "دانشنامه آخرین بار در این زمان ویرایش شده"
@@ -1594,8 +1589,6 @@ fa_IR:
         change_owner: "تغییر مالکیت"
       actions:
         flag: 'پرچم'
-        defer_flags:
-          other: "پرچم تاخیر"
         undo:
           off_topic: "برداشتن پرچم"
           spam: "برداشتن پرچم"
@@ -2052,9 +2045,7 @@ fa_IR:
       selector_no_tags: "بدون برچسب"
       changed: "برچسب‌های تغییر یافته:"
       tags: "برچسب‌ها"
-      choose_for_topic: "انتخاب برچسب‌های اختیاری برای موضوع"
       delete_tag: "حذف برچسب"
-      delete_confirm: "آیا از حذف برچسب اطمینان دارید؟"
       rename_tag: "تغییر نام برچسب"
       rename_instructions: "انتخاب نام جدید برای برچسب:"
       sort_by: "مرتب سازی بر اساس:"
@@ -2149,7 +2140,6 @@ fa_IR:
         no_problems: "هیچ مشکلات پیدا نشد."
         moderators: 'مدیران:'
         admins: 'مدیران ارشد:'
-        blocked: 'مسدود شده‌ها:'
         suspended: 'تعلیق شده:'
         private_messages_short: "پیام‌ها"
         private_messages_title: "پیام‌ها"
@@ -2182,24 +2172,13 @@ fa_IR:
         by: "توسط"
       flags:
         title: "پرچم‌ها"
-        old: "قدیمی"
-        active: "فعال"
         agree: "موافقت کردن"
         agree_title: "تایید این پرچم به عنوان معتبر و صحیح"
-        agree_flag_modal_title: "موافقت کردن و..."
-        agree_flag_hide_post: "موافقت با (مخفی کردن نوشته + ارسال پیام خصوصی)"
-        agree_flag_hide_post_title: "این نوشته را مخفی کن و به کاربر به صورت خودکار پیام ارسال کن تا این نوشته را ویرایش کند"
-        agree_flag_restore_post: "موافقم (بازگرداندن نوشته)"
-        agree_flag_restore_post_title: "بازگرداندن این نوشته"
-        agree_flag: "موافقت با پرچم گذاری"
-        agree_flag_title: "موافقت با پرچم و نگه داشتن نوشته بدون تغییر"
-        defer_flag: " واگذار کردن"
+        defer_flag: "چشم پوشی"
         defer_flag_title: "حذف این پرچم; بدون نیاز به اقدام در این زمان"
         delete: "حذف"
         delete_title: "نوشته‌ای که پرچم به آن اشاره دارد حذف کن."
-        delete_post_defer_flag: "حذف نوشته و تاثیر در پرچم"
         delete_post_defer_flag_title: "حذف نوشته; اگر اولین نوشته است، موضوع را حذف نمایید."
-        delete_post_agree_flag: "حذف نوشته و موافقت با پرچم"
         delete_post_agree_flag_title: "حذف نوشته; اگر اولین نوشته است، موضوع را حذف نمایید."
         delete_flag_modal_title: "حذف و..."
         delete_spammer: "حذف هرزنگار"
@@ -2214,29 +2193,16 @@ fa_IR:
         dispositions:
           agreed: "موافقت شد"
           disagreed: "مخالفت شد"
-          deferred: "به تعویق افتاد"
         flagged_by: "پرچم شده توسط"
         resolved_by: "حل شده توسط"
         took_action: "زمان عمل"
         system: "سیستم"
         error: "اشتباهی روی داد"
         reply_message: "پاسخ دادن"
-        no_results: "هیچ پرچمی نیست"
         topic_flagged: "این <strong>موضوع</strong> پرچم خورده است."
         visit_topic: " موضوع را برای اقدام لازم ببینید"
         was_edited: "نوشته پس از پرچم اول ویرایش شد"
         previous_flags_count: "این موضوع در حال حاضر {{count}} بار پرچم گذاری شده است."
-        summary:
-          action_type_3:
-            other: "x{{count}} خارج از بحث"
-          action_type_4:
-            other: "X{{count}} نامناسب"
-          action_type_6:
-            other: "x{{count}} سفارشی"
-          action_type_7:
-            other: "x{{count}} دلخواه"
-          action_type_8:
-            other: " x{{count}} هرزنامه"
       groups:
         primary: "گروه اصلی"
         no_primary: "(بدون گروه اصلی)"
@@ -2680,8 +2646,6 @@ fa_IR:
             change_category_settings: "تغییر تنظیمات دسته‌بندی"
             delete_category: "حذف دسته‌بندی"
             create_category: "ساخت دسته‌بندی"
-            block_user: "بستن دسترسی کاربر"
-            unblock_user: "باز کردن دسترسی کاربر"
             grant_admin: "اعطای مقام مدیر ارشد"
             revoke_admin: "برداشتن مقام مدیر ارشد"
             grant_moderation: "اعطای مقام مدیریت"
@@ -2748,7 +2712,6 @@ fa_IR:
           pending: "در انتظار"
           staff: 'همکاران'
           suspended: 'تعلیق شد '
-          blocked: 'مسدود شده'
           suspect: 'مشکوک'
         approved: "تایید شده ؟"
         approved_selected:
@@ -2767,7 +2730,6 @@ fa_IR:
           staff: "همکار"
           admins: 'مدیران ارشد'
           moderators: 'مدیران'
-          blocked: 'کاربران مسدود شده'
           suspended: 'کاربران تعلیق شده'
           suspect: 'کاربران مشکوک'
         reject_successful:
@@ -2782,18 +2744,14 @@ fa_IR:
         suspend_failed: "در جریان به تعلیق درآوردن این کاربر اشتباهی رخ داد. {{error}}"
         unsuspend_failed: "در جریان خارج کردن این کاربر از تعلیق، اشتباهی رخ داد {{error}}"
         suspend_duration: "کاربر چه مدت در تعلیق خواهد بود؟"
-        suspend_duration_units: "(روزا)"
         suspend_reason_label: "شما چرا معلق شده‌اید؟ این متن بر روی صفحه‌ی نمایه‌ی کاربر <b/>برای همه قابل مشاهده خواهد بود<b>، و در هنگام ورود به سیستم نیز به خود کاربر نشان داده خواهد شد. لطفاً خلاصه بنویسید."
         suspend_reason: "دلیل"
         suspended_by: "تعلیق شده توسط"
         delete_all_posts: "پاک کردن همه‌ی نوشته‌ها"
         delete_all_posts_confirm_MF: "شما در حال حذف {POSTS, plural, one {1 نوشته} other {# نوشته}} and {TOPICS, plural, one {1 نوشته} other {# موضوع}} هستید. ادامه می‌دهید؟"
-        suspend: "تعلیق"
-        unsuspend: "خارج کردن از تعلیق"
-        suspended: "تعلیق شد؟"
         moderator: "مدیر؟ "
         admin: "مدیر ارشد؟"
-        blocked: "مسدود شد؟"
+        suspended: "تعلیق شد؟"
         staged: "کاربر خودکار؟"
         show_admin_profile: "مدیر ارشد"
         refresh_browsers: "تازه کردن اجباری مرورگر"
@@ -2809,8 +2767,8 @@ fa_IR:
         grant_admin_confirm: "برای تایید مدیر ارشد جدید ایمیلی ارسال کردیم. لطفا ایمیل را باز کرده و دستور‌العمل آن را دنبال کنید."
         revoke_moderation: 'پس گرفتن مدیریت'
         grant_moderation: 'اعطای مدیریت'
-        unblock: 'باز کردن'
-        block: 'بستن'
+        unsuspend: 'خارج کردن از تعلیق'
+        suspend: 'تعلیق'
         reputation: ' اعتبار'
         permissions: دسترسی‌ها
         activity: فعالیت
@@ -2854,17 +2812,12 @@ fa_IR:
         activate_failed: "در فعال‌سازی این کاربر مشکلی پیش آمد."
         deactivate_account: "غیرفعال‌کردن حساب‌کاربری"
         deactivate_failed: "در غیرفعال کردن این کاربر مشکلی وجود دارد."
-        unblock_failed: 'در رفع مسدودی این کاربر مشکلی وجود دارد.'
-        block_failed: 'در مسدودی این کاربر مشکلی وجود دارد.'
-        block_confirm: 'آیا از بستن دسترسی کاربر اطمینان دارید؟ بعد از انجام این کار امکان ایجاد موضوع یا ارسال پست نخواهند داشت.'
-        block_accept: 'بله، این کاربر را مسدود کن'
         bounce_score: "امتیاز ویژه"
         reset_bounce_score:
           label: "بازنشانی"
           title: "بازنشانی امتیاز ویژه به 0"
         deactivate_explanation: "کاربر غیر فعال باید دوباره ایمیل خود را تایید کند."
         suspended_explanation: "کاربر تعلیق شده نمی‌تواند وارد سیستم شود."
-        block_explanation: "کاربر مسدود شده نمی‌تواند نوشته‌ای بگذارد یا موضوعی آغاز کند."
         staged_explanation: "کاربر خودکار فقط در بخش های خاص و با ایمیل می‌تواند پست ارسال کند."
         bounce_score_explanation:
           none: "بازتابی به تازگی از آن ایمیل دریافت نشده."
@@ -3116,6 +3069,8 @@ fa_IR:
       upload: "بارگذاری"
       uploading: "در حال بار گذاری..."
       quit: "شاید بعدا"
+      staff_count:
+        other: "انجمن شما %{count} کارکن، شامل خودتان، دارد."
       invites:
         add_user: "اضافه کردن"
         none_added: "هیچ کدام از همکاران را دعوت نکردید. ادامه می‌دهید؟"

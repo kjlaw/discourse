@@ -1,3 +1,4 @@
+import { default as computed } from 'ember-addons/ember-computed-decorators';
 import BulkTopicSelection from "discourse/mixins/bulk-topic-selection";
 import { default as NavItem, extraNavItemProperties, customNavItemHref } from 'discourse/models/nav-item';
 
@@ -58,6 +59,13 @@ export default Ember.Controller.extend(BulkTopicSelection, {
   max_posts: null,
   q: null,
 
+  categories: Ember.computed.alias('site.categoriesList'),
+
+  @computed('canCreateTopic', 'category', 'canCreateTopicOnCategory')
+  createTopicDisabled(canCreateTopic, category, canCreateTopicOnCategory) {
+    return !canCreateTopic || (category && !canCreateTopicOnCategory);
+  },
+
   queryParams: ['order', 'ascending', 'status', 'state', 'search', 'max_posts', 'q'],
 
   navItems: function() {
@@ -67,10 +75,6 @@ export default Ember.Controller.extend(BulkTopicSelection, {
   showTagFilter: function() {
     return Discourse.SiteSettings.show_filter_by_tag;
   }.property('category'),
-
-  categories: function() {
-    return Discourse.Category.list();
-  }.property(),
 
   showAdminControls: function() {
     return !this.get('additionalTags') && this.get('canAdminTag') && !this.get('category');

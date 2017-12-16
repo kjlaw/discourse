@@ -19,6 +19,9 @@ class User < ActiveRecord::Base
   include Roleable
   include HasCustomFields
 
+  # TODO: Remove this after 7th Jan 2018
+  self.ignored_columns = %w{email}
+
   has_many :posts
   has_many :notifications, dependent: :destroy
   has_many :topic_users, dependent: :destroy
@@ -89,7 +92,7 @@ class User < ActiveRecord::Base
 
   after_initialize :add_trust_level
 
-  before_validation :set_should_validate_email
+  before_validation :set_skip_validate_email
 
   after_create :create_email_token
   after_create :create_user_stat
@@ -108,7 +111,6 @@ class User < ActiveRecord::Base
   after_save :expire_old_email_tokens
   after_save :index_search
   after_commit :trigger_user_created_event, on: :create
-  after_commit :trigger_user_updated_event, on: :update
 
   before_destroy do
     # These tables don't have primary keys, so destroying them with activerecord is tricky:
@@ -144,9 +146,9 @@ class User < ActiveRecord::Base
 
   # TODO-PERF: There is no indexes on any of these
   # and NotifyMailingListSubscribers does a select-all-and-loop
-  # may want to create an index on (active, blocked, suspended_till)?
-  scope :blocked, -> { where(blocked: true) }
-  scope :not_blocked, -> { where(blocked: false) }
+  # may want to create an index on (active, silence, suspended_till)?
+  scope :silenced, -> { where("silenced_till IS NOT NULL AND silenced_till > ?", Time.zone.now) }
+  scope :not_silenced, -> { where("silenced_till IS NULL OR silenced_till <= ?", Time.zone.now) }
   scope :suspended, -> { where('suspended_till IS NOT NULL AND suspended_till > ?', Time.zone.now) }
   scope :not_suspended, -> { where('suspended_till IS NULL OR suspended_till <= ?', Time.zone.now) }
   scope :activated, -> { where(active: true) }
@@ -164,9 +166,12 @@ class User < ActiveRecord::Base
     SiteSetting.min_username_length.to_i..SiteSetting.max_username_length.to_i
   end
 
-  def self.username_available?(username)
+  def self.username_available?(username, email = nil)
     lower = username.downcase
-    !reserved_username?(lower) && !User.where(username_lower: lower).exists?
+    return false if reserved_username?(lower)
+    return true  if !User.exists?(username_lower: lower)
+    # staged users can use the same username since they will take over the account
+    email.present? && User.joins(:user_emails).exists?(staged: true, username_lower: lower, user_emails: { primary: true, email: email })
   end
 
   def self.reserved_username?(username)
@@ -450,6 +455,10 @@ class User < ActiveRecord::Base
     !!@password_required
   end
 
+  def password_validation_required?
+    password_required? || @raw_password.present?
+  end
+
   def has_password?
     password_hash.present?
   end
@@ -615,7 +624,7 @@ class User < ActiveRecord::Base
   end
 
   def flags_given_count
-    PostAction.where(user_id: id, post_action_type_id: PostActionType.flag_types.values).count
+    PostAction.where(user_id: id, post_action_type_id: PostActionType.flag_types_without_custom.values).count
   end
 
   def warnings_received_count
@@ -623,7 +632,7 @@ class User < ActiveRecord::Base
   end
 
   def flags_received_count
-    posts.includes(:post_actions).where('post_actions.post_action_type_id' => PostActionType.flag_types.values).count
+    posts.includes(:post_actions).where('post_actions.post_action_type_id' => PostActionType.flag_types_without_custom.values).count
   end
 
   def private_topics_count
@@ -655,15 +664,39 @@ class User < ActiveRecord::Base
   end
 
   def suspended?
-    suspended_till && suspended_till > DateTime.now
+    !!(suspended_till && suspended_till > Time.zone.now)
+  end
+
+  def silenced?
+    !!(silenced_till && silenced_till > Time.zone.now)
+  end
+
+  def silenced_record
+    UserHistory.for(self, :silence_user).order('id DESC').first
+  end
+
+  def silence_reason
+    silenced_record.try(:details) if silenced?
+  end
+
+  def silenced_at
+    silenced_record.try(:created_at) if silenced?
   end
 
   def suspend_record
     UserHistory.for(self, :suspend_user).order('id DESC').first
   end
 
+  def full_suspend_reason
+    return suspend_record.try(:details) if suspended?
+  end
+
   def suspend_reason
-    suspend_record.try(:details) if suspended?
+    if details = full_suspend_reason
+      return details.split("\n")[0]
+    end
+
+    nil
   end
 
   # Use this helper to determine if the user has a particular trust level.
@@ -947,6 +980,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def recent_time_read
+    self.created_at && self.created_at < 60.days.ago ?
+      self.user_visits.where('visited_at >= ?', 60.days.ago).sum(:time_read) :
+      self.user_stat&.time_read
+  end
+
   protected
 
   def badge_grant
@@ -1005,6 +1044,7 @@ class User < ActiveRecord::Base
       UserAuthToken.where(user_id: id).destroy_all
       # We should not carry this around after save
       @raw_password = nil
+      @password_required = false
     end
   end
 
@@ -1098,14 +1138,9 @@ class User < ActiveRecord::Base
     true
   end
 
-  def trigger_user_updated_event
-    DiscourseEvent.trigger(:user_updated, self)
-    true
-  end
-
-  def set_should_validate_email
+  def set_skip_validate_email
     if self.primary_email
-      self.primary_email.should_validate_email = should_validate_email_address?
+      self.primary_email.skip_validate_email = !should_validate_email_address?
     end
 
     true
@@ -1117,48 +1152,47 @@ end
 #
 # Table name: users
 #
-#  id                      :integer          not null, primary key
-#  username                :string(60)       not null
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  name                    :string
-#  seen_notification_id    :integer          default(0), not null
-#  last_posted_at          :datetime
-#  email                   :string(513)
-#  password_hash           :string(64)
-#  salt                    :string(32)
-#  active                  :boolean          default(FALSE), not null
-#  username_lower          :string(60)       not null
-#  last_seen_at            :datetime
-#  admin                   :boolean          default(FALSE), not null
-#  last_emailed_at         :datetime
-#  trust_level             :integer          not null
-#  approved                :boolean          default(FALSE), not null
-#  approved_by_id          :integer
-#  approved_at             :datetime
-#  previous_visit_at       :datetime
-#  suspended_at            :datetime
-#  suspended_till          :datetime
-#  date_of_birth           :date
-#  views                   :integer          default(0), not null
-#  flag_level              :integer          default(0), not null
-#  ip_address              :inet
-#  moderator               :boolean          default(FALSE)
-#  blocked                 :boolean          default(FALSE)
-#  title                   :string
-#  uploaded_avatar_id      :integer
-#  locale                  :string(10)
-#  primary_group_id        :integer
-#  registration_ip_address :inet
-#  trust_level_locked      :boolean          default(FALSE), not null
-#  staged                  :boolean          default(FALSE), not null
-#  first_seen_at           :datetime
+#  id                        :integer          not null, primary key
+#  username                  :string(60)       not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  name                      :string(255)
+#  seen_notification_id      :integer          default(0), not null
+#  last_posted_at            :datetime
+#  password_hash             :string(64)
+#  salt                      :string(32)
+#  active                    :boolean          default(FALSE), not null
+#  username_lower            :string(60)       not null
+#  last_seen_at              :datetime
+#  admin                     :boolean          default(FALSE), not null
+#  last_emailed_at           :datetime
+#  trust_level               :integer          not null
+#  approved                  :boolean          default(FALSE), not null
+#  approved_by_id            :integer
+#  approved_at               :datetime
+#  previous_visit_at         :datetime
+#  suspended_at              :datetime
+#  suspended_till            :datetime
+#  date_of_birth             :date
+#  views                     :integer          default(0), not null
+#  flag_level                :integer          default(0), not null
+#  ip_address                :inet
+#  moderator                 :boolean          default(FALSE)
+#  title                     :string(255)
+#  uploaded_avatar_id        :integer
+#  primary_group_id          :integer
+#  locale                    :string(10)
+#  registration_ip_address   :inet
+#  staged                    :boolean          default(FALSE), not null
+#  first_seen_at             :datetime
+#  silenced_till             :datetime
+#  group_locked_trust_level  :integer
+#  manual_locked_trust_level :integer
 #
 # Indexes
 #
 #  idx_users_admin                    (id)
 #  idx_users_moderator                (id)
-#  index_users_on_email               (lower((email)::text)) UNIQUE
 #  index_users_on_last_posted_at      (last_posted_at)
 #  index_users_on_last_seen_at        (last_seen_at)
 #  index_users_on_uploaded_avatar_id  (uploaded_avatar_id)

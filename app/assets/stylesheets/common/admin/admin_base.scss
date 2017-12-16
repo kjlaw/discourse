@@ -5,6 +5,7 @@
 
 @import "common/admin/customize";
 @import "common/admin/flagging";
+@import "common/admin/moderation_history";
 @import "common/admin/suspend";
 
 $mobile-breakpoint: 700px;
@@ -176,6 +177,16 @@ $mobile-breakpoint: 700px;
   }
 }
 
+.full-reason {
+  white-space: pre-wrap;
+}
+
+.admin-users .users-list {
+  .username .fa {
+    color: dark-light-choose($primary-medium, $secondary-medium);
+  }
+}
+
 .ip-lookup {
   position: relative;
   display: inline-block;
@@ -211,6 +222,21 @@ $mobile-breakpoint: 700px;
 
 .admin-container {
   margin-top: 20px;
+
+  .select-kit {
+    width: 350px;
+  }
+  .select-kit.multi-select {
+    width: 500px;
+  }
+  .select-box-kit.dropdown-select-box {
+    width: auto;
+  }
+
+  .search-logs-filter {
+    width: 200px;
+    float: right;
+  }
 }
 
 .admin-container .controls {
@@ -222,7 +248,7 @@ $mobile-breakpoint: 700px;
 }
 
 .admin-title {
-  height: 45px;
+  margin-bottom: 0.5em;
 }
 
 .admin-controls {
@@ -252,7 +278,7 @@ $mobile-breakpoint: 700px;
   .controls .menu-toggle {
     display: none;
     float: left;
-    font-size: 24px;
+    font-size: 1.7em;
     padding: 3px 6px;
     margin-right: 32px;
     border: 1px solid lighten($primary, 40%);
@@ -442,7 +468,7 @@ $mobile-breakpoint: 700px;
         width: 100%;
         padding-right: 0;
       }
-      .select2-container {
+      .select-kit {
         width: 100% !important; // Needs !important to override hard-coded value
         @media (max-width: $mobile-breakpoint) {
           width: 100% !important; // !important overrides hard-coded mobile width of 68px
@@ -503,7 +529,7 @@ $mobile-breakpoint: 700px;
 
     .desc, .validation-error {
       padding-top: 3px;
-      font-size: 80%;
+      font-size: .8em;
       line-height: 1.4em;
     }
 
@@ -512,7 +538,7 @@ $mobile-breakpoint: 700px;
     }
 
     .desc {
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
     }
 
     h3 {
@@ -523,7 +549,7 @@ $mobile-breakpoint: 700px;
 
   .setting.overridden {
     h3 {
-      color: scale-color($highlight, $lightness: -50%);
+      color: $highlight-high;
     }
   }
 
@@ -545,7 +571,7 @@ section.details {
 }
 
 #selected-controls {
-  background-color: scale-color($tertiary, $lightness: 75%);
+  background-color: $tertiary-low;
   padding: 8px;
   min-height: 27px;
   position: fixed;
@@ -581,7 +607,7 @@ section.details {
     border-top: 0;
   }
   &.highlight-danger {
-    background-color: scale-color($danger, $lightness: 50%);
+    background-color: $danger-low;
   }
   border-top: 1px solid $primary-low;
   &:before, &:after {
@@ -611,6 +637,10 @@ section.details {
       float: right;
       text-align: left;
       margin-left: 0;
+    }
+
+    .select-kit {
+      width: inherit;
     }
   }
   .long-value {
@@ -647,11 +677,11 @@ section.details {
 
     .list-badge {
       float: right;
-      font-size: 11px;
+      font-size: .8em;
       font-weight: normal;
       padding: 0 6px;
       color: $secondary;
-      background-color: scale-color($tertiary, $lightness: 50%);
+      background-color: $tertiary-medium;
       border-radius: 3px;
     }
   }
@@ -661,12 +691,45 @@ section.details {
 
     p.help {
       margin: 0;
-      color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 60%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
       font-size: 0.9em;
     }
   }
 
   .form-horizontal {
+    .ace-wrapper {
+      position: relative;
+      height: 270px;
+      margin-bottom: 10px;
+
+      .ace_editor {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border: 1px solid #e9e9e9;
+        border-radius: 3px;
+
+        .ace_gutter {
+          border-right: 1px solid #e9e9e9;
+          background: #f4f4f4;
+        }
+      }
+
+      &[data-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.5;
+
+        .ace_editor {
+          pointer-events:none;
+
+          .ace_cursor {
+            visibility: hidden;
+          }
+        }
+      }
+    }
     .delete-link {
       margin-left: 15px;
       margin-top: 5px;
@@ -679,7 +742,7 @@ section.details {
   .current-badge-actions {
     margin: 10px;
     padding: 10px;
-    border-top: 1px solid dark-light-choose(scale-color($primary, $lightness: 80%), scale-color($secondary, $lightness: 20%));
+    border-top: 1px solid dark-light-choose($primary-low, $secondary-high);
   }
 
   .buttons {
@@ -732,7 +795,7 @@ section.details {
 .groups {
   .ac-wrap {
     width: 100% !important;
-    border-color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+    border-color: dark-light-choose($primary-low-mid, $secondary-high);
     .item {
       margin-right: 10px;
     }
@@ -754,7 +817,7 @@ section.details {
   }
   .select2-choices {
     width: 100%;
-    border-color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+    border-color: dark-light-choose($primary-low-mid, $secondary-high);
   }
 
   .content-list {
@@ -990,102 +1053,6 @@ table.api-keys {
   }
 }
 
-.commits-widget {
-  border: solid 1px $primary-low;
-  height: 180px;
-  margin-bottom: 36px;
-
-  ul, li {
-    margin: 0;
-    padding: 0;
-  }
-  ul {
-    list-style: none;
-  }
-  a {
-    color: $primary;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-
-  .header {
-    color: $primary;
-    font-weight: bold;
-    height: 30px;
-    background: $primary-low;
-    cursor: pointer;
-
-    h1 {
-      font-size: 1.286em;
-      margin: 5px 0 0 8px;
-      display: inline-block;
-      line-height: 1.0em;
-    }
-  }
-
-  .header:hover h1 {
-    color: $tertiary;
-  }
-
-  .commits-list {
-    height: 149px;
-    overflow-y:auto;
-
-    li {
-      @extend .clearfix;
-      line-height: 1.0em;
-      padding: 6px 8px;
-    background-color: $primary-low;
-      .left {
-        float: left;
-      }
-      .right {
-        margin-left: 52px;
-      }
-
-      img {
-        margin-top: 2px;
-        border: solid 1px $primary-low;
-        padding: 2px;
-        background-color: $secondary;
-      }
-
-      .commit-message {
-        color: $primary;
-        font-size: 0.857em;
-        font-weight: bold;
-      }
-
-      .commit-meta {
-        color: $primary;
-        font-size: 0.857em;
-      }
-
-      .committer-name {
-        font-weight: bold;
-        color: $primary;
-      }
-    }
-    li:last-child {
-      border: none;
-    }
-  }
-
-  // Always show the scrollbar:
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: $primary-low;
-    -webkit-border-radius: 3px;
-  }
-  ::-webkit-scrollbar-track {
-    border-left: solid 1px $primary-low;
-  }
-}
-
 .content-editor {
   min-height: 500px;
 
@@ -1250,7 +1217,7 @@ table.api-keys {
   margin: 0 0 20px 6px;
   a.filter {
     display: inline-block;
-    background-color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+    background-color: dark-light-choose($primary-low-mid, $secondary-high);
     padding: 3px 10px;
     border-radius: 3px;
 
@@ -1281,9 +1248,9 @@ table.api-keys {
   position: absolute;
 }
 
-.staff-actions, .screened-emails, .screened-urls, .screened-ip-addresses, .permalinks, .web-hook-events {
+.staff-actions, .screened-emails, .screened-urls, .screened-ip-addresses, .permalinks, .search-logs-list, .web-hook-events {
 
-  border-bottom: dotted 1px dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+  border-bottom: dotted 1px dark-light-choose($primary-low-mid, $secondary);
 
   .heading-container {
     width: 100%;
@@ -1307,7 +1274,25 @@ table.api-keys {
   }
 }
 
+.search-logs-list{
+  .col {
+    text-align: center;
+    width: 15%;
+  }
+
+  .col.term {
+    width: 45%;
+    text-align: left;
+  }
+}
+
 .log-details-modal {
+
+  pre {
+    white-space: pre-wrap;
+    max-height: 250px;
+  }
+
   .modal-tab {
     width: 95%;
   }
@@ -1607,7 +1592,7 @@ table#user-badges {
   }
 
   p.description {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     margin-bottom: 1em;
     max-width: 700px;
   }
@@ -1628,8 +1613,8 @@ table#user-badges {
   }
   .reply-key {
     display: block;
-    font-size: 12px;
-    color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 40%));
+    font-size: .857em;
+    color: dark-light-choose($primary-medium, $secondary-high);
   }
   .username div {
     max-width: 180px;
@@ -1658,7 +1643,7 @@ table#user-badges {
   }
   .error-description {
     color: #919191;
-    font-size: 90%;
+    font-size: .857em;
   }
   hr {
     margin: 0;
@@ -1817,7 +1802,7 @@ table#user-badges {
   float: right;
   text-align: right;
   .instructions {
-    font-size: 12px;
+    font-size: .857em;
   }
 }
 .watched-words-detail {

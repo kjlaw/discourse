@@ -189,15 +189,19 @@ describe Post do
     end
 
     it "doesn't count favicons as images" do
+      PrettyText.stubs(:cook).returns(post_with_favicon.raw)
       expect(post_with_favicon.image_count).to eq(0)
     end
 
     it "doesn't count thumbnails as images" do
+      PrettyText.stubs(:cook).returns(post_with_thumbnail.raw)
       expect(post_with_thumbnail.image_count).to eq(0)
     end
 
     it "doesn't count whitelisted images" do
       Post.stubs(:white_listed_image_classes).returns(["classy"])
+      # I dislike this, but passing in a custom whitelist is hard
+      PrettyText.stubs(:cook).returns(post_with_two_classy_images.raw)
       expect(post_with_two_classy_images.image_count).to eq(0)
     end
 
@@ -769,6 +773,36 @@ describe Post do
       expect(p4.reply_history(1)).to eq([p2])
       expect(p3.reply_history).to be_blank
       expect(p2.reply_history).to eq([p1])
+    end
+
+  end
+
+  context "reply_ids" do
+
+    let!(:topic) { Fabricate(:topic) }
+    let!(:p1) { Fabricate(:post, topic: topic, post_number: 1) }
+    let!(:p2) { Fabricate(:post, topic: topic, post_number: 2, reply_to_post_number: 1) }
+    let!(:p3) { Fabricate(:post, topic: topic, post_number: 3) }
+    let!(:p4) { Fabricate(:post, topic: topic, post_number: 4, reply_to_post_number: 2) }
+    let!(:p5) { Fabricate(:post, topic: topic, post_number: 5, reply_to_post_number: 4) }
+    let!(:p6) { Fabricate(:post, topic: topic, post_number: 6) }
+
+    before {
+      PostReply.create!(post: p1, reply: p2)
+      PostReply.create!(post: p2, reply: p4)
+      PostReply.create!(post: p2, reply: p6) # simulates p6 quoting p2
+      PostReply.create!(post: p3, reply: p5) # simulates p5 quoting p3
+      PostReply.create!(post: p4, reply: p5)
+      PostReply.create!(post: p6, reply: p6) # https://meta.discourse.org/t/topic-quoting-itself-displays-reply-indicator/76085
+    }
+
+    it "returns the reply ids and their level" do
+      expect(p1.reply_ids).to eq([{ id: p2.id, level: 1 }, { id: p4.id, level: 2 }, { id: p6.id, level: 2 }])
+      expect(p2.reply_ids).to eq([{ id: p4.id, level: 1 }, { id: p6.id, level: 1 }])
+      expect(p3.reply_ids).to be_empty # has no replies
+      expect(p4.reply_ids).to be_empty # p5 replies to 2 posts (p4 and p3)
+      expect(p5.reply_ids).to be_empty # has no replies
+      expect(p6.reply_ids).to be_empty # quotes itself
     end
 
   end

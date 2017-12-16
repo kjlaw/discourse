@@ -302,7 +302,10 @@ describe SessionController do
         @sso.sso_secret = SiteSetting.sso_secret
         @sso.return_sso_url = "http://somewhere.over.rainbow/sso"
 
-        @user = Fabricate(:user, password: "frogs", active: true, admin: true)
+        @user = Fabricate(:user, password: "myfrogs123ADMIN", active: true, admin: true)
+        group = Fabricate(:group)
+        group.add(@user)
+        @user.reload
         EmailToken.update_all(confirmed: true)
       end
 
@@ -311,7 +314,7 @@ describe SessionController do
         expect(response).to redirect_to("/login")
 
         post :create,
-          params: { login: @user.username, password: "frogs" },
+          params: { login: @user.username, password: "myfrogs123ADMIN" },
           format: :json,
           xhr: true
 
@@ -328,6 +331,7 @@ describe SessionController do
         expect(sso2.external_id).to eq(@user.id.to_s)
         expect(sso2.admin).to eq(true)
         expect(sso2.moderator).to eq(false)
+        expect(sso2.groups).to eq(@user.groups.pluck(:name))
       end
 
       it "successfully redirects user to return_sso_url when the user is logged in" do
@@ -418,7 +422,7 @@ describe SessionController do
       @sso.sso_secret = SiteSetting.sso_secret
       @sso.return_sso_url = "http://somewhere.over.rainbow/sso"
 
-      @user = Fabricate(:user, password: "frogs", active: true, admin: true)
+      @user = Fabricate(:user, password: "myfrogs123ADMIN", active: true, admin: true)
       EmailToken.update_all(confirmed: true)
     end
 
@@ -427,7 +431,7 @@ describe SessionController do
       expect(response).to redirect_to("/login")
 
       post :create,
-        params: { login: @user.username, password: "frogs" },
+        params: { login: @user.username, password: "myfrogs123ADMIN" },
         format: :json,
         xhr: true
 
@@ -752,7 +756,7 @@ describe SessionController do
     context 'rate limited' do
       it 'rate limits login' do
         SiteSetting.max_logins_per_ip_per_hour = 2
-        RateLimiter.stubs(:disabled?).returns(false)
+        RateLimiter.enable
         RateLimiter.clear_all!
 
         2.times do

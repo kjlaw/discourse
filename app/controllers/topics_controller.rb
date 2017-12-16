@@ -75,7 +75,7 @@ class TopicsController < ApplicationController
       begin
         RateLimiter.new(current_user, "print-topic-per-hour", SiteSetting.max_prints_per_hour_per_user, 1.hour).performed! unless @guardian.is_admin?
       rescue RateLimiter::LimitExceeded
-        render_json_error(I18n.t("rate_limiter.slow_down"))
+        return render_json_error I18n.t("rate_limiter.slow_down")
       end
     end
 
@@ -287,7 +287,7 @@ class TopicsController < ApplicationController
   end
 
   def timer
-    params.permit(:time, :timezone_offset, :based_on_last_post, :category_id)
+    params.permit(:time, :based_on_last_post, :category_id)
     params.require(:status_type)
 
     status_type =
@@ -302,7 +302,6 @@ class TopicsController < ApplicationController
 
     options = {
       by_user: current_user,
-      timezone_offset: params[:timezone_offset]&.to_i,
       based_on_last_post: params[:based_on_last_post]
     }
 
@@ -439,9 +438,10 @@ class TopicsController < ApplicationController
   def remove_allowed_user
     params.require(:username)
     topic = Topic.find_by(id: params[:topic_id])
-    guardian.ensure_can_remove_allowed_users!(topic)
+    user = User.find_by(username: params[:username])
+    guardian.ensure_can_remove_allowed_users!(topic, user)
 
-    if topic.remove_allowed_user(current_user, params[:username])
+    if topic.remove_allowed_user(current_user, user)
       render json: success_json
     else
       render json: failed_json, status: 422
@@ -467,7 +467,7 @@ class TopicsController < ApplicationController
     topic = Topic.find_by(id: params[:topic_id])
 
     if topic.private_message?
-      guardian.ensure_can_send_private_message!(group)
+      guardian.ensure_can_invite_group_to_private_message!(group, topic)
       topic.invite_group(current_user, group)
       render_json_dump BasicGroupSerializer.new(group, scope: guardian, root: 'group')
     else

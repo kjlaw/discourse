@@ -19,6 +19,7 @@ after_initialize do
     '../jobs/narrative_init.rb',
     '../jobs/send_default_welcome_message.rb',
     '../jobs/onceoff/grant_badges.rb',
+    '../jobs/onceoff/remap_old_bot_images.rb',
     '../lib/discourse_narrative_bot/actions.rb',
     '../lib/discourse_narrative_bot/base.rb',
     '../lib/discourse_narrative_bot/new_user_narrative.rb',
@@ -32,7 +33,7 @@ after_initialize do
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   # Disable welcome message because that is what the bot is supposed to replace.
-  SiteSetting.send_welcome_message = false
+  SiteSetting.send_welcome_message = false if SiteSetting.send_welcome_message
 
   require_dependency 'plugin_store'
 
@@ -184,7 +185,7 @@ after_initialize do
     if self.user.enqueue_narrative_bot_job?
       input =
         case self.post_action_type_id
-        when *PostActionType.flag_types.values
+        when *PostActionType.flag_types_without_custom.values
           :flag
         when PostActionType.types[:like]
           :like

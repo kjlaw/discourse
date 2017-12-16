@@ -51,6 +51,7 @@ class SessionController < ApplicationController
         sso.external_id = current_user.id.to_s
         sso.admin = current_user.admin?
         sso.moderator = current_user.moderator?
+        sso.groups = current_user.groups.pluck(:name)
 
         if sso.return_sso_url.blank?
           render plain: "return_sso_url is blank, it must be provided", status: 400
@@ -105,6 +106,11 @@ class SessionController < ApplicationController
 
     begin
       if user = sso.lookup_or_create_user(request.remote_ip)
+
+        if user.suspended?
+          render_sso_error(text: I18n.t("login.suspended", date: user.suspended_till), status: 403)
+          return
+        end
 
         if SiteSetting.must_approve_users? && !user.approved?
           if SiteSetting.sso_not_approved_url.present?
@@ -169,10 +175,10 @@ class SessionController < ApplicationController
 
     rescue => e
       message = "Failed to create or lookup user: #{e}."
-      message << "\n\n" << "-" * 100 << "\n\n"
-      message << sso.diagnostics
-      message << "\n\n" << "-" * 100 << "\n\n"
-      message << e.backtrace.join("\n")
+      message << "  "
+      message << "  #{sso.diagnostics}"
+      message << "  "
+      message << "  #{e.backtrace.join("\n")}"
 
       Rails.logger.error(message)
 

@@ -173,7 +173,7 @@ ar:
           other: "بعد %{count} عام"
       previous_month: 'الشهر السابق'
       next_month: 'الشهر التالي'
-      placeholder: حدد تاريخًا
+      placeholder: التاريخ
     share:
       topic: 'شارك رابط هذا الموضوع'
       post: 'المنشور رقم %{postNumber}'
@@ -314,7 +314,7 @@ ar:
         unbookmark: "انقر لإزالة كلّ العلامات المرجعية في هذا الموضوع"
     bookmarks:
       not_logged_in: "عذرا، عليك تسجيل الدخول لتضع علامات مرجعية علي المنشورات"
-      created: "لقد وضعت علامة مرعجية علي هذا المنشور"
+      created: "لقد وضعت علامة مرجعية علي هذا المنشور"
       not_bookmarked: "لقد قرأت هذا المنشور، انقر لوضع علامة مرجعية علية"
       last_read: "هذا آخر منشور قرأته، انقر لوضع علامة مرجعية علية"
       remove: "أزل العلامة المرجعية"
@@ -641,12 +641,14 @@ ar:
         disable: "عطّل الإشعارات"
         enable: "فعّل الإشعارات"
         each_browser_note: "ملاحظة: عليك تغيير هذا الإعداد في كل متصفح تستخدمه."
+      dismiss: 'تجاهل'
       dismiss_notifications: "تجاهل الكل"
       dismiss_notifications_tooltip: "اجعل كل الإشعارات مقروءة"
       first_notification: "إشعارك الأول! قم بالضغط عليه للبدء."
       disable_jump_reply: "لا تنتقل إلى منشوري بعد النشر"
       dynamic_favicon: "أظهر عدد الموضوعات الجديدة/المحدّثة في أيقونة المتصفح"
       theme_default_on_all_devices: "اجعل هذة الواجهة افتراضية على جميع اجهزتي"
+      allow_private_messages: "السماح للأعضاء الاخرين بإرسال رسالة خاصة لي"
       external_links_in_new_tab: "فتح الروابط الخارجية في تبويب جديد"
       enable_quoting: "فعل خاصية إقتباس النصوص المظللة"
       change: "غيّر"
@@ -654,8 +656,8 @@ ar:
       admin: "{{user}} هو مدير"
       moderator_tooltip: "هذا المستخدم مشرف"
       admin_tooltip: "هذا المستخدم مدير"
-      blocked_tooltip: "هذا المستخدم محظور"
       suspended_notice: "هذا المستخدم موقوف حتى تاريخ  {{date}}"
+      suspended_permanently: "هذا العضو موقوف."
       suspended_reason: "السبب:"
       github_profile: "Github"
       email_activity_summary: "ملخص النشاط"
@@ -669,13 +671,13 @@ ar:
         individual_no_echo: "أرسل رسالة لكل منشور جديد عدا منشوراتي"
         many_per_day: "أرسل لي رسالة لكل منشور جديد (تقريبا {{dailyEmailEstimate}} يوميا)"
         few_per_day: "أرسل لي رسالة لكل منشور جديد (تقريبا إثنتان يوميا)"
-      tag_settings: "الوسوم"
+      tag_settings: "الأوسمة"
       watched_tags: "مراقب"
-      watched_tags_instructions: "ستراقب آليا كل الموضوعات التي تستخدم هذه الوسوم. ستصلك إشعارات بالمنشورات والمواضيع الجديدة، وسيظهر أيضا عدّاد للمنشورات الجديدة بجانب كل موضوع."
+      watched_tags_instructions: "ستراقب آليا كل الموضوعات التي تستخدم هذه الأوسمة. ستصلك إشعارات بالمنشورات و الموضوعات الجديدة، وسيظهر أيضا عدّاد للمنشورات الجديدة بجانب كل موضوع."
       tracked_tags: "متابع"
-      tracked_tags_instructions: "ستتابع آليا كل الموضوعات التي تستخدم هذه الوسوم. وسيظهر أيضا عدّاد للمنشورات الجديدة بجانب كل موضوع."
+      tracked_tags_instructions: "ستتابع آليا كل الموضوعات التي تستخدم هذه الأوسمة. وسيظهر أيضا عدّاد للمنشورات الجديدة بجانب كل موضوع."
       muted_tags: "مكتوم"
-      muted_tags_instructions: "لن يتم إشعارك بأي جديد بالموضوعات التي تستخدم هذه الوسوم، ولن تظهر موضوعات هذه الوسوم في قائمة الموضوعات المنشورة مؤخراً."
+      muted_tags_instructions: "لن يتم إشعارك بأي جديد بالموضوعات التي تستخدم هذه الأوسمة، ولن تظهر موضوعات هذه الوسوم في قائمة الموضوعات المنشورة مؤخراً."
       watched_categories: "مراقب"
       watched_categories_instructions: "ستراقب آليا كل موضوعات هذا القسم. ستصلك إشعارات بالمنشورات و الموضوعات الجديدة، وسيظهر أيضا عدّاد للمنشورات الجديدة بجانب كل موضوع."
       tracked_categories: "متابع"
@@ -683,7 +685,7 @@ ar:
       watched_first_post_categories: "مراقبة أول منشور"
       watched_first_post_categories_instructions: "سيصلك إشعار بأول منشور في كل موضوع بهذا القسم."
       watched_first_post_tags: "مراقبة أول منشور"
-      watched_first_post_tags_instructions: "سيصلك إشعار بأول منشور في كل موضوع يستخدم هذة الوسوم."
+      watched_first_post_tags_instructions: "سيصلك إشعار بأول منشور في كل موضوع يستخدم هذة الأوسمة."
       muted_categories: "مكتوم"
       muted_categories_instructions: "لن يتم إشعارك بأي جديد عن الموضوعات الجديدة في هذا القسم، ولن تظهر موضوعات هذا القسم في قائمة الموضوعات المنشورة مؤخراً."
       no_category_access: "كمشرف لديك صلاحيات وصول محدودة للأقسام, الحفظ معطل"
@@ -728,7 +730,7 @@ ar:
         emails: "البريد الإلكتروني"
         notifications: "التنبيهات"
         categories: "الأقسام"
-        tags: "الوسوم"
+        tags: "الأوسمة"
         interface: "واجهة المستخدم"
         apps: "التطبيقات"
       change_password:
@@ -793,7 +795,7 @@ ar:
         ok: "يبدو اسمك جيدا"
       username:
         title: "اسم المستخدم"
-        instructions: "فريد و دون مسافات و قصير"
+        instructions: "باللغة الإنجليزية و دون مسافات و قصير و غير مكرر"
         short_instructions: "يمكن للغير الإشارة إليك ب‍@{{username}}"
         available: "اسم المستخدم متاح"
         not_available: "غير متاح. جرّب {{suggestion}} ؟"
@@ -936,20 +938,6 @@ ar:
           few: "المنشورات المنشأة"
           many: "المنشورات المنشأة"
           other: "المنشورات المنشأة"
-        likes_given:
-          zero: "ما أعطى من <i class='fa fa-heart'></i>"
-          one: "ما أعطى من <i class='fa fa-heart'></i>"
-          two: "ما أعطى من <i class='fa fa-heart'></i>"
-          few: "ما أعطى من <i class='fa fa-heart'></i>"
-          many: "ما أعطى من <i class='fa fa-heart'></i>"
-          other: "ما أعطى من <i class='fa fa-heart'></i>"
-        likes_received:
-          zero: "ما تلقي من <i class='fa fa-heart'></i>"
-          one: "ما تلقي من <i class='fa fa-heart'></i>"
-          two: "ما تلقي من <i class='fa fa-heart'></i>"
-          few: "ما تلقي من <i class='fa fa-heart'></i>"
-          many: "ما تلقي من <i class='fa fa-heart'></i>"
-          other: "ما تلقي من <i class='fa fa-heart'></i>"
         days_visited:
           zero: "أيّام الزّيارة"
           one: "أيّام الزّيارة"
@@ -1057,7 +1045,8 @@ ar:
     first_post: أوّل منشور
     mute: كتم
     unmute: إلغاء الكتم
-    last_post: آخر منشور
+    last_post: المُرسَلة
+    time_read: المقروءة
     last_reply_lowercase: آخر رد
     replies_lowercase:
       zero: الردود
@@ -1193,7 +1182,7 @@ ar:
       shift: 'Shift'
       ctrl: 'Ctrl'
       alt: 'Alt'
-    select_box:
+    select_kit:
       default_header_text: اختر...
       no_content: لا يوجد نتائج مطابقة
       filter_placeholder: بحث...
@@ -1263,6 +1252,7 @@ ar:
       edit_reason_placeholder: "لماذا تقوم بالتعديل؟"
       show_edit_reason: "(أضف سبب التعديل)"
       topic_featured_link_placeholder: "ضع رابطاً يظهر مع العنوان"
+      remove_featured_link: "حذف الرابط من الموضوع"
       reply_placeholder: "اكتب ما تريد هنا. استخدم Markdown، أو BBCode، أو HTML للتنسيق. اسحب الصور أو ألصقها."
       view_new_post: "شاهد منشورك الجديد."
       saving: "يحفظ"
@@ -1293,12 +1283,7 @@ ar:
       olist_title: "قائمة مرقمة"
       ulist_title: "قائمة نقطية"
       list_item: "قائمة العناصر"
-      heading_label: "H"
-      heading_title: "عنوان"
-      heading_text: "عنوان"
-      hr_title: "خط افقي"
       help: "مساعدة في رموز التنسيق"
-      toggler: "اخف او اظهر صندوق التحرير"
       modal_ok: "حسنا"
       modal_cancel: "إلغاء"
       cant_send_pm: "نأسف، لا يمكنك إرسال الرسائل إلى %{username}."
@@ -1333,7 +1318,7 @@ ar:
       invitee_accepted: "<span>{{username}}</span> قبل دعوتك"
       moved_post: "<span>{{username}}</span> نقل {{description}}"
       linked: "<span>{{username}}</span>{{description}} "
-      granted_badge: "حصلت علي '{{description}}'"
+      granted_badge: "تم منحك شارة '{{description}}'"
       topic_reminder: "<span>{{username}}</span>{{description}} "
       watching_first_post: "<span>موضوع جديد</span> {{description}}"
       group_message_summary:
@@ -1358,6 +1343,7 @@ ar:
         linked: "وضع رابطا لمنشورك"
         granted_badge: "تم منح الوسام"
         group_message_summary: "رسائل صندوق المجموعة"
+        topic_reminder: "تذكير"
       popup:
         mentioned: 'أشار {{username}} إليك في "{{topic}}" - {{site_title}}'
         group_mentioned: 'أشار {{username}} إليك في "{{topic}}" - {{site_title}}'
@@ -1380,6 +1366,7 @@ ar:
       uploading: "يرفع"
       select_file: "اختر ملفا"
       image_link: "رابط سيفتح عند الضغط علي الصورة"
+      default_image_alt_text: صورة
     search:
       sort_by: "رتب حسب"
       relevance: "الملاءمة"
@@ -1402,7 +1389,6 @@ ar:
       no_more_results: "لا يوجد نتائج أخرى."
       searching: "يبحث..."
       post_format: "#{{post_number}} كتبها {{username}}"
-      results_page: "نتائج البحث"
       more_results: "يوجد عدد كبير من النتائج, يرجى تضييق نطاق البحث."
       cant_find: "لا تستطيع ايجاد ما تبحث عنة؟"
       start_new_topic: "افتح موضوع جديد."
@@ -1419,30 +1405,24 @@ ar:
         title: بحث متقدّم
         posted_by:
           label: نشرها
-        in_category:
-          label: في قسم
         in_group:
           label: في المجموعة
         with_badge:
           label: عليها شارة
         with_tags:
-          label: بها الاوسمة
+          label: موسوم
         filters:
-          label: ابحث فقط في الموضوعات / المنشورات التي...
           likes: أعجبتني
           posted: نشرت بها
           watching: أراقبها
           tracking: أتابعها
-          private: موجودة في رسائلي
-          bookmarks: علّمتُها
+          bookmarks: وضعت علية علامة مرجعية
           first: اول منشور في الموضوعات
           pinned: مثبتة
           unpinned: غير مثبتة
-          seen: قرأتها
+          seen: قراءته
           unseen: لم أقرأها
           wiki: من النوع wiki
-          images: تحتوي صوراً !!
-          all_tags: تحتوي علي كل الوسوم
         statuses:
           label: بشرط أن تكون المواضيع
           open: مفتوحة
@@ -1491,11 +1471,11 @@ ar:
           few: "حددت <b>{{count}}</b> مواضيع."
           many: "حددت <b>{{count}}</b> موضوعا."
           other: "حددت <b>{{count}}</b> موضوع."
-        change_tags: "غيّر الوسوم"
-        append_tags: "اضف وسوم"
-        choose_new_tags: "اختر وسوم جديدة لهذه الموضوعات:"
-        choose_append_tags: "اختر وسوم جديدة لإضافتها لهذة الموضوعات"
-        changed_tags: "تغيرت وسوم هذه الموضوعات."
+        change_tags: "غيّر الأوسمة"
+        append_tags: "اضف الأوسمة"
+        choose_new_tags: "اختر أوسمة جديدة لهذه الموضوعات:"
+        choose_append_tags: "اختر أوسمة جديدة لإضافتها لهذة الموضوعات"
+        changed_tags: "تغيرت أوسمة هذه الموضوعات."
       none:
         unread: "ليست هناك مواضيع غير مقروءة."
         new: "ليست هناك مواضيع جديدة."
@@ -1611,7 +1591,6 @@ ar:
       jump_reply_down: انتقل إلى آخر رد
       deleted: "الموضوع محذوف"
       topic_status_update:
-        title: "ضع مؤقت للموضوع"
         save: "ضع مؤقت"
         num_of_hours: "عدد الساعات:"
         remove: "ازل المؤقت"
@@ -1624,6 +1603,7 @@ ar:
         this_weekend: "هذا الأسبوع"
         next_week: "الاسبوع القادم"
         next_month: "الشهر القادم"
+        one_year: "سنة واحدة"
         pick_date_and_time: "اختر التاريخ والوقت"
         set_based_on_last_post: "اغلقة بناء علي اخر منشور"
       publish_to_category:
@@ -1893,7 +1873,6 @@ ar:
       reply: "<i class='fa fa-mail-forward'></i> {{replyAvatar}} {{usernameLink}}"
       reply_topic: "<i class='fa fa-mail-forward'></i> {{link}}"
       quote_reply: "اقتبس"
-      edit: "تعديل {{link}} {{replyAvatar}} {{username}} ."
       edit_reason: "السبب:"
       post_number: "المنشور {{number}}"
       wiki_last_edited_on: "آخر تعديل على الـ wiki في "
@@ -2005,13 +1984,6 @@ ar:
         change_owner: "غير الكاتب"
       actions:
         flag: 'ابلاغ'
-        defer_flags:
-          zero: "أجل البلاغ"
-          one: "أجل البلاغ"
-          two: "أجل البلاغات"
-          few: "أجل البلاغات"
-          many: "أجل البلاغات"
-          other: "أجل البلاغات"
         undo:
           off_topic: "تراجع عن التبليغ"
           spam: "تراجع عن البلاغ"
@@ -2211,11 +2183,11 @@ ar:
       general: 'عام'
       settings: 'اعدادات'
       topic_template: "إطار الموضوع"
-      tags: "الوسوم"
-      tags_allowed_tags: "اسمح فقط لهذة الوسمة بالاستخدام في هذا القسم."
-      tags_allowed_tag_groups: "اسمح فقط للأوسمة من هذة المجموعات بالاستخدام في هذا القسم."
-      tags_placeholder: "(اختياري) قائمة الاوسمة المسموح بها"
-      tag_groups_placeholder: "(اختياريّ) قائمة مجموعات الوسوم المسموح بها"
+      tags: "الأوسمة"
+      tags_allowed_tags: "اسمح فقط بإستخدام هذة الأوسمة في هذا القسم."
+      tags_allowed_tag_groups: "اسمح فقط بإستخدام مجموعات الأوسمة هذة في هذا القسم."
+      tags_placeholder: "(اختياري) قائمة الأوسمة المسموح بها"
+      tag_groups_placeholder: "(اختياريّ) قائمة مجموعات الأوسمة المسموح بها"
       topic_featured_link_allowed: "اسمح بالروابط المُميزة بهذا القسم."
       delete: 'احذف القسم'
       create: 'قسم جديد'
@@ -2424,14 +2396,14 @@ ar:
       many: "اﻹعجابات"
       other: "اﻹعجابات"
     likes_long: "هناك {{number}} اعجابات في هذا الموضوع"
-    users: "المستخدمون"
+    users: "الأعضاء"
     users_lowercase:
-      zero: "المستخدمون"
-      one: "المستخدمون"
-      two: "المستخدمون"
-      few: "المستخدمون"
-      many: "المستخدمون"
-      other: "المستخدمون"
+      zero: "عضو"
+      one: "عضو واحد"
+      two: "عضوين"
+      few: "الأعضاء"
+      many: "الأعضاء"
+      other: "الأعضاء"
     category_title: "قسم"
     history: "تاريخ"
     changed_by: "الكاتب {{author}}"
@@ -2489,9 +2461,9 @@ ar:
           two: "{{count}} جديد"
           few: "{{count}} جديد"
           many: "{{count}} جديد"
-          other: "{{count}} جديد"
-        lower_title: "جديد"
-        title: "جديد"
+          other: "{{count}} جديدة"
+        lower_title: "الجديدة"
+        title: "الجديدة"
         title_with_count:
           zero: "الجديدة ({{count}})"
           one: "الجديدة ({{count}})"
@@ -2572,7 +2544,6 @@ ar:
         hamburger_menu: '<b>=</b> فتح القائمة الرّئيسيّة'
         user_profile_menu: '<b>p</b>فتح قائمة المستخدم'
         show_incoming_updated_topics: '<b>.</b> عرض الموضوعات المحدثة'
-        search: '<b>/</b> او <b>ctrl</b>+<b>shift</b>+<b>s</b> بحث'
         help: '<b>?</b> فتح مساعدة لوحة المفاتيح'
         dismiss_new_posts: '<b>x</b>, <b>r</b> تجاهل المنشورات الجديدة'
         dismiss_topics: '<b>x</b>, <b>t</b> تجاهل الموضوعات'
@@ -2654,21 +2625,27 @@ ar:
       </form>
       </p>
     tagging:
-      all_tags: "كل الوسوم"
-      selector_all_tags: "كل الوسوم"
-      selector_no_tags: "لا وسوم"
-      changed: "الوسوم المعدلة:"
-      tags: "الوسوم"
-      choose_for_topic: "اختر (إن أردت) وسوما لهذا الموضوع"
+      all_tags: "كل الأوسمة"
+      selector_all_tags: "كل الأوسمة"
+      selector_no_tags: "لا أوسمة"
+      changed: "الأوسمة المعدلة:"
+      tags: "الأوسمة"
       delete_tag: "احذف الوسم"
-      delete_confirm: "أمتأكد من حذف هذا الوسم؟"
+      delete_confirm:
+        zero: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من {{count}} موضوع؟"
+        one: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من موضوع واحد؟"
+        two: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من {{count}} موضوع؟"
+        few: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من {{count}} موضوع؟"
+        many: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من {{count}} موضوع؟"
+        other: "هل أنت متاكد انك تريد حذف هذا الوسم و إذالتة من {{count}} موضوع؟"
+      delete_confirm_no_topics: "هل أنت متاكد انك تريد حذف هذا الوسم؟"
       rename_tag: "أعد تسمية الوسم"
       rename_instructions: "اختر اسما جديدا للوسم:"
       sort_by: "افرز ب‍:"
       sort_by_count: "العدد"
       sort_by_name: "الاسم"
-      manage_groups: "أدر مجموعات الوسوم"
-      manage_groups_description: "انشئ مجموعات لتنظيم الوسوم"
+      manage_groups: "أدرج مجموعات الأوسمة"
+      manage_groups_description: "أنشئ مجموعات لتنظيم الأوسمة"
       filters:
         without_category: "مواضيع %{tag} %{filter}"
         with_category: "موضوعات %{filter}%{tag}  في %{category}"
@@ -2677,7 +2654,7 @@ ar:
       notifications:
         watching:
           title: "مُراقب"
-          description: "ستتابع بشكل تلقائي جديد هذه التصنيفات. سيتم إشعارك بكل مشاركة او موضوع، بالإضافة لذلك سيتم عرض عدد  المشاركات الغير مقروءة و الجديدة بجانب الموضوع."
+          description: "ستتابع بشكل تلقائي جديد هذه الأقسام. سيتم إشعارك بكل منشور او موضوع، بالإضافة لذلك سيتم عرض عدد  المنشورات الغير مقروءة و الجديدة بجانب الموضوع."
         watching_first_post:
           title: "يُراقب فيه أول مشاركة"
           description: "ستستقبل إشعارًا لأوّل مشاركة في كلّ موضوع في هذا الوسم."
@@ -2691,15 +2668,15 @@ ar:
           title: "مكتوم"
           description: "لن تستقبل أيّ إشعار لأيّ موضوع جديد في هذا الوسم، ولن تظهر هذه المواضيع في لسان المواضيع غير المقروءة."
       groups:
-        title: "مجموعات الوسوم"
-        about: "أضف وسوما للمجموعات ليسهل عليك إدارتها."
+        title: "مجموعات الأوسمة"
+        about: "ضع الأوسمة في مجموعات ليسهل عليك إدارتها."
         new: "مجموعة جديدة"
-        tags_label: "الوسوم في هذه المجموعة:"
+        tags_label: "الأوسمة في هذه المجموعة:"
         parent_tag_label: "التصنيف الأب"
         parent_tag_placeholder: "اختياري"
-        parent_tag_description: "لا يمكن استخدام الوسوم في هذه المجموعة ما لم يوجد الوسم الأب."
-        one_per_topic_label: "اختر علامة وصفية واحدة لكل موضوع من هذه المجموعة"
-        new_name: "مجموعة وسوم جديدة"
+        parent_tag_description: "لا يمكن استخدام الأوسمة في هذه المجموعة ما لم يوجد الوسم الأب."
+        one_per_topic_label: "السماح بوسم واحد فقط من هذة المجموعة لكل موضوع"
+        new_name: "مجموعة أوسمة جديدة"
         save: "حفظ"
         delete: "حذف"
         confirm_delete: "أمتأكد من حذف مجموعة الوسوم هذه؟"
@@ -2756,7 +2733,6 @@ ar:
         no_problems: "لا مشاكل."
         moderators: 'المشرفون:'
         admins: 'المدراء:'
-        blocked: 'محظورون:'
         suspended: 'موقوفون:'
         private_messages_short: "الرسائل"
         private_messages_title: "الرسائل"
@@ -2794,37 +2770,26 @@ ar:
         topics: "الموشوعات المبلغ عنها "
         agree: "أوافق"
         agree_title: "أكد هذا البلاغ كونه صحيح وصالح"
-        agree_flag_modal_title: "أوافق و ..."
-        agree_flag_hide_post: "اوافق (اخفاء المنشور + ارسال رسالة خاصة)"
-        agree_flag_hide_post_title: "أخفي هذا المنشور و ارسل رسالة للعضو تلقائيا تحثه علي تعديلة"
-        agree_flag_restore_post: "موافق (اعد المنشور)"
-        agree_flag_restore_post_title: "اعد هذا المنشور."
-        agree_flag: "الموافقه على البلاغ"
-        agree_flag_title: "الموافقة علي البلاغ و حفظ المنشور دون تغيير."
-        defer_flag: "تأجيل"
         defer_flag_title: "ازل هذا البلاغ، لا يتطلب منك إجراء في الوقت الحالي."
         delete: "احذف"
         delete_title: "احذف المنشور المرتبط بهذا البلاغ"
-        delete_post_defer_flag: "احذف المنشور مع تأجيل البلاغ"
         delete_post_defer_flag_title: "احذف المنشور. اذا كان المنشور الاول, احذف الموضوع"
-        delete_post_agree_flag: "احذف المنشور مع الموافقة على البلاغ"
         delete_post_agree_flag_title: "احذف المنشور. اذا كان المنشور الاول, احذف الموضوع"
         delete_flag_modal_title: "احذف و..."
         delete_spammer: "احذف ناشر السبام"
-        delete_spammer_title: "احذف المستخدم مع مشاركاته ومواضيعه."
-        disagree_flag_unhide_post: "أختلف مع البلاغ، إعادة إظهار المشاركة."
-        disagree_flag_unhide_post_title: "حذف أي بلاغ يخص هذه المشاركة مع إظهارها مرة أخرى"
-        disagree_flag: "أختلف"
+        delete_spammer_title: "احذف العضو و كل منشوراتة و موضوعاتة."
+        disagree_flag_unhide_post: "لا اوافق (اعد اظهار المنشور)"
+        disagree_flag_unhide_post_title: "احذف أي بلاغ يخص هذا المنشور و اظهر المنشور مرة اخري"
+        disagree_flag: "لا اوافق"
         disagree_flag_title: "رفض هذا البلاغ لكونه خاطئ"
         clear_topic_flags: "إتمام العملية"
         clear_topic_flags_title: "تم فحص الموضوع وحل المشاكل المتعلقة به. إضغط على إتمام العملية لحذف هذه البلاغات."
-        more: "ردود أكثر..."
+        more: "(ردود أكثر...)"
         suspend_user: "عضو موقوف"
         suspend_user_title: "اوقف عضو عن هذا المنشور"
         dispositions:
           agreed: "متفق"
           disagreed: "أختلف"
-          deferred: "مؤجل"
         flagged_by: "مُبلّغ عنه بواسطة"
         resolved_by: "تم حلّه بواسطة"
         took_action: "اجريت العمليات"
@@ -2832,80 +2797,51 @@ ar:
         error: "حدث خطب ما"
         reply_message: "الرد"
         no_results: "لا يوجد بلاغات."
-        topic_flagged: "هذا  <strong>الموضوع</strong> قد عُلِّم."
+        topic_flagged: "هذا <strong>الموضوع</strong> قد ابلغ عنة."
         show_full: "عرض المنشور كاملاًَ"
-        visit_topic: "زيارة الموضوع لاتخاذ قرار"
-        was_edited: "تم تعديل المشاركة بعد أول بلاغ"
-        previous_flags_count: "هذه المشاركة قد سبق الإشارة إليها {{count}} مرات."
+        visit_topic: "انتقل إلى الموضوع لاتخاذ إجراء"
+        was_edited: "تم تعديل المنشور بعد أول بلاغ"
+        previous_flags_count: "هذا المنشور قد سبق الإبلاغ عنه {{count}} مرة."
         show_details: "اظهر تفاصيل البلاغ"
+        details: "التفاصيل"
         flagged_topics:
           topic: "موضوع"
           type: "النوع"
           users: "الأعضاء"
-          last_flagged: "مُبلّغ عنه الاخير"
-        summary:
-          action_type_3:
-            zero: "خارج عن الموضوع"
-            one: "خارج عن الموضوع"
-            two: "خارج عن الموضوع x{{count}}"
-            few: "خارج عن الموضوع x{{count}}"
-            many: "خارج عن الموضوع x{{count}}"
-            other: "خارج عن الموضوع x{{count}}"
-          action_type_4:
-            zero: "غير ملائم"
-            one: "غير ملائم"
-            two: "غير ملائم x{{count}}"
-            few: "غير ملائم x{{count}}"
-            many: "غير ملائم x{{count}}"
-            other: "غير ملائم x{{count}}"
-          action_type_6:
-            zero: "مخصص"
-            one: "مخصص"
-            two: "مخصص x{{count}}"
-            few: "مخصص x{{count}}"
-            many: "مخصص x{{count}}"
-            other: "مخصص x{{count}}"
-          action_type_7:
-            zero: "مخصص"
-            one: "مخصص"
-            two: "مخصص x{{count}}"
-            few: "مخصص x{{count}}"
-            many: "مخصص x{{count}}"
-            other: "مخصص x{{count}}"
-          action_type_8:
-            zero: "رسائل مزعجة"
-            one: "رسائل مزعجة"
-            two: "رسائل مزعجة x{{count}}"
-            few: "رسائل مزعجة x{{count}}"
-            many: "رسائل مزعجة x{{count}}"
-            other: "رسائل مزعجة x{{count}}"
+          last_flagged: "اخر البلاغات"
+        short_names:
+          off_topic: "خارج الموضوع"
+          inappropriate: "غير لائق"
+          spam: "مزعج"
+          notify_user: "مخصص"
+          notify_moderators: "مخصص"
       groups:
         primary: "المجموعة الأساسية"
-        no_primary: "(لايوجد مجموعة أساسية)"
+        no_primary: "(لا يوجد مجموعة أساسية)"
         title: "مجموعات"
         edit: "تعديل المجموعة"
         refresh: "تحديث"
         new: "جديد"
         selector_placeholder: "أدخل اسم المستخدم"
-        about: "هنا عدّل على عضوية المجموعة والاسماء"
+        about: "عدل عضوية المجموعة وأسماءها هنا"
         group_members: "أعضاء المجموعة"
-        delete: "حذف"
-        delete_confirm: "أأحذف هذه المجموعة؟"
+        delete: "احذف"
+        delete_confirm: "هل تريد حذف هذه المجموعة؟"
         delete_failed: "تعذّر حذف المجموعة. إن كانت مجموعة آليّة، فلا يمكن تدميرها."
         delete_owner_confirm: "هل تريد إزالة صلاحيات الإدارة من '%{username} ؟"
         add: "اضافة"
-        add_members: "اضافة عضو"
+        add_members: "اضافة اعضاء"
         custom: "مخصص"
-        bulk_complete: "أُضيف المستخدمون إلى المجموعة."
+        bulk_complete: "تمت إضافة الاعضاء إلى المجموعة."
         bulk_complete_users_not_added: "هؤلاء الاعضاء لم يتم اضافتهم (تأكد انهم يملكون حساب)"
-        bulk: "اضافة بالجملة للمجموعة"
-        bulk_paste: "ألصق قائمة بأسماء المستخدمين أو عناوين البريد، واحد في كلّ سطر:"
+        bulk: "إضافة متعددة إلى المجموعة"
+        bulk_paste: "الصق قائمة بأسماء الاعضاء أو عناوين البريد الإلكتروني، واحد لكل سطر:"
         bulk_select: "(اختر مجموعة)"
         automatic: "تلقائي"
         automatic_membership_email_domains: "المستخدمين الذين يمتلكون بريد الالكتروني عنوانه مطابق للعنوان الذي في القائمة سيتم تلقائيا اضافتهم للمجموعة."
-        automatic_membership_retroactive: "اضافة الاعضاء الذين يمتكلون عنوان ايميل مطابق للعنوان الموجود في القائمة."
+        automatic_membership_retroactive: "تطبيق نفس قاعدة عنوان البريد الإلكتروني لإضافة الاعضاء المسجلين الحاليين"
         default_title: "العنوان الافتراضي لكل أعضاء هذه المجموعة"
-        primary_group: "تلقيائاً ضعها كمجموعة أساسية."
+        primary_group: "تعيين تلقائيا كمجموعة أساسية"
         group_owners: الملّاك
         add_owners: اضف ملّاكً
         incoming_email: "تعيين بريد إلكتروني خاص:"
@@ -2915,7 +2851,7 @@ ar:
       api:
         generate_master: "توليد مفتاح  API رئيسى"
         none: "لا مفاتيح API نشطة حاليًّا."
-        user: "مستخدمين"
+        user: "الاعضاء"
         title: "API"
         key: "مفتاح API"
         generate: "إنشاء"
@@ -2924,19 +2860,35 @@ ar:
         confirm_regen: "أمتأكّد من استبدال مفتاح API هذا بواحد جديد؟"
         confirm_revoke: "هل أنت متأكد من رغبتك في تعطيل هذا المفتاح؟"
         info_html: "مفتاح API الخاص بك سيسمح لك بانشاء أو تعديل مواضيع باستخدام أليات رسائل JSON."
-        all_users: "جميع المستخدمين"
+        all_users: "جميع الاعضاء"
         note_html: "حافظ على <strong>سرية</strong> هذا المفتاح، اي شخص يحصل عليه يستطيع انشاء مواضيع باسم اي مستخدم اخر"
       web_hooks:
-        detailed_instruction: "سيُرسل طلب POST إلى العنوان الموفّر عندما يحدث الحدث المنتقى."
+        title: "Webhooks"
+        none: "لا يوجد Webhooks حاليا."
+        instruction: "Webhooks تسمح للموقع باشعار خدمات خارجية عند حدوث حدث محدد في الموقع. عندما يتم تفعيل ال Webhooks سوف يتم ارسال  POST request لعنوان ال URL للخدمة."
+        detailed_instruction: "سيُرسل POST request إلى العنوان الURL للموفر عند حدوث الحدث المنشود."
+        new: "Webhook جديد"
         create: "أنشئ"
-        save: "حفظ"
-        destroy: "مسح"
+        save: "احفظ"
+        destroy: "أحذف"
         description: "الوصف"
         controls: "التحكم"
+        go_back: "العودة إلي القائمة"
+        payload_url: "الURL المستهدف"
+        payload_url_placeholder: "https://example.com/postreceive"
+        warn_local_payload_url: "يبدو أنك تحاول إعداد الwebhook علي عنوان محلي. ارسال الاحداث إلي عنوان محلي قد يؤدي إلى حدوث آثار جانبية أو سلوكيات غير متوقعة. استمر؟"
+        secret_invalid: "يجب ألا يحتوي الرمز السري على أية فواصل."
+        secret_too_short: "يجب أن يكون الرمز السري 12 حرفا على الأقل."
+        secret_placeholder: "كلمة اختيارية، تستخدم لتوليد توقيع إلكتروني"
+        event_type_missing: "يجب ان تحدد علي الاقل نوع واحد من الاحداث."
         content_type: "نوع المحتوى"
-        secret: "سر"
-        wildcard_event: "ارسل إلى أى شئ."
+        secret: "الرمز السري"
+        event_chooser: "اي احداي يجب ان تفعل هذا الwebhook؟"
+        wildcard_event: "ارسل إلى كل شئ."
+        individual_event: "حدد احداث مفردة."
+        verify_certificate: "تحقق من شهادة  TLS لعنوان الURL المستهدف"
         active: "فعل"
+        active_notice: "سوف يتم ارسال تفاصيل الحدث عند حدوثة."
         user_event:
           name: "أحداث المستخدم"
           details: "عندما مستخدم ينشئ، يؤكد او يُحدث."
@@ -2970,8 +2922,8 @@ ar:
         title: "الإضافات"
         installed: "الإضافات المثبتة"
         name: "الاسم"
-        none_installed: "لا إضافات مثبّتة."
-        version: "الاصدارة"
+        none_installed: "ليس لديك أي إضافات مثبتة."
+        version: "الإصدار"
         enabled: "مفعّلة؟"
         is_enabled: "نعم"
         not_enabled: "لا"
@@ -2983,7 +2935,7 @@ ar:
         menu:
           backups: "النسخ الاحتياطية"
           logs: "السّجلّات"
-        none: "لا نسخ احتياطية."
+        none: "لا تتوفر نسخة إحتياطية."
         read_only:
           enable:
             title: "فعّل وضع القراءة فقط"
@@ -3001,42 +2953,42 @@ ar:
           label: "رفع"
           title: "رفع نسخة احتياطية لهذه الحالة."
           uploading: "يرفع..."
-          success: "رُفع '{{filename}}' بنجاح."
+          success: "تم رفع '{{filename}}' بنجاح."
           error: "حصلت مشكلة أثناء رفع '{{filename}}': {{message}}"
         operations:
           is_running: "هناك عمليّة تجري حاليًّا..."
           failed: "الـ {{operation}} فشلت. الرجاء التحقق من logs."
           cancel:
-            label: "ألغِ"
-            title: "ألغِ العمليّة الحاليّة"
-            confirm: "أمتأكّد من إلغاء العمليّة الحاليّة؟"
+            label: "إلغاء"
+            title: "قم بإلغاء العملية الحالية"
+            confirm: "هل تريد إلغاء العملية الحالية؟"
           backup:
             label: "أجرِ نسخ احتياطي"
             title: "أنشئ نسخة احتياطية"
             confirm: "أتريد إجراء نسخة احتياطية جديدة؟"
             without_uploads: "نعم (لا تضمن الملفات)"
           download:
-            label: "نزّل"
-            title: "أرسل بريدًا فيه رابط التّنزيل"
-            alert: "أُرسل بريد إلكترونيّ إليك فيه رابط لتنزيل النّسخة الاحتياطيّة هذه."
+            label: "حمل"
+            title: "أرسل بريدًا إلكترونيا فيه رابط التحميل"
+            alert: "تم إرسال بريد إلكتروني إليك به رابط لتنزيل هذه النسخة الاحتياطية."
           destroy:
-            title: "أزل النسخة الاحتياطية"
+            title: "احذف النسخة الاحتياطية"
             confirm: "هل أنت متأكد من رغبتك في حذف النسخة الاحتياطية؟"
           restore:
             is_disabled: "الاستعادة معطّلة في إعدادات الموقع."
             label: "استعادة"
-            title: "اعادة تخزين النسخة الاحتياطية"
-            confirm: "أمتأكد من استعادة النسخة الاحتياطية هذه؟"
+            title: "اعادة استخدام النسخة الاحتياطية"
+            confirm: "هل انت متاكد من اعادة إستخدام هذه النسخة الاحتياطية؟"
           rollback:
-            label: "اعادة السنخة السابقة"
-            title: "Rollback the database to previous working state"
+            label: "اعادة النسخة السابقة"
+            title: "إعادة قاعدة البيانات إلى حالة العمل السابقة"
             confirm: "هل انت متاكد انك تريد اعاده قواعد البيانات الى الحاله السابقه؟"
       export_csv:
         success: "بدأ التصدير, سيتم إعلامك برسالة عند اكتمال العملية."
         failed: "فشل التصدير. من فضلك افحص السجلات."
         button_text: "التصدير"
         button_title:
-          user: "صدّر كامل قائمة المستخدمين بنسق CSV."
+          user: "صدّر كامل قائمة الاعضاء بنسق CSV."
           staff_action: "صدّر كامل سجلّ إجراءات الطّاقم بنسق CSV."
           screened_email: "Export full screened email list in CSV format."
           screened_ip: "Export full screened IP list in CSV format."
@@ -3050,13 +3002,13 @@ ar:
         title: "تخصيص"
         long_title: "تخصيص الموقع"
         preview: "معاينة"
-        explain_preview: "شاهد الموقع مع هذه السمة و هي مفعلة"
-        save: "حفظ"
+        explain_preview: "عاين الموقع مع تفعيل هذة الواجهة"
+        save: "احفظ"
         new: "جديد"
-        new_style: "تصميم جديد"
+        new_style: "واجهة جديدة"
         import: "استيراد"
-        delete: "حذف"
-        delete_confirm: "أأحذف هذه السّمة؟"
+        delete: "أحذف"
+        delete_confirm: "هل احذف هذة الواجهة؟"
         color: "لون"
         opacity: "الشفافية"
         copy: "نسخ"
@@ -3073,34 +3025,40 @@ ar:
           revert: "اعاده التغيرات "
           revert_confirm: "هل انت متاكد من انك تريد اعاده التغيرات؟ "
         theme:
-          import_theme: "استيراد السمة"
+          import_theme: "استيراد الواجهة"
           customize_desc: "تخصيص:"
-          title: "السمات"
-          edit: "حرّر"
+          title: "الواجهات"
+          edit: "عدل"
           common: "شائع"
           desktop: "سطح المكتب"
           mobile: "هاتف محمول"
-          preview: "مراجعة"
-          is_default: "السمة مفعلة إفتراضيا"
-          custom_sections: "مُخصص القسم:"
-          theme_components: "مكونات السمة"
-          uploads: "المرفوعة"
-          no_uploads: "يمكنك رفع ملحقات مرتبطة بالسمة الخاصة بك مثل الخطوط و الصور"
-          add_upload: "اضف للرفع"
-          upload: "رفع"
-          child_themes_check: "السمة "
-          css_html: "مُخصص CSS/HTML"
-          edit_css_html: "عدل CSS/HTML"
+          preview: "معاينة"
+          is_default: "الواجهة مفعلة إفتراضيا"
+          user_selectable: "يستطيع الأعضاء اختيار واجهة المستخدم"
+          color_scheme: "نظام الألوان"
+          color_scheme_select: "حدد الألوان لاستخدامها في الواجهة"
+          custom_sections: "أقسام مخصصة:"
+          theme_components: "مكونات المواجهة"
+          uploads: "الملفات المساعدة"
+          no_uploads: "يمكنك رفع ملفات خاصة بواجهة المستخدم الخاصة بك مثل الخطوط و الصور"
+          add_upload: "اضف ملف"
+          upload_file_tip: "اختر ملف للرفع ( png او woff2... إلخ )"
+          variable_name: "SCSS var name:"
+          upload: "ارفع"
+          child_themes_check: "تشمل الواجهة واجهات فرعية اخري"
+          css_html: "CSS/HTML مخصص"
+          edit_css_html: "تعدل CSS/HTML"
           edit_css_html_help: "انت لم تقم بتعديل اي CSS او HTML"
-          delete_upload_confirm: "حذف المرفوع ؟(CSS الخاصة بالسمة قد يتوقف عن العمل)"
-          import_web_tip: "المخزن يحتوي على السمة"
-          import_file_tip: "ملف الـ .dcstyle.json يحتوي على السمة"
-          about_theme: "عن السمة"
+          delete_upload_confirm: "حذف الملف؟ (ملف الـCSS الخاص بالواجهة قد يتوقف عن العمل)"
+          import_web_tip: "المخزن يحتوي على واجهة مستخدم"
+          import_file_tip: "ملف الـ .dcstyle.json يحتوي على واجهة"
+          about_theme: "عن الواجهة"
           license: "الرخصة"
-          component_of: "السمة مكونة من:"
-          update_to_latest: "حدث لآخر"
+          component_of: "الواجهة مكونة من:"
+          update_to_latest: "حدث لاحدث اصدار"
           check_for_updates: "تحقق من التحديثات"
           updating: "تحديث..."
+          up_to_date: "الواجة محدثة, اخر مره تم التحقق من التحديث:"
           add: "اضافة"
           scss:
             text: "CSS"
@@ -3163,7 +3121,7 @@ ar:
             name: 'إعجاب'
             description: "لون زر الإعجاب."
       email:
-        title: "البُرد الإلكترونية"
+        title: "البريد الالكتروني"
         settings: "إعدادات"
         templates: "القوالب"
         preview_digest: "ملخص المعاينة."
@@ -3225,6 +3183,10 @@ ar:
             type_placeholder: "الخلاصة، إنشاء حساب..."
             reply_key_placeholder: "مفتاح الرد"
             skipped_reason_placeholder: "السبب"
+      moderation_history:
+        actions:
+          delete_user: "حُذف المستخدم."
+          suspend_user: "العضو موقوف."
       logs:
         title: "السجلات"
         action: "الإجراء"
@@ -3280,15 +3242,13 @@ ar:
             change_category_settings: "تغيير إعدادات القسم"
             delete_category: "حذف القسم"
             create_category: "أنشئ قسم"
-            block_user: "حظر"
-            unblock_user: "رفع الحظر"
             grant_admin: "منح صلاحيات ادارية"
             revoke_admin: "سحب الصلاحيات الادارية"
             grant_moderation: "عين كمشرف"
             revoke_moderation: "سحب صلاحيات المشرف"
             backup_create: "أنشئ نسخة احتياطية"
-            deleted_tag: "علامة وصفية محذوفة"
-            renamed_tag: "اعادة تسمية العلامة الوصفية"
+            deleted_tag: "وسم محذوف"
+            renamed_tag: "إعادة تسمية الوسم"
             revoke_email: "حذف البريد الالكتروني"
             lock_trust_level: "قفل مستوى الثقة"
             unlock_trust_level: "فتح مستوى الثقة "
@@ -3327,6 +3287,10 @@ ar:
           roll_up:
             text: "متغير"
             title: "أنشئ مدخلات فرعية جديدة إذا كانت هذه على الأقل مدخلات 'min_ban_entries_for_roll_up'."
+        search_logs:
+          types:
+            all_search_types: "بحث في جميع الأنواع"
+            full_page: "صفحة كاملة"
         logster:
           title: "سجلات الخطأ."
       watched_words:
@@ -3355,11 +3319,11 @@ ar:
         not_found: "تعذر إيجاد المستخدم."
         invalid: "عذراً , لايمكنك تمثل شخصية ذلك العضو."
       users:
-        title: 'المستخدمون'
+        title: 'الأعضاء'
         create: 'اضافة مدير'
         last_emailed: "آخر بريد الكتروني"
-        not_found: "آسفون، اسم هذا المستخدم غير موجود في النظام."
-        id_not_found: "آسفون، معرّف هذا المستخدم غير موجود في النظام."
+        not_found: "عذرا، اسم المستخدم غير موجود في النظام."
+        id_not_found: "عذرا، هذا الرقم التعريفي غير موجود في النظام."
         active: "نشط"
         show_emails: "عرض الرسائل"
         nav:
@@ -3368,7 +3332,6 @@ ar:
           pending: "قيد الانتظار"
           staff: 'الطاقم'
           suspended: 'موقوف'
-          blocked: 'محظور'
           suspect: 'المريبون'
         approved: "موافقة؟"
         approved_selected:
@@ -3386,8 +3349,8 @@ ar:
           many: "رفض المستخدمين ({{count}})"
           other: "رفض المستخدمين ({{count}})"
         titles:
-          active: 'المستخدمون النشطون'
-          new: 'المستخدمون الجدد'
+          active: 'الأعضاء النشطون'
+          new: 'الأعضاء الجدد'
           pending: 'أعضاء بانتظار المراجعة'
           newuser: 'أعضاء في مستوى الثقة 0 (عضو جديد)'
           basic: 'أعضاء في مستوى الثقة 1 (عضو أساسي)'
@@ -3395,25 +3358,24 @@ ar:
           regular: 'الاعضاء في مستوى الثقة رقم 3 (عاديين)'
           leader: 'الاعضاء في مستوى الثقة رقم 4 (قادة)'
           staff: "الطاقم"
-          admins: 'المستخدمون المدراء'
+          admins: 'الأعضاء المدراء'
           moderators: 'المشرفون'
-          blocked: 'مستخدمين محظورين:'
           suspended: 'أعضاء موقوفين'
-          suspect: 'المستخدمون المريبون'
+          suspect: 'الأعضاء المريبون'
         reject_successful:
-          zero: "رفض بنجاح 1 مستخدم"
-          one: "رفض بنجاح 1 مستخدم"
-          two: "رفض بنجاح %{count} مستخدمين."
-          few: "رفض بنجاح %{count} مستخدمين."
-          many: "رفض بنجاح %{count} مستخدمين."
-          other: "رفض بنجاح %{count} مستخدمين."
+          zero: "رفض بنجاح 1 عضو"
+          one: "رفض بنجاح 1 عضو"
+          two: "رفض بنجاح %{count} عضو."
+          few: "رفض بنجاح %{count} عضو."
+          many: "رفض بنجاح %{count} عضو."
+          other: "رفض بنجاح %{count} عضو."
         reject_failures:
-          zero: "فشل لرفض 1 مستخدم."
-          one: "فشل لرفض 1 مستخدم."
-          two: "فشل لرفض %{count} مستخدمين."
-          few: "فشل لرفض %{count} مستخدمين."
-          many: "فشل لرفض %{count} مستخدمين."
-          other: "فشل لرفض %{count} مستخدمين."
+          zero: "فشل لرفض 1 عضو."
+          one: "فشل لرفض 1 عضو."
+          two: "فشل لرفض %{count} عضو."
+          few: "فشل لرفض %{count} عضو."
+          many: "فشل لرفض %{count} عضو."
+          other: "فشل لرفض %{count} عضو."
         not_verified: "لم يتم التحقق"
         check_email:
           title: "اكشف عنوان البريد الإلكتروني لهذا العضو"
@@ -3429,16 +3391,15 @@ ar:
         suspend_message: "رسالة بريد الكتروني"
         suspend_message_placeholder: "اختياري. وفر المزيد من المعلومات حول التوقيف و سيتم ارساله عبر البريد الالكتروني الى العضو."
         suspended_by: "محظور من قبل"
+        silence_reason: "السبب"
+        silence_message: "رسالة بريد الكتروني"
         suspended_until: "(حتى %{until})"
         cant_suspend: "لا يمكن ايقاف هذا العضو"
         delete_all_posts: "احذف كل مشاركاته"
         delete_all_posts_confirm_MF: "أنت على وشك {POSTS, plural, zero {عدم حذف شيء} one {حذف مشاركة واحدة} two {حذف مشاركتين} few {حذف # مشاركات} many {حذف # مشاركة} other {حذف # مشاركة}}{TOPICS, plural, zero {} one { وموضوع واحد} two { وموضوعين} few { و# مواضيع} many {و# موضوعا} other {و# موضوع}}. أمتأكد؟"
-        suspend: "علّق"
-        unsuspend: "إلقاء التعليق"
-        suspended: "معلّق؟"
         moderator: "مراقب؟"
         admin: "مدير؟"
-        blocked: "محظور؟"
+        suspended: "معلّق؟"
         staged: "تنظيم؟"
         show_admin_profile: "مدير"
         refresh_browsers: "أجبر إنعاش المتصفح"
@@ -3454,8 +3415,8 @@ ar:
         grant_admin_confirm: "لقد ارسلنا بريداً الكترونياً لتأكيد المدير الجديد. رجاء افتح الرسالة و اتبع التعلميات."
         revoke_moderation: 'سحب المراقبة'
         grant_moderation: 'منحة مراقبة'
-        unblock: 'إلغاء حظر'
-        block: 'حظر'
+        unsuspend: 'إلقاء التعليق'
+        suspend: 'علّق'
         reputation: شهرة
         permissions: التّصاريح
         activity: أنشطة
@@ -3514,17 +3475,12 @@ ar:
         activate_failed: "حدث خطأ عند تفعيل هذا المستخدم."
         deactivate_account: "تعطيل الحساب"
         deactivate_failed: "حدث خطأ عند تعطيل هذا المستخدم."
-        unblock_failed: 'حدثت مشكلة في رفع المنع عن المستخدم.'
-        block_failed: 'حدثت مشكلة في منع المستخدم.'
-        block_confirm: 'هل انت متأكد من حظر هذا المستخدم؟ لن يستطيع انشاء مواضيع او ردود جديدة'
-        block_accept: 'نعم، امنع هذا المستخدم'
         bounce_score: "سجل الترويج"
         reset_bounce_score:
           label: "اعادة تعيين"
           title: "اعادة تعيين سجل الترويج  الى 0"
         deactivate_explanation: "المستخدم الغير نشط يحب أن يتأكد من البريد الالكتروني"
         suspended_explanation: "المستخدم الموقوف لايملك صلاحية تسجيل الدخول"
-        block_explanation: "المستخدم الموقوف لايستطيع أن يشارك"
         staged_explanation: "العضو المنظم يمكنه فقط النشر عن طريق البريد الالكتروني في المواضيع المخصصه ."
         bounce_score_explanation:
           none: "لا ترويجات تم استلامها من هذا البريد الالكتروني"
@@ -3550,11 +3506,11 @@ ar:
           posts_read: "المنشورات المقروءة"
           posts_read_all_time: "المشاركات المقروءة (جميع الاوقات)"
           flagged_posts: "المشاركات المبلغ عنها "
-          flagged_by_users: "المستخدمين الذين بلغوا"
+          flagged_by_users: "الأعضاء الذين بلغوا"
           likes_given: "الإعجابات المعطاة"
           likes_received: "الإعجابات المستلمة"
           likes_received_days: "الإعجابات المستلمة : الايام الغير عادية"
-          likes_received_users: "الإعجابات المستلمة : المستخدمين المميزين"
+          likes_received_users: "الإعجابات المستلمة : الأعضاء المميزين"
           qualifies: "مستوى الثقة الممنوحة للمستوى "
           does_not_qualify: "غير مستحق للمستوى"
           will_be_promoted: "سيتم الترقية عنه قريبا"
@@ -3645,7 +3601,7 @@ ar:
           login: "تسجيل الدخول"
           plugins: "الإضافات "
           user_preferences: "تفضيلات العضو"
-          tags: "الوسوم"
+          tags: "الأوسمة"
           search: "البحث"
           groups: "المجموعات"
       badges:

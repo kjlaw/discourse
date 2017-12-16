@@ -20,7 +20,7 @@ describe PostAction do
 
     it "limits redo/undo" do
 
-      RateLimiter.stubs(:disabled?).returns(false)
+      RateLimiter.enable
 
       PostAction.act(eviltrout, post, PostActionType.types[:like])
       PostAction.remove_act(eviltrout, post, PostActionType.types[:like])
@@ -506,7 +506,7 @@ describe PostAction do
 
   it "prevents user to act twice at the same time" do
     # flags are already being tested
-    all_types_except_flags = PostActionType.types.except(PostActionType.flag_types)
+    all_types_except_flags = PostActionType.types.except(PostActionType.flag_types_without_custom)
     all_types_except_flags.values.each do |action|
       expect do
         PostAction.act(eviltrout, post, action)

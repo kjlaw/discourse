@@ -3,7 +3,7 @@ require_dependency 'email_validator'
 class UserEmail < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessor :should_validate_email
+  attr_accessor :skip_validate_email
 
   before_validation :strip_downcase_email
 
@@ -24,7 +24,7 @@ class UserEmail < ActiveRecord::Base
   end
 
   def validate_email?
-    return false unless self.should_validate_email
+    return false if self.skip_validate_email
     email_changed?
   end
 end
@@ -37,8 +37,8 @@ end
 #  user_id    :integer          not null
 #  email      :string(513)      not null
 #  primary    :boolean          default(FALSE), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 # Indexes
 #

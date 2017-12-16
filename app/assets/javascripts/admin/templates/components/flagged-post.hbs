@@ -20,6 +20,10 @@
   </div>
 
   <div class="flagged-post-contents">
+    <div class='flagged-post-user-details'>
+      <a class='username' href={{user.path}} data-user-card={{flaggedPost.user.username}}>{{format-username flaggedPost.user.username}}</a>
+    </div>
+
     <div class='flagged-post-excerpt'>
       {{#unless hideTitle}}
         <h3>
@@ -73,7 +77,7 @@
           {{#each flaggedPost.post_actions as |postAction|}}
             {{#flag-user user=postAction.user date=postAction.created_at}}
               <div class='flagger-flag-type'>
-                {{i18n (concat "admin.flags.summary.action_type_" postAction.post_action_type_id) count=1}}
+                {{post-action-title postAction.post_action_type_id postAction.name_key}}
               </div>
             {{/flag-user}}
           {{/each}}
@@ -105,15 +109,11 @@
       </div>
     {{/if}}
 
-    {{#if canAct}}
-      <div class='flagged-post-controls'>
-        {{d-button
-          title="admin.flags.agree_title"
-          class="agree-flag"
-          label="admin.flags.agree"
-          icon="thumbs-o-up"
-          action="showAgreeFlagModal"
-          ellipsis=true}}
+    <div class='flagged-post-controls'>
+      {{#if canAct}}
+        {{admin-agree-flag-dropdown
+          post=flaggedPost
+          removeAfter=(action "removeAfter") }}
 
         {{#if flaggedPost.postHidden}}
           {{d-button
@@ -138,12 +138,7 @@
           icon="external-link"
           label="admin.flags.defer_flag"}}
 
-        {{d-button
-          class="btn-danger delete-flag"
-          title="admin.flags.delete_title"
-          action="showDeleteFlagModal"
-          icon="trash-o"
-          label="admin.flags.delete"}}
+        {{admin-delete-flag-dropdown post=flaggedPost removeAfter=(action "removeAfter")}}
 
         {{#unless suspended}}
           {{d-button
@@ -153,8 +148,13 @@
             title="admin.flags.suspend_user_title"
             action=(action "showSuspendModal")}}
         {{/unless}}
-      </div>
-    {{/if}}
+      {{/if}}
+
+      {{d-button
+        icon="list"
+        label="admin.flags.moderation_history"
+        action=(action "showModerationHistory")}}
+    </div>
     {{plugin-outlet
       name="flagged-post-below-controls"
       tagName=""

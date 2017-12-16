@@ -26,7 +26,7 @@
     margin-top: 6px;
     margin-right: 6px;
   }
-  #edit-title, .category-select-box {
+  #edit-title, .category-chooser, .edit-controls {
     width: 500px;
   }
   h1 {
@@ -42,12 +42,18 @@
     vertical-align: middle;
   }
   .private-message-glyph { display: none; }
+  .remove-featured-link {
+    float: right;
+    text-transform: lowercase;
+    color: dark-light-choose($primary-medium, $secondary-medium);
+    font-size: 0.875rem;
+  }
 }
 
 .private-message-glyph {
-  color: dark-light-choose(scale-color($primary, $lightness: 75%), scale-color($secondary, $lightness: 25%));
+  color: dark-light-choose($primary-low-mid, $secondary-high);
   float: left;
-  margin: 0 5px 0 0;
+  margin-right: 5px;
 }
 .private_message #topic-title .private-message-glyph { display: inline; }
 
@@ -188,7 +194,7 @@
 
 
 #topic-filter {
-  background-color: scale-color($highlight, $lightness: 25%);
+  background-color: $highlight-medium;
   padding: 8px;
   bottom: 0;
   position: fixed;
@@ -206,11 +212,11 @@ and (min-width: 400px) {
   }
 
   #topic-progress-wrapper {
-    right: 160px;
+    right: 19vw;
   }
 
   #topic-progress-wrapper.docked {
-    right: 152px;
+    right: 19vw;
   }
 
   #topic-footer-main-buttons {

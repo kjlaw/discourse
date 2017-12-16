@@ -26,23 +26,6 @@ blockquote {
 
 }
 
-h1.page-not-found {
-  line-height: 24px;
-  margin: 5px 0 -5px 0;
-}
-
-h2 {
-  &.popular-topics-title {
-    margin-bottom: 6px;
-    font-size: 1.2em;
-  }
-
-  &.recent-topics-title {
-    margin-bottom: 6px;
-    font-size: 1.2em;
-  }
-}
-
 // Common classes
 .wrap {
   padding: 0 10px;
@@ -63,7 +46,7 @@ h2 {
 
   .topic-status {
     i {
-      color: $secondary-medium;
+      color: $secondary-high;
     }
   }
 
@@ -100,7 +83,7 @@ h2 {
 
     .fa {
       margin-right: 8px;
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
     }
   }
 
@@ -143,17 +126,6 @@ h2 {
         }
       }
     }
-  }
-}
-
-/* page not found styles */
-.page-not-found {
-  &-topics a.badge-wrapper {
-    margin-left: 8px;
-  }
-
-  &-search h2 {
-    font-size: 1.2em;
   }
 }
 

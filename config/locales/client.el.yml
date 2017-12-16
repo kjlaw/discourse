@@ -48,6 +48,9 @@ el:
         x_seconds:
           one: "1δ"
           other: "%{count}δ"
+        less_than_x_minutes:
+          one: "< 1λ"
+          other: "< %{count}λ"
         x_minutes:
           one: "1λ"
           other: "%{count}λ"
@@ -57,6 +60,9 @@ el:
         x_days:
           one: "1η"
           other: "%{count}η"
+        x_months:
+          one: "1μην"
+          other: "%{count}μην"
         about_x_years:
           one: "1χ"
           other: "%{count}έ"
@@ -101,7 +107,7 @@ el:
           other: "%{count} χρόνια μετά"
       previous_month: 'Προηγούμενος μήνας'
       next_month: 'Επόμενος μήνας'
-      placeholder: Επιλέξτε ημερομηνία
+      placeholder: ημερομηνία
     share:
       topic: 'κοινοποίησε έναν σύνδεσμο προς αυτό το νήμα'
       post: 'ανάρτηση #%{postNumber}'
@@ -525,12 +531,14 @@ el:
         disable: "Απενεργοποίηση Ειδοποιήσεων"
         enable: "Ενεργοποίηση Ειδοποιήσεων"
         each_browser_note: "Σημείωση: Θα πρέπει να αλλάξετε αυτή τη ρύθμιση σε κάθε browser που χρησιμοποιείτε."
+      dismiss: 'Απόρριψη'
       dismiss_notifications: "Απόρριψη Όλων"
       dismiss_notifications_tooltip: "Όλες οι αδιάβαστες ειδοποιήσεις να χαρακτηριστούν διαβασμένες"
       first_notification: "Η πρώτη σου ειδοποίηση! Επίλεξε την για να ξεκινήσεις."
       disable_jump_reply: "Να μην εστιάζεται η ανάρτηση μου αφού απαντήσω"
       dynamic_favicon: "Δείξε τον αριθμό νέων/ενημερωμένων νημάτων στο εικονίδιο του προγράμματος περιήγησης"
       theme_default_on_all_devices: "Αυτό να γίνει το προεπιλεγμένο θέμα σε όλες μου τις συσκευές"
+      allow_private_messages: "Επίτρεψε στους χρήστες να μου στέλνουν προσωπικά μηνύματα"
       external_links_in_new_tab: "Άνοιγε όλους τους εξωτερικούς συνδέσμους σε νέα καρτέλα"
       enable_quoting: "Το κείμενο που επισημαίνεται να παρατίθεται στην απάντηση "
       change: "αλλαγή"
@@ -538,7 +546,7 @@ el:
       admin: "Ο/Η {{user}} είναι διαχειριστής"
       moderator_tooltip: "Αυτός ο χρήστης είναι συντονιστής"
       admin_tooltip: "Αυτός ο χρήστης είναι διαχειριστής"
-      blocked_tooltip: "Ο χρήστης είναι μπλοκαρισμένος"
+      silenced_tooltip: "Χρήστης σε σιγή"
       suspended_notice: "Αυτός ο χρήστης είναι σε αποβολή μέχρι τις {{date}}."
       suspended_permanently: "Ο χρήστης είναι αποβλημένος."
       suspended_reason: "Αιτιολογία:"
@@ -590,6 +598,7 @@ el:
       undo_revoke_access: "Απενεργοποίηση Ανάκλησης Πρόσβασης"
       api_approved: "Εγκεκριμένο:"
       theme: "Θέμα"
+      home: "Προεπιλεγμένη Αρχική Σελίδα"
       staff_counters:
         flags_given: "χρήσιμες σημάνσεις"
         flagged_posts: "επισημασμένες αναρτήσεις"
@@ -799,6 +808,7 @@ el:
         title: "Περίληψη"
         stats: "Στατιστικά"
         time_read: "χρόνος ανάγνωσης"
+        recent_time_read: "πρόσφατος χρόνος ανάγνωσης"
         topic_count:
           one: "δημιουργημένο θέμα"
           other: "δημιουργημένα θέματα"
@@ -806,14 +816,17 @@ el:
           one: "δημιουργημένη ανάρτηση"
           other: "δημιουργημένες αναρτήσεις"
         likes_given:
-          one: "<i class='fa fa-heart'></i> δεδομένο"
-          other: "<i class='fa fa-heart'></i> δόθηκαν"
+          one: "δόθηκε"
+          other: "δόθηκαν"
         likes_received:
-          one: "<i class='fa fa-heart'></i> ελήφθη"
-          other: "<i class='fa fa-heart'></i> ελήφθησαν"
+          one: "ελήφθη"
+          other: "ελήφθησαν"
         days_visited:
           one: "ημέρα επίσκεψης"
           other: "ημέρες επίσκεψης"
+        topics_entered:
+          one: "νήμα προβλήθηκε"
+          other: "νήματα προβλήθηκαν"
         posts_read:
           one: "διαβασμένη ανάρτηση"
           other: "διαβασμένες αναρτήσεις"
@@ -902,7 +915,11 @@ el:
     first_post: Πρώτη ανάρτηση
     mute: Σίγαση
     unmute: Αναίρεση σίγασης
-    last_post: Τελευταία ανάρτηση
+    last_post: Αναρτήθηκε
+    time_read: Διαβάστηκε
+    time_read_recently: '%{time_read} πρόσφατα'
+    time_read_tooltip: '%{time_read} συνολικός χρόνος ανάγνωσης'
+    time_read_recently_tooltip: '%{time_read}συνολικός χρόνος ανάγνωσης (%{recent_time_read} τις τελευταίες 60 ημέρες)'
     last_reply_lowercase: τελευταία απάντηση
     replies_lowercase:
       one: απάντηση
@@ -928,6 +945,7 @@ el:
     private_message_info:
       title: "Μήνυμα"
       invite: "Προσκάλεσε άλλους..."
+      leave_message: "Σίγουρα θελετε να αφήσετε αυτό το μήνυμα;"
       remove_allowed_user: "Θέλεις σίγουρα να αφαιρέσεις τον/την {{name}} από αυτή τη συζήτηση;"
       remove_allowed_group: "Θέλεις σίγουρα να αφαιρέσεις τον/την {{name}} από αυτό το μήνυμα;"
     email: 'Email'
@@ -1034,10 +1052,11 @@ el:
       shift: ' Shift'
       ctrl: 'Ctrl'
       alt: 'Alt'
-    select_box:
-      default_header_text: Επίλεξε...
+    select_kit:
+      default_header_text: Επιλογή...
       no_content: Δεν βρέθηκαν αποτελέσματα
       filter_placeholder: Αναζήτηση...
+      create: "Δημιουργία {{content}}"
     emoji_picker:
       filter_placeholder: Αναζήτηση για emoji
       people: Άνθρωποι
@@ -1093,6 +1112,7 @@ el:
       cancel: "Ακύρωση"
       create_topic: "Δημιουργία Νήματος"
       create_pm: "Μήνυμα"
+      create_whisper: "Ψυθίρισμα"
       title: "Ή πάτα Ctrl+Enter"
       users_placeholder: "Προσθήκη χρήστη"
       title_placeholder: "Τι αφορά αυτή η συζήτησης σε μία σύντομη πρόταση;"
@@ -1130,12 +1150,7 @@ el:
       olist_title: "Αριθμημένη λίστα"
       ulist_title: "Κουκίδες"
       list_item: "Στοιχείο Λίστας"
-      heading_label: "H"
-      heading_title: "Επικεφαλίδα"
-      heading_text: "Επικεφαλίδα"
-      hr_title: "Οριζόντια γραμμή"
       help: "Βοήθεια Επεξεργασίας Markdown"
-      toggler: "εμφάνιση ή απόκρυψη του παραθύρου σύνθεσης"
       modal_ok: "OK"
       modal_cancel: "Ακύρωση"
       cant_send_pm: "Λυπούμαστε, δεν μπορείτε να στείλετε μήνυμα στο χρήστη %{username}."
@@ -1227,7 +1242,7 @@ el:
       no_more_results: "Δε βρέθηκαν άλλα αποτελέσματα"
       searching: "Ψάχνω ..."
       post_format: "#{{post_number}} από {{username}}"
-      results_page: "Αποτελέσματα Αναζήτησης"
+      results_page: "Αποτελέσματα αναζήτησης για '{{term}}'"
       more_results: "Υπάρχουν περισσότερα αποτελέσματα. Παρακαλούμε περιορίστε την αναζήτησή σας."
       cant_find: "Δεν μπορείτε να βρείτε αυτό που ψάχνετε;"
       start_new_topic: "Ίσως να ξεκινούσατε ένα νέο νήμα;"
@@ -1244,30 +1259,20 @@ el:
         title: Προηγμένη Αναζήτηση
         posted_by:
           label: Αναρτήθηκε από
-        in_category:
-          label: Σε κατηγορία
         in_group:
           label: Σε ομάδα
         with_badge:
           label: Με Παράσημο
-        with_tags:
-          label: Με Ετικέτες
         filters:
-          label: Να επιστρέψεις μόνο νήματα/αναρτήσεις που...
           likes: μου άρεσαν
           posted: απάντησα
           watching: επιτηρώ
           tracking: παρακολουθώ
-          private: είναι στα μηνύματα μου
-          bookmarks: εχω βάλει σελιδοδείκτη
           first: είναι η πρώτη ανάρτηση
           pinned: είναι καρφιτσωμένα
           unpinned: δεν είναι καρφιτσωμένα
-          seen: διάβασα
           unseen: δεν διάβασα
           wiki: ' είναι βίκι'
-          images: περιλαμβάνουν εικόνες
-          all_tags: Πειρέχει όλες τις ετικέτες
         statuses:
           label: Τα οποία νήματα
           open: είναι ανοιχτά
@@ -1404,13 +1409,16 @@ el:
       jump_reply_down: μετάβαση στην  απάντηση που ακολουθεί
       deleted: "Το νήμα έχει διαγραφεί "
       topic_status_update:
-        title: "Ρύθμιση Χρονοδιακόπτη Νήματος"
+        title: "Χρονοδιακόπτης Νήματος"
         save: "Ρύθμιση Χρονοδιακόπτη"
         num_of_hours: "Ώρες:"
         remove: "Αφαίρεση Χρονοδιακόπτη"
         publish_to: "Δημοσίευση Σε:"
         when: "Πότε:"
+        public_timer_types: Χρονοδιακόπτες Νημάτων
+        private_timer_types: Χρονοδιακόπτες Νημάτων Χρήστη
       auto_update_input:
+        none: "Επιλέξτε χρονικό περιθώριο"
         later_today: "Αργότερα σήμερα"
         tomorrow: "Αύριο"
         later_this_week: "Αργότερα αυτή την εβδομάδα"
@@ -1418,6 +1426,9 @@ el:
         next_week: "Την άλλη εβδομάδα"
         two_weeks: "Δύο Εβδομάδες"
         next_month: "Τον άλλο μήνα"
+        three_months: "Τρεις Μήνες"
+        six_months: "Έξη Μήνες"
+        one_year: "Ένα Έτος"
         forever: "Για Πάντα"
         pick_date_and_time: "Επίλεξε ημερομηνία και ώρα"
         set_based_on_last_post: "Κλείσε ανάλογα με την τελευταία ανάρτηση"
@@ -1656,7 +1667,6 @@ el:
       reply: "<i class='fa fa-mail-forward'></i> {{replyAvatar}} {{usernameLink}}"
       reply_topic: "<i class='fa fa-mail-forward'></i> {{link}}"
       quote_reply: "Παράθεση"
-      edit: "Επεξεργασία του {{link}} {{replyAvatar}} {{username}}"
       edit_reason: "Αιτία:"
       post_number: "ανάρτηση {{number}}"
       wiki_last_edited_on: "το βίκι επεξεργάστηκε τελευταία φορά στις"
@@ -1741,8 +1751,8 @@ el:
       actions:
         flag: 'Επισήμανση'
         defer_flags:
-          one: "Αγνόησε την επισήμανση"
-          other: "Αγνόησε τις επισημάνσεις"
+          one: "Αγνόηση επισήμανσης"
+          other: "Αγνόηση επισημάνσεων"
         undo:
           off_topic: "Αναίρεση σήμανσης"
           spam: "Αναίρεση σήμανσης"
@@ -1758,6 +1768,9 @@ el:
           notify_user: "έστειλαν ένα μήνυμα"
           bookmark: "έβαλαν σελιδοδείκτη"
           like: "άρεσαν αυτό"
+          like_capped:
+            one: "και {{count}} άλλος το άρεσε αυτό "
+            other: "και {{count}} άλλοι το άρεσαν αυτό "
           vote: "ψήφισαν για αυτό"
         by_you:
           off_topic: "Το επισήμανες σαν εκτός θέματος"
@@ -2171,7 +2184,7 @@ el:
         hamburger_menu: '<b>=</b>''Ανοιξε μενού χάμπουρκερ'
         user_profile_menu: '<b>p</b> Άνοιγμα μενού χρήστη'
         show_incoming_updated_topics: '<b>.</b> Εμφάνιση ενημερωμένων νημάτων'
-        search: '<b>/</b> ή <b>ctrl</b>+<b>shift</b>+<b>s</b> Αναζήτηση'
+        search: '<b>/</b> or <b>ctrl</b>+<b>alt</b>+<b>f</b> Αναζήτηση'
         help: '<b>?</b> Εμφάνισε βοήθειας πληκτρολογίου'
         dismiss_new_posts: '<b>x</b>, <b>r</b> Απόρριψη Νέων/Αναρτήσεων'
         dismiss_topics: '<b>x</b>, <b>t</b> Απόρριψη Νημάτων'
@@ -2242,9 +2255,11 @@ el:
       selector_no_tags: "καμία ετικέτα"
       changed: "αλλαγμένες ετικέτες:"
       tags: "Ετικέτες"
-      choose_for_topic: "επίλεξε προαιρετικές ετικέτες για αυτό το νήμα"
       delete_tag: "Αφαίρεση Ετικέτας"
-      delete_confirm: "Είσαι σίγουρος πως θέλεις να αφαιρέσεις την ετικέτα;"
+      delete_confirm:
+        one: "Είσαι βέβαιος πως θέλεις να διαγράψεις αυτήν την ετικέτα και να την αφαιρέσεις από το 1 νήμα στο οποίο είναι προσαρτημένη;"
+        other: "Είσαι βέβαιος πως θέλεις να διαγράψεις αυτήν την ετικέτα και να την αφαιρέσεις από τα {{count}} νήματα στα οποία είναι προσαρτημένη;"
+      delete_confirm_no_topics: "Είσαι βέβαιος πως θέλεις να διαγράψεις αυτήν την ετικέτα;"
       rename_tag: "Μετονομασία Ετικέτας"
       rename_instructions: "Επίλεξε ένα καινούριο όνομα για την ετικέτα:"
       sort_by: "Ταξινόμηση κατά:"
@@ -2339,7 +2354,7 @@ el:
         no_problems: "Δεν βρέθηκε κανένα πρόβλημα."
         moderators: 'Συντονιστές: '
         admins: 'Διαχειριστές:'
-        blocked: 'Αποκλεισμένοι:'
+        silenced: 'Σιγήθηκαν:'
         suspended: 'Αποβλημένοι:'
         private_messages_short: "Μνμτ."
         private_messages_title: "Μηνύματα"
@@ -2377,20 +2392,19 @@ el:
         topics: "Επισημασμένα Νήματα"
         agree: "Συμφωνώ"
         agree_title: "Επιβεβαίωσε αυτή τη σήμανση ως έγκυρη και σωστή"
-        agree_flag_modal_title: "Συμφωνώ και..."
-        agree_flag_hide_post: "Συμφωνώ (κρύψε την ανάρτηση και στείλε ΠΜ)"
-        agree_flag_hide_post_title: "Κρύψε αυτή την ανάρτηση και ειδοποίησε το χρήστη με ένα αυτόματο μήνυμα που τον προτρέπει να το επεξεργαστεί"
-        agree_flag_restore_post: "Συμφωνώ (επανάφερε την ανάρτηση)"
-        agree_flag_restore_post_title: "Επανάφερε την ανάρτηση"
-        agree_flag: "Συμφωνώ με την επισήμανση "
-        agree_flag_title: "Συμφωνώ με την επισήμανση και κρατάω την ανάρτηση αμετάβλητη"
-        defer_flag: "Αναβολή"
+        agree_flag_hide_post: "Αποδοχή και απόκρυψη ανάρτησης"
+        agree_flag_hide_post_title: "Κρύψε αυτή την ανάρτηση και αυτόματα στείλε στον χρήστη ένα μήνυμα που θα τους προτρέπει να το επεξεργαστούν."
+        agree_flag_restore_post: "Αποδοχή και επαναφορά ανάρτησης"
+        agree_flag_restore_post_title: "Επαναφορά της ανάρτησης ώστε όλοι οι χρήστες να μπορούν να το δουν."
+        agree_flag: "Αποδοχή και διατήρηση της ανάρτησης"
+        agree_flag_title: "Αποδοχή επισήμανσης και διατήρηση της ανάρτησης αμετάβλητης."
+        defer_flag: "Αγνόηση"
         defer_flag_title: "Αφαίρεσε αυτή την επισήμανση. Δεν χρειάζεται να γίνει κάποια ενέργεια αυτή τη στιγμή"
         delete: "Διαγραφή"
         delete_title: "Διέγραψε την ανάρτηση στην οποία αναφέρεται αυτή η επισήμανση."
-        delete_post_defer_flag: "Διέγραψε την ανάρτηση και ανέβαλε την επισήμανση"
+        delete_post_defer_flag: "Διαγραφή ανάρτησης και αγνόηση επισήμανσης"
         delete_post_defer_flag_title: "Διέγραψε την ανάρτηση. Αν είναι η πρώτη στο νήμα, διέγραψε και αυτό"
-        delete_post_agree_flag: "Διέγραψε την ανάρτηση και συμφώνησε με την επισήμανση"
+        delete_post_agree_flag: "Διαγραφή ανάρτησης και αποδοχή επισήμανσης"
         delete_post_agree_flag_title: "Διέγραψε την ανάρτηση. Αν είναι η πρώτη στο νήμα, διέγραψε και αυτό"
         delete_flag_modal_title: "Διέγραψε και..."
         delete_spammer: "Διαγραφή ανεπιθύμητου χρήστη"
@@ -2407,7 +2421,7 @@ el:
         dispositions:
           agreed: "συμφώνησε"
           disagreed: "διαφώνησε"
-          deferred: "ανέβαλε"
+          deferred: "Αγνοήθηκε"
         flagged_by: "Επισημάνθηκε από"
         resolved_by: "Επιλύθηκε από"
         took_action: "Ενήργησε"
@@ -2421,27 +2435,18 @@ el:
         was_edited: "Η ανάρτηση έχει υποστεί επεξεργασία μετά την πρώτη επισήμανση"
         previous_flags_count: "Αυτό το νήμα έχει επισημανθεί ήδη {{count}} φορές"
         show_details: "Εμφάνιση λεπτομερειών επισήμανσης"
+        details: "λεπτομέρειες"
         flagged_topics:
           topic: "Νήμα"
           type: "Τύπος"
           users: "Χρήστες"
           last_flagged: "Τελευταίες Επισημάνσεις"
-        summary:
-          action_type_3:
-            one: "εκτός θέματος"
-            other: "εκτός θέματος x{{count}}"
-          action_type_4:
-            one: "ανάρμοστο"
-            other: "ανάρμοστο x{{count}}"
-          action_type_6:
-            one: "προσπαρμοσμένο"
-            other: "προσαρμοσμένο x{{count}}"
-          action_type_7:
-            one: "προσαρμοσμένο"
-            other: "προσαρμοσμένο x{{count}}"
-          action_type_8:
-            one: "ανεπιθύμητο"
-            other: "ανεπιθύμητο x{{count}}"
+        short_names:
+          off_topic: "εκτός θέματος"
+          inappropriate: "ακατάλληλο"
+          spam: "spam"
+          notify_user: "προσαρμοσμένο"
+          notify_moderators: "προσαρμοσμένο"
       groups:
         primary: "Κύρια ομάδα"
         no_primary: "(χωρίς κύρια ομάδα)"
@@ -2891,8 +2896,8 @@ el:
             change_category_settings: "αλλαγή ρυθμίσεων κατηγορίας"
             delete_category: "διαγραφή κατηγορίας"
             create_category: "δημιουργία κατηγορίας"
-            block_user: "αποκλεισμός χρήστη"
-            unblock_user: "κατάργηση αποκλεισμού χρήστη"
+            silence_user: "σίγαση χρήστη"
+            unsilence_user: "αναίρεση σίγασης"
             grant_admin: "χορήγηση διαχειριστή"
             revoke_admin: "ανάκληση διαχειριστή"
             grant_moderation: "χορήγηση συντονιστή"
@@ -2940,6 +2945,11 @@ el:
           roll_up:
             text: "Σύνοψη"
             title: "Δημιουργεί νέες εγγραφές για τον αποκλεισμό υποδικτύων αν υπάρχουν τουλάχιστον  'min_ban_entries_for_roll_up' εγγραφές."
+        search_logs:
+          title: "Αναζήτηση καταγραφών"
+          term: "Όρος"
+          searches: "Αναζητήσεις"
+          unique: "Μοναδικό"
         logster:
           title: "Error Logs"
       watched_words:
@@ -2987,7 +2997,7 @@ el:
           pending: "Εκκρεμή"
           staff: 'Συνεργάτες'
           suspended: 'Αποβλημένοι'
-          blocked: 'Αποκλεισμένο'
+          silenced: 'Σιγήθηκαν'
           suspect: 'Ύποπτο'
         approved: "Εγκεκριμένο;"
         approved_selected:
@@ -3008,7 +3018,7 @@ el:
           staff: "Συνεργάτες"
           admins: 'Διαχειριστές'
           moderators: 'Συντονιστές'
-          blocked: 'Αποκλεισμένοι Χρήστες'
+          silenced: 'Σιγημένοι Χρήστες'
           suspended: 'Αποβλημένοι Χρήστες'
           suspect: 'Ύποπτοι χρήστες'
         reject_successful:
@@ -3032,16 +3042,24 @@ el:
         suspend_message: "Μήνυμα Email"
         suspend_message_placeholder: "Προεραιτικά συμπληρώστε αναλυτική αιτιολόγηση για τον λόγο αποβολής και αυτή θα σταλεί με email στον χρήστη."
         suspended_by: "Αποβλήθηκε από τον/την"
+        silence_reason: "Αιτία"
+        silenced_by: "Σίγαση Από"
+        silence_modal_title: "Σίγαση Χρήστη"
+        silence_duration: "Για πόσο χρονικό διάστημα ο χρήστης θα σιωπηθεί;"
+        silence_reason_label: "Γιατί εσείς σιωπάτε αυτό τον χρήστη;"
+        silence_reason_placeholder: "Αιτία σιώπησης"
+        silence_message: "Μήνυμα email"
+        silence_message_placeholder: "(αφήστε κενό για να στείλετε το προκαθορισμένο μήνυμα)"
         suspended_until: "(έως %{until})"
         cant_suspend: "Ο χρήστης αυτός δεν μπορεί να αποβληθεί."
         delete_all_posts: "Σβήσε όλες τις αναρτήσεις"
         delete_all_posts_confirm_MF: "Πρόκειται να διαγράψεις {POSTS, plural, one {1 ανάρτηση} other {# αναρτήσεις}} and {TOPICS, plural, one {1 νήμα} other {# νήματα}}. Είσαι σίγουρος;"
-        suspend: "Αποβολή"
-        unsuspend: "Αναίρεση αποβολής"
-        suspended: "Αποβλημένος;"
+        silence: "Σίγαση"
+        unsilence: "Αναίρεση Σίγασης"
+        silenced: "Σε Σιγή;"
         moderator: "Συντονιστής;"
         admin: "Διαχειριστής;"
-        blocked: "Αποκλείστηκε; "
+        suspended: "Αποβλημένος;"
         staged: "Στάδιο Μετάβασης;"
         show_admin_profile: "Διαχείριση"
         refresh_browsers: "Να ανανεωθεί αναγκαστικά η σελίδα"
@@ -3057,8 +3075,8 @@ el:
         grant_admin_confirm: "Έχουμε στείλει ένα email για να επιβεβαιώσουμε τον νέο διαχειριστή. Παρακαλούμε ανοίξτε το και ακολουθήστε τις οδηγίες."
         revoke_moderation: 'Ανάκληση δικαιωμάτων συντονιστή'
         grant_moderation: 'Απόδοση δικαιωμάτων συντονιστή'
-        unblock: 'Αναίρεση αποκλεισμού'
-        block: 'Αποκλεισμός'
+        unsuspend: 'Αναίρεση αποβολής'
+        suspend: 'Αποβολή'
         reputation: Φήμη
         permissions: Δικαιώματα
         activity: Δραστηριότητα
@@ -3105,10 +3123,10 @@ el:
         activate_failed: "Παρουσιάστηκε πρόβλημα κατά την ενεργοποίηση του χρήστη."
         deactivate_account: "Απενεργοποίηση Λογαριασμού"
         deactivate_failed: "Παρουσιάστηκε πρόβλημα κατά την απενεργοποίηση του χρήστη."
-        unblock_failed: 'Παρουσιάστηκε πρόβλημα κατά την άρση αποκλεισμού του χρήστη.'
-        block_failed: 'Παρουσιάστηκε πρόβλημα κατά τον αποκλεισμό του χρήστη.'
-        block_confirm: 'Είσαι βέβαιος πως θέλεις να αποκλείσεις αυτόν τον χρήστη; Δε θα μπορεί να δημιουργήσει καινούρια νήματα ή αναρτήσεις.'
-        block_accept: 'Ναι, αποκλεισμός του χρήστη'
+        unsilence_failed: 'Υπήρξε ένα πρόβλημα κατά την αναίρεση της σίγασης του χρήστη.'
+        silence_failed: 'Υπήρξε ένα πρόβλημα κατά την σίγαση του χρήστη.'
+        silence_confirm: 'Θέλετε σίγουρα να σιγήσετε τον χρήστη; Δεν θα μπορεί να δημιουργήσει νέα νήματα ή αναρτήσεις.'
+        silence_accept: 'Ναι, σίγαση του χρήστη'
         bounce_score: "Bounce Score"
         reset_bounce_score:
           label: "Επαναφορά"
@@ -3116,7 +3134,7 @@ el:
         visit_profile: "Επισκεφθείτε <a href='%{url}'>την σελίδα προτιμήσεων του χρήστη</a> για να επεξεργαστείτε το προφίλ του"
         deactivate_explanation: "Ένας απενεργοποιημένος χρήστης πρέπει να επιβεβαιώσει ξανά τη διεύθυνση του ηλεκτρονικού του ταχυδρομείου."
         suspended_explanation: "Ένας χρήστης που έχει αποβληθεί δεν γίνεται να συνδεθεί."
-        block_explanation: "Ένας απενεργοποιημένος χρήστης δεν μπορεί να αναρτήσει ή να δημιουργεί νήματα"
+        silence_explanation: "Ένας χρήστης σε σιγή δεν μπορεί να αναρτήσει ή να ξεκινήσει νήματα."
         staged_explanation: "Ένας χρήστης σε στάδιο μετάβασης μπορεί να κάνει αναρτήσεις μέσω email και σε συγκεκριμένα θέματα. "
         bounce_score_explanation:
           none: "Κανένα επιστρεφόμενο μήνυμα δεν ελήφθη από αυτή τη διεύθυνση email."
@@ -3234,6 +3252,7 @@ el:
           developer: 'Developer'
           embedding: "Ενσωμάτωση"
           legal: "Νομικά"
+          api: 'API'
           user_api: 'User API'
           uncategorized: 'Άλλα'
           backups: "Αντίγραφα ασφαλέιας"

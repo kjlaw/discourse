@@ -8,7 +8,8 @@ import { emojiSearch, isSkinTonableEmoji } from 'pretty-text/emoji';
 import { emojiUrlFor } from 'discourse/lib/text';
 import { getRegister } from 'discourse-common/lib/get-owner';
 import { findRawTemplate } from 'discourse/lib/raw-templates';
-import { determinePostReplaceSelection } from 'discourse/lib/utilities';
+import { determinePostReplaceSelection, clipboardData } from 'discourse/lib/utilities';
+import toMarkdown from 'discourse/lib/to-markdown';
 import deprecated from 'discourse-common/lib/deprecated';
 
 // Our head can be a static string or a function that returns a string
@@ -101,24 +102,6 @@ class Toolbar {
       perform: e => e.applyList(i => !i ? "1. " : `${parseInt(i) + 1}. `, 'list_item')
     });
 
-    this.addButton({
-      id: 'heading',
-      group: 'extras',
-      icon: 'header',
-      label: getButtonLabel('composer.heading_label', 'H'),
-      shortcut: 'Alt+1',
-      perform: e => e.applyList('## ', 'heading_text')
-    });
-
-    this.addButton({
-      id: 'rule',
-      group: 'extras',
-      icon: 'minus',
-      shortcut: 'Alt+R',
-      title: 'composer.hr_title',
-      perform: e => e.addText("\n\n----------\n")
-    });
-
     if (site.mobileView) {
       this.groups.push({group: 'mobileExtras', buttons: []});
     }
@@ -139,7 +122,8 @@ class Toolbar {
       icon: button.label ? null : button.icon || button.id,
       action: button.action || 'toolbarButton',
       perform: button.perform || function() { },
-      trimLeading: button.trimLeading
+      trimLeading: button.trimLeading,
+      popupMenu: button.popupMenu || false
     };
 
     if (button.sendAction) {
@@ -233,7 +217,7 @@ export default Ember.Component.extend({
     const shortcuts = this.get('toolbar.shortcuts');
 
     // for some reason I am having trouble bubbling this so hack it in
-    mouseTrap.bind(['ctrl+shift+s','command+shift+s'], (event) =>{
+    mouseTrap.bind(['ctrl+alt+f'], (event) =>{
       this.appEvents.trigger('header:keyboard-trigger', {type: 'search', event});
       return true;
     });
@@ -456,7 +440,9 @@ export default Ember.Component.extend({
       }
 
       if (operation !== OP.ADDED &&
-          (l.slice(0, hlen) === hval && tlen === 0 || l.slice(-tlen) === tail)) {
+          (l.slice(0, hlen) === hval && tlen === 0 ||
+          (tail.length && l.slice(-tlen) === tail))) {
+
         operation = OP.REMOVED;
         if (tlen === 0) {
           const result = l.slice(hlen);
@@ -518,6 +504,7 @@ export default Ember.Component.extend({
           tlen,
           opts
         );
+
         this.set('value', `${pre}${contents}${post}`);
         if (lines.length === 1 && tlen > 0) {
           this._selectText(sel.start + hlen, sel.value.length);
@@ -629,6 +616,75 @@ export default Ember.Component.extend({
     $textarea.prop("selectionStart", insert.length);
     $textarea.prop("selectionEnd", insert.length);
     Ember.run.scheduleOnce("afterRender", () => $textarea.focus());
+  },
+
+  _extractTable(text) {
+    if (text.endsWith("\n")) {
+      text = text.substring(0, text.length - 1);
+    }
+
+    let rows = text.split("\n");
+
+    if (rows.length > 1) {
+      const columns = rows.map(r => r.split("\t").length);
+      const isTable = columns.reduce((a, b) => a && columns[0] === b && b > 1);
+
+      if (isTable) {
+        const splitterRow = [...Array(columns[0])].map(() => "---").join("\t");
+        rows.splice(1, 0, splitterRow);
+
+        return "|" + rows.map(r => r.split("\t").join("|")).join("|\n|") + "|\n";
+      }
+    }
+    return null;
+  },
+
+  _pasteMarkdown(text) {
+    const lineVal = this._getSelected(null, {lineVal: true}).lineVal;
+
+    if(lineVal) { // inline pasting
+      text = text.replace(/^#+/, "").trim();
+      text = (lineVal.search(/\s$/) === lineVal.length - 1) ? text : ` ${text}`;
+    }
+
+    this.appEvents.trigger('composer:insert-text', text);
+  },
+
+  paste(e) {
+    if (!$(".d-editor-input").is(":focus")) {
+      return;
+    }
+
+    const isComposer = $("#reply-control .d-editor-input").is(":focus");
+    const { clipboard, canPasteHtml } = clipboardData(e, isComposer);
+
+    let plainText = clipboard.getData("text/plain");
+    let html = clipboard.getData("text/html");
+    let handled = false;
+
+    if (plainText) {
+      plainText = plainText.trim().replace(/\r/g,"");
+      const table = this._extractTable(plainText);
+      if (table) {
+        this.appEvents.trigger('composer:insert-text', table);
+        handled = true;
+      } else if (html && html.includes("urn:schemas-microsoft-com:office:word")) {
+        html = ""; // use plain text data for microsoft word
+      }
+    }
+
+    if (canPasteHtml && !handled) {
+      const markdown = toMarkdown(html);
+
+      if (!plainText || plainText.length < markdown.length) {
+        this._pasteMarkdown(markdown);
+        handled = true;
+      }
+    }
+
+    if (handled) {
+      e.preventDefault();
+    }
   },
 
   actions: {

@@ -101,7 +101,6 @@ sq:
           other: "%{count} vjet më vonë"
       previous_month: 'Muaji i kaluar'
       next_month: 'Muaji i ardhshëm'
-      placeholder: Zgjidh një datë
     share:
       topic: 'shpërnda një lidhje tek kjo temë'
       post: 'postim #%{postNumber}'
@@ -492,7 +491,6 @@ sq:
       admin: "{{user}} është admin"
       moderator_tooltip: "Ky anëtar është moderator"
       admin_tooltip: "Ky anëtar është administrator"
-      blocked_tooltip: "Ky anëtar është i bllokuar"
       suspended_notice: "Ky anëtar është përjashtuar deri më {{date}}."
       suspended_reason: "Arsyeja:"
       github_profile: "Github"
@@ -741,12 +739,6 @@ sq:
         post_count:
           one: "postim i krijuar"
           other: "postime të krijuara"
-        likes_given:
-          one: "<i class='fa fa-heart'></i> dhënë"
-          other: "<i class='fa fa-heart'></i> dhënë"
-        likes_received:
-          one: "<i class='fa fa-heart'></i> marrë"
-          other: "<i class='fa fa-heart'></i> marrë"
         days_visited:
           one: "ditë që viziton faqen"
           other: "ditë që viziton faqen"
@@ -836,7 +828,6 @@ sq:
     first_post: Postimi i parë
     mute: Hesht
     unmute: Çaktivizo heshtjen
-    last_post: Postimi i fundit
     last_reply_lowercase: përgjigja e fundit
     replies_lowercase:
       one: përgjigje
@@ -1030,12 +1021,7 @@ sq:
       olist_title: "Listë e numëruar"
       ulist_title: "Listë me pika"
       list_item: "Element liste"
-      heading_label: "T"
-      heading_title: "Titull"
-      heading_text: "Titull"
-      hr_title: "Vizë ndarëse horizontale"
       help: "Ndihmë mbi Markdown"
-      toggler: "trego ose fshih panelin e shkrimit"
       modal_ok: "OK"
       modal_cancel: "Anulo"
       cant_send_pm: "Na vjen keq, nuk mund t'i dërgoni mesazh privat anëtarit %{username}."
@@ -1101,7 +1087,6 @@ sq:
       no_more_results: "Nuk gjetëm rezultate të tjera. "
       searching: "Duke kërkuar..."
       post_format: "#{{post_number}} nga {{username}}"
-      results_page: "Rezultatet e kërkimit"
       context:
         user: "Kërko postime nga @{{username}}"
         category: "Kërkoni kategorinë #{{category}}"
@@ -1111,14 +1096,10 @@ sq:
         title: Kërkim i avancuar
         posted_by:
           label: Postuar nga
-        in_category:
-          label: Në kategorinë
         in_group:
           label: Në grupin
         with_badge:
           label: Me stemën
-        with_tags:
-          label: Me etiketat
     hamburger_menu: "shko tek një kategori ose një listë e re temash"
     new_item: "e re"
     go_back: 'kthehu mbrapa'
@@ -1418,7 +1399,6 @@ sq:
     post:
       reply: "<i class='fa fa-mail-forward'></i> {{replyAvatar}} {{usernameLink}}"
       reply_topic: "<i class='fa fa-mail-forward'></i> {{link}}"
-      edit: "Duke modifikuar {{link}} {{replyAvatar}} {{username}}"
       edit_reason: "Arsyeja:"
       post_number: "postimi {{number}}"
       last_edited_on: "redaktimi i fundit u krye më"
@@ -1496,9 +1476,6 @@ sq:
         change_owner: "Ndrysho zotëruesin"
       actions:
         flag: 'Sinjalizoni'
-        defer_flags:
-          one: "Shty sinjalizimin"
-          other: "Shty sinjalizimet"
         undo:
           off_topic: "Anulo sinjalizimin"
           spam: "Anulo sinjalizimin"
@@ -1939,9 +1916,7 @@ sq:
       selector_no_tags: "asnjë etiketë"
       changed: "etiketat e ndryshuara:"
       tags: "Etiketat"
-      choose_for_topic: "zgjidhni etiketat fakultative për këtë temë"
       delete_tag: "Fshi etiketën"
-      delete_confirm: "Jeni të sigurtë që doni të fshini këtë etiketë?"
       rename_tag: "Riemëro etiketën"
       rename_instructions: "Zgjidhni një emër të ri për këtë etiketë"
       sort_by: "Rendit sipas:"
@@ -2031,7 +2006,6 @@ sq:
         no_problems: "Nuk u gjet asnjë gabim."
         moderators: 'Moderatorët:'
         admins: 'Administratorët:'
-        blocked: 'Bllokuar:'
         suspended: 'Përjashtuar:'
         private_messages_short: "Msgs"
         private_messages_title: "Mesazhet"
@@ -2061,24 +2035,12 @@ sq:
         by: "nga"
       flags:
         title: "Sinjalizimet"
-        old: "Të Vjetra"
-        active: "Aktive"
         agree: "Pranoj"
         agree_title: "Konfirmo këtë sinjalizim si të vlefshëm do korrekt"
-        agree_flag_modal_title: "Prano dhe..."
-        agree_flag_hide_post: "Dakord (fshi postimin + ço MP)"
-        agree_flag_hide_post_title: "Fshihe këtë postim automatikisht dhe çoi postuesit një mesazh që t'a redaktojë postimin"
-        agree_flag_restore_post: "Dakord (rikthe postimin)"
-        agree_flag_restore_post_title: "Rikthe këtë postim"
-        agree_flag: "Bi dakord me sinjalizimin"
-        agree_flag_title: "Dakord me sinjalizimin dhe lini postimin të pandryshuar"
-        defer_flag: "Shty"
         defer_flag_title: "Hiqe këtë sinjalizim; nuk ka nevojë për veprime në këtë moment. "
         delete: "Fshij"
         delete_title: "Fshini postimin e sinjalizuar."
-        delete_post_defer_flag: "Fshini postimin dhe shtyni për më vonë sinjalizimin"
         delete_post_defer_flag_title: "Fshini postimin; në qoftë postim i parë, fshihet tema"
-        delete_post_agree_flag: "Fshini postimin dhe bini dakord me sinjalizimin"
         delete_post_agree_flag_title: "Fshini postimin; në qoftë postim i parë, fshihet tema"
         delete_flag_modal_title: "Fshi dhe..."
         delete_spammer: "Elimino Spammer"
@@ -2093,34 +2055,16 @@ sq:
         dispositions:
           agreed: "dakort"
           disagreed: "nuk ishte dakord"
-          deferred: "shtyu"
         flagged_by: "Sinjalizuar nga"
         resolved_by: "Zgjidhur nga"
         took_action: "Mori veprimin"
         system: "Sistemi"
         error: "Pati një gabim"
         reply_message: "Përgjigju"
-        no_results: "Nuk ka sinjalizime."
         topic_flagged: "Kjo <strong>temë</strong> është sinjalizuar."
         visit_topic: "Vizito temën për të vepruar"
         was_edited: "Postimi është redaktuar pas sinjalizimit të parë"
         previous_flags_count: "Ky postim është sinjalizuar {{count}} herë."
-        summary:
-          action_type_3:
-            one: "jashtë teme"
-            other: "jashtë teme x{{count}}"
-          action_type_4:
-            one: "e papërshtatshme"
-            other: "e papërshtatshme x{{count}}"
-          action_type_6:
-            one: "tjetër"
-            other: "tjetër x{{count}}"
-          action_type_7:
-            one: "tjetër"
-            other: "tjetër x{{count}}"
-          action_type_8:
-            one: "spam"
-            other: "spam x{{count}}"
       groups:
         primary: "Grupi Parësor"
         no_primary: "(asnjë grup parësor)"
@@ -2365,8 +2309,6 @@ sq:
             change_category_settings: "ndrysho parametrat e kategorisë"
             delete_category: "fshi kategorinë"
             create_category: "krijo një kategori"
-            block_user: "blloko anëtarin"
-            unblock_user: "çblloko anëtarin"
             grant_admin: "jepi rolin admin"
             revoke_admin: "hiq rolin admin"
             grant_moderation: "jepi rolin moderator"
@@ -2416,7 +2358,6 @@ sq:
           pending: "Pezulluar"
           staff: 'Stafi'
           suspended: 'Të pezulluar'
-          blocked: 'Të bllokuar'
           suspect: 'Të dyshimtë'
         approved: "Aprovuar?"
         approved_selected:
@@ -2437,7 +2378,6 @@ sq:
           staff: "Stafi"
           admins: 'Administratorë'
           moderators: 'Moderatorë'
-          blocked: 'Përdorues të Bllokuar'
           suspended: 'Përdorues të Pezulluar'
           suspect: 'Përdorues të Dyshimtë'
         reject_successful:
@@ -2454,17 +2394,13 @@ sq:
         suspend_failed: "Pati një problem gjatë pezullimit të anëtarit. {{error}}"
         unsuspend_failed: "Pati një problem gjatë çpezullimit të anëtarit. {{error}}"
         suspend_duration: "Për sa kohë do të pezullohet anëtari?"
-        suspend_duration_units: "(ditë)"
         suspend_reason_label: "Pse po e pezulloni? Ky tekst <b>do të shfaqet publikisht</b> në profilin e këtij anëtari, dhe do t'i shfaqet vetë anëtarit si mesazh kur ky i fundit do tentojë të futet në faqe. Shkruani shkurt."
         suspend_reason: "Arsye"
         suspended_by: "Përjashtuar nga:"
         delete_all_posts: "Fshi gjithë postimet"
-        suspend: "Pezullo"
-        unsuspend: "Çpezullo"
-        suspended: "Pezulluar?"
         moderator: "Moderator?"
         admin: "Admin?"
-        blocked: "Bllokuar?"
+        suspended: "Pezulluar?"
         staged: "Staged?"
         show_admin_profile: "Admin"
         refresh_browsers: "Forco rifreskimin e shfletuesit"
@@ -2478,8 +2414,8 @@ sq:
         grant_admin: 'Jepi rolin admin'
         revoke_moderation: 'Hiqi rolin moderator'
         grant_moderation: 'Jepi rolin moderator'
-        unblock: 'Çblloko'
-        block: 'Blloko'
+        unsuspend: 'Çpezullo'
+        suspend: 'Pezullo'
         reputation: Reputacioni
         permissions: Të drejtat
         activity: Aktiviteti
@@ -2513,17 +2449,12 @@ sq:
         activate_failed: "Pati një problem gjatë aktivizimit të anëtarit."
         deactivate_account: "Çaktivizo llogarinë"
         deactivate_failed: "Pati një problem gjatë çaktivizimit të anëtarit."
-        unblock_failed: 'Pati një problem gjatë çbllokimit të anëtarit.'
-        block_failed: 'Pati një problem gjatë bllokimit të anëtarit.'
-        block_confirm: 'A jeni të sigurtë që doni të bllokoni këtë anëtar? Anëtari nuk do të ketë më të drejtën të krijojë postime ose tema të reja.'
-        block_accept: 'Po, blloko anëtarin'
         bounce_score: "Rezultati \"bounce\""
         reset_bounce_score:
           label: "Rivendos"
           title: "Rivendos në 0 rezultatin \"bounce\""
         deactivate_explanation: "Një anëtar i çaktivizuar duhet të ri-verifikojë adresën email."
         suspended_explanation: "Një anëtar i pezulluar nuk ka të drejtë të identifikohet. "
-        block_explanation: "Një anëtar i bllokuar nuk mund të përgjigjet apo të hapë tema të reja. "
         staged_explanation: "Një anëtar \"staged\" mund të postojë vetëm me email në tema të caktuara. "
         bounce_score_explanation:
           none: "Nuk ka patur mesazhe email të kthyera për këtë anëtar."

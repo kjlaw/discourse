@@ -33,8 +33,20 @@ class Topic < ActiveRecord::Base
 
   attr_accessor :allowed_user_ids, :tags_changed
 
+  DiscourseEvent.on(:site_setting_saved) do |site_setting|
+    if site_setting.name.to_s == "slug_generation_method" && site_setting.saved_change_to_value?
+      Scheduler::Defer.later("Null topic slug") do
+        Topic.update_all(slug: nil)
+      end
+    end
+  end
+
   def self.max_sort_order
     @max_sort_order ||= (2**31) - 1
+  end
+
+  def self.max_fancy_title_length
+    400
   end
 
   def featured_users
@@ -84,7 +96,7 @@ class Topic < ActiveRecord::Base
               (!t.user_id || !t.user.staff?)
             }
 
-  validates :featured_link, allow_nil: true, format: URI::regexp(%w(http https))
+  validates :featured_link, allow_nil: true, url: true
   validate if: :featured_link do
     errors.add(:featured_link, :invalid_category) unless !featured_link_changed? ||
       Guardian.new.can_edit_featured_link?(category_id)
@@ -92,7 +104,7 @@ class Topic < ActiveRecord::Base
 
   before_validation do
     self.title = TextCleaner.clean_title(TextSentinel.title_sentinel(title).text) if errors[:title].empty?
-    self.featured_link.strip! if self.featured_link
+    self.featured_link = self.featured_link.strip.presence if self.featured_link
   end
 
   belongs_to :category
@@ -304,18 +316,18 @@ class Topic < ActiveRecord::Base
   def self.fancy_title(title)
     escaped = ERB::Util.html_escape(title)
     return unless escaped
-    Emoji.unicode_unescape(HtmlPrettify.render(escaped))
+    fancy_title = Emoji.unicode_unescape(HtmlPrettify.render(escaped))
+    fancy_title.length > Topic.max_fancy_title_length ? title : fancy_title
   end
 
   def fancy_title
     return ERB::Util.html_escape(title) unless SiteSetting.title_fancy_entities?
 
     unless fancy_title = read_attribute(:fancy_title)
-
       fancy_title = Topic.fancy_title(title)
       write_attribute(:fancy_title, fancy_title)
 
-      unless new_record?
+      if !new_record? && !Discourse.readonly_mode?
         # make sure data is set in table, this also allows us to change algorithm
         # by simply nulling this column
         exec_sql("UPDATE topics SET fancy_title = :fancy_title where id = :id", id: self.id, fancy_title: fancy_title)
@@ -641,7 +653,7 @@ SQL
 
       Category.where(id: new_category.id).update_all("topic_count = topic_count + 1")
       CategoryFeaturedTopic.feature_topics_for(old_category) unless @import_mode
-      CategoryFeaturedTopic.feature_topics_for(new_category) unless @import_mode || old_category.id == new_category.id
+      CategoryFeaturedTopic.feature_topics_for(new_category) unless @import_mode || old_category.try(:id) == new_category.id
     end
 
     true
@@ -709,14 +721,21 @@ SQL
   end
 
   def remove_allowed_user(removed_by, username)
-    if user = User.find_by(username: username)
+    user = username.is_a?(User) ? username : User.find_by(username: username)
+
+    if user
       topic_user = topic_allowed_users.find_by(user_id: user.id)
+
       if topic_user
         topic_user.destroy
-        # we can not remove ourselves cause then we will end up adding
-        # ourselves in add_small_action
-        removed_by = Discourse.system_user if user.id == removed_by&.id
-        add_small_action(removed_by, "removed_user", user.username)
+
+        if user.id == removed_by&.id
+          removed_by = Discourse.system_user
+          add_small_action(removed_by, "user_left", user.username)
+        else
+          add_small_action(removed_by, "removed_user", user.username)
+        end
+
         return true
       end
     end
@@ -1021,10 +1040,9 @@ SQL
   #  * `nil` to delete the topic's status update.
   # Options:
   #  * by_user: User who is setting the topic's status update.
-  #  * timezone_offset: (Integer) offset from UTC in minutes of the given argument.
   #  * based_on_last_post: True if time should be based on timestamp of the last post.
   #  * category_id: Category that the update will apply to.
-  def set_or_create_timer(status_type, time, by_user: nil, timezone_offset: 0, based_on_last_post: false, category_id: SiteSetting.uncategorized_category_id)
+  def set_or_create_timer(status_type, time, by_user: nil, based_on_last_post: false, category_id: SiteSetting.uncategorized_category_id)
     return delete_topic_timer(status_type, by_user: by_user) if time.blank?
 
     public_topic_timer = !!TopicTimer.public_types[status_type]
@@ -1056,7 +1074,6 @@ SQL
       if is_timestamp && time.include?("-") && timestamp = utc.parse(time)
         # a timestamp in client's time zone, like "2015-5-27 12:00"
         topic_timer.execute_at = timestamp
-        topic_timer.execute_at += timezone_offset * 60 if timezone_offset
         topic_timer.errors.add(:execute_at, :invalid) if timestamp < now
       else
         num_hours = time.to_f
@@ -1255,6 +1272,10 @@ SQL
     result.ntuples != 0
   end
 
+  def featured_link_root_domain
+    MiniSuffix.domain(URI.parse(self.featured_link).hostname)
+  end
+
   private
 
   def update_category_topic_count_by(num)
@@ -1277,63 +1298,58 @@ end
 #
 # Table name: topics
 #
-#  id                            :integer          not null, primary key
-#  title                         :string           not null
-#  last_posted_at                :datetime
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
-#  views                         :integer          default(0), not null
-#  posts_count                   :integer          default(0), not null
-#  user_id                       :integer
-#  last_post_user_id             :integer          not null
-#  reply_count                   :integer          default(0), not null
-#  featured_user1_id             :integer
-#  featured_user2_id             :integer
-#  featured_user3_id             :integer
-#  avg_time                      :integer
-#  deleted_at                    :datetime
-#  highest_post_number           :integer          default(0), not null
-#  image_url                     :string
-#  like_count                    :integer          default(0), not null
-#  incoming_link_count           :integer          default(0), not null
-#  category_id                   :integer
-#  visible                       :boolean          default(TRUE), not null
-#  moderator_posts_count         :integer          default(0), not null
-#  closed                        :boolean          default(FALSE), not null
-#  archived                      :boolean          default(FALSE), not null
-#  bumped_at                     :datetime         not null
-#  has_summary                   :boolean          default(FALSE), not null
-#  vote_count                    :integer          default(0), not null
-#  archetype                     :string           default("regular"), not null
-#  featured_user4_id             :integer
-#  notify_moderators_count       :integer          default(0), not null
-#  spam_count                    :integer          default(0), not null
-#  pinned_at                     :datetime
-#  score                         :float
-#  percent_rank                  :float            default(1.0), not null
-#  subtype                       :string
-#  slug                          :string
-#  auto_close_at                 :datetime
-#  auto_close_user_id            :integer
-#  auto_close_started_at         :datetime
-#  deleted_by_id                 :integer
-#  participant_count             :integer          default(1)
-#  word_count                    :integer
-#  excerpt                       :string(1000)
-#  pinned_globally               :boolean          default(FALSE), not null
-#  auto_close_based_on_last_post :boolean          default(FALSE)
-#  auto_close_hours              :float
-#  pinned_until                  :datetime
-#  fancy_title                   :string(400)
-#  highest_staff_post_number     :integer          default(0), not null
-#  featured_link                 :string
+#  id                        :integer          not null, primary key
+#  title                     :string(255)      not null
+#  last_posted_at            :datetime
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  views                     :integer          default(0), not null
+#  posts_count               :integer          default(0), not null
+#  user_id                   :integer
+#  last_post_user_id         :integer          not null
+#  reply_count               :integer          default(0), not null
+#  featured_user1_id         :integer
+#  featured_user2_id         :integer
+#  featured_user3_id         :integer
+#  avg_time                  :integer
+#  deleted_at                :datetime
+#  highest_post_number       :integer          default(0), not null
+#  image_url                 :string(255)
+#  like_count                :integer          default(0), not null
+#  incoming_link_count       :integer          default(0), not null
+#  category_id               :integer
+#  visible                   :boolean          default(TRUE), not null
+#  moderator_posts_count     :integer          default(0), not null
+#  closed                    :boolean          default(FALSE), not null
+#  archived                  :boolean          default(FALSE), not null
+#  bumped_at                 :datetime         not null
+#  has_summary               :boolean          default(FALSE), not null
+#  vote_count                :integer          default(0), not null
+#  archetype                 :string(255)      default("regular"), not null
+#  featured_user4_id         :integer
+#  notify_moderators_count   :integer          default(0), not null
+#  spam_count                :integer          default(0), not null
+#  pinned_at                 :datetime
+#  score                     :float
+#  percent_rank              :float            default(1.0), not null
+#  subtype                   :string(255)
+#  slug                      :string(255)
+#  deleted_by_id             :integer
+#  participant_count         :integer          default(1)
+#  word_count                :integer
+#  excerpt                   :string(1000)
+#  pinned_globally           :boolean          default(FALSE), not null
+#  pinned_until              :datetime
+#  fancy_title               :string(400)
+#  highest_staff_post_number :integer          default(0), not null
+#  featured_link             :string
 #
 # Indexes
 #
 #  idx_topics_front_page                   (deleted_at,visible,archetype,category_id,id)
 #  idx_topics_user_id_deleted_at           (user_id)
 #  idxtopicslug                            (slug)
-#  index_topics_on_bumped_at               (bumped_at)
+#  index_forum_threads_on_bumped_at        (bumped_at)
 #  index_topics_on_created_at_and_visible  (created_at,visible)
 #  index_topics_on_id_and_deleted_at       (id,deleted_at)
 #  index_topics_on_lower_title             (lower((title)::text))

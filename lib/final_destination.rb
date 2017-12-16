@@ -1,10 +1,30 @@
-require "socket"
-require "ipaddr"
+require 'socket'
+require 'ipaddr'
 require 'excon'
 require 'rate_limiter'
+require 'url_helper'
 
 # Determine the final endpoint for a Web URI, following redirects
 class FinalDestination
+
+  def self.clear_https_cache!(domain)
+    key = redis_https_key(domain)
+    $redis.without_namespace.del(key)
+  end
+
+  def self.cache_https_domain(domain)
+    key = redis_https_key(domain)
+    $redis.without_namespace.setex(key, "1", 1.day.to_i).present?
+  end
+
+  def self.is_https_domain?(domain)
+    key = redis_https_key(domain)
+    $redis.without_namespace.get(key).present?
+  end
+
+  def self.redis_https_key(domain)
+    "HTTPS_DOMAIN_#{domain}"
+  end
 
   attr_reader :status, :cookie, :status_code
 
@@ -21,9 +41,7 @@ class FinalDestination
     @opts[:max_redirects] ||= 5
     @opts[:lookup_ip] ||= lambda do |host|
       begin
-        IPSocket::getaddress(host)
-      rescue SocketError
-        nil
+        FinalDestination.lookup_ip(host)
       end
     end
     @ignored = [Discourse.base_url_no_prefix] + (@opts[:ignore_redirects] || [])
@@ -31,6 +49,8 @@ class FinalDestination
     @status = :ready
     @http_verb = @force_get_hosts.any? { |host| hostname_matches?(host) } ? :get : :head
     @cookie = nil
+    @limited_ips = []
+    @verbose = @opts[:verbose] || false
   end
 
   def self.connection_timeout
@@ -44,7 +64,7 @@ class FinalDestination
   def request_headers
     result = {
       "User-Agent" => "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-      "Accept" => "text/html",
+      "Accept" => "*/*",
       "Host" => @uri.hostname
     }
 
@@ -57,17 +77,19 @@ class FinalDestination
     Net::HTTP.start(@uri.host, @uri.port, use_ssl: @uri.is_a?(URI::HTTPS)) do |http|
       http.open_timeout = FinalDestination.connection_timeout
       http.read_timeout = FinalDestination.connection_timeout
-
-      request = Net::HTTP::Get.new(@uri.request_uri, headers)
-      http.request(request) do |response|
-        return response
-      end
+      http.request_get(@uri.request_uri, headers)
     end
   end
 
   def resolve
+    if @uri && @uri.port == 80 && FinalDestination.is_https_domain?(@uri.hostname)
+      @uri.scheme = "https"
+      @uri = URI(@uri.to_s)
+    end
+
     if @limit < 0
       @status = :too_many_redirects
+      log(:warn, "FinalDestination could not resolve URL (too many redirects): #{@uri}") if @verbose
       return nil
     end
 
@@ -78,7 +100,11 @@ class FinalDestination
       end
     end
 
-    return nil unless validate_uri
+    unless validate_uri
+      log(:warn, "FinalDestination could not resolve URL (invalid URI): #{@uri}") if @verbose
+      return nil
+    end
+
     headers = request_headers
     response = Excon.public_send(@http_verb,
       @uri.to_s,
@@ -95,8 +121,8 @@ class FinalDestination
     when 200
       @status = :resolved
       return @uri
-    when 405, 409, 501
-      get_response = small_get(headers)
+    when 405, 406, 409, 501
+      get_response = small_get(request_headers)
 
       response_status = get_response.code.to_i
       if response_status == 200
@@ -132,9 +158,17 @@ class FinalDestination
     end
 
     if location
+      old_port = @uri.port
+
       location = "#{@uri.scheme}://#{@uri.host}#{location}" if location[0] == "/"
       @uri = URI(location) rescue nil
       @limit -= 1
+
+      # https redirect, so just cache that whole new domain is https
+      if old_port == 80 && @uri.port == 443 && (URI::HTTPS === @uri)
+        FinalDestination.cache_https_domain(@uri.hostname)
+      end
+
       return resolve
     end
 
@@ -142,8 +176,10 @@ class FinalDestination
     @status = :failure
     @status_code = response.status
 
+    log(:warn, "FinalDestination could not resolve URL (status #{response.status}): #{@uri}") if @verbose
     nil
   rescue Excon::Errors::Timeout
+    log(:warn, "FinalDestination could not resolve URL (timeout): #{@uri}") if @verbose
     nil
   end
 
@@ -191,8 +227,9 @@ class FinalDestination
     end
 
     # Rate limit how often this IP can be crawled
-    unless @opts[:skip_rate_limit]
-      RateLimiter.new(nil, "crawl-destination-ip:#{address_s}", 100, 1.hour).performed!
+    if !@opts[:skip_rate_limit] && !@limited_ips.include?(address)
+      @limited_ips << address
+      RateLimiter.new(nil, "crawl-destination-ip:#{address_s}", 1000, 1.hour).performed!
     end
 
     true
@@ -201,7 +238,7 @@ class FinalDestination
   end
 
   def escape_url
-    TopicEmbed.escape_uri(
+    UrlHelper.escape_uri(
       CGI.unescapeHTML(@url),
       Regexp.new("[^#{URI::PATTERN::UNRESERVED}#{URI::PATTERN::RESERVED}#]")
     )
@@ -210,6 +247,16 @@ class FinalDestination
   def private_ranges
     FinalDestination.standard_private_ranges +
       SiteSetting.blacklist_ip_blocks.split('|').map { |r| IPAddr.new(r) rescue nil }.compact
+  end
+
+  def log(log_level, message)
+    # blacklist 404 on gravatar.com
+    return if @status_code == 404 && @uri.hostname["gravatar.com"]
+
+    Rails.logger.public_send(
+      log_level,
+      "#{RailsMultisite::ConnectionManagement.current_db}: #{message}"
+    )
   end
 
   def self.standard_private_ranges
@@ -223,7 +270,13 @@ class FinalDestination
   end
 
   def self.lookup_ip(host)
+    # TODO clean this up in the test suite, cause it is a mess
+    # if Rails.env == "test"
+    #   STDERR.puts "WARNING FinalDestination.lookup_ip was called with host: #{host}, this is network call that should be mocked"
+    # end
     IPSocket::getaddress(host)
+  rescue SocketError
+    nil
   end
 
 end

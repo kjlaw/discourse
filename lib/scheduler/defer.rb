@@ -8,6 +8,10 @@ module Scheduler
       @thread = nil
     end
 
+    def length
+      @queue.length
+    end
+
     def pause
       stop!
       @paused = true
@@ -74,20 +78,12 @@ module Scheduler
       end
     rescue => ex
       Discourse.handle_job_exception(ex, message: "Processing deferred code queue")
+    ensure
+      ActiveRecord::Base.connection_handler.clear_active_connections!
     end
   end
 
   class Defer
-
-    module Unicorn
-      def process_client(client)
-        Defer.pause
-        super(client)
-        Defer.do_all_work
-        Defer.resume
-      end
-    end
-
     extend Deferrable
     initialize
   end

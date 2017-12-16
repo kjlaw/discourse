@@ -47,7 +47,6 @@ pt:
         auto_generated_email_error: "Acontece quando o cabeçalho 'precedence' é definida como: 'list', 'junk' ou 'auto_reply', ou quando algum cabeçalho contém: 'auto-submitted', 'auto-replied' ou 'auto-generated'."
         no_body_detected_error: "Acontece quando nós não conseguimos extrair um corpo e não existiam anexos."
         inactive_user_error: "Acontece quando o remetente não está ativo."
-        blocked_user_error: "Acontece quando o remetente foi bloqueado."
         bad_destination_address: "Acontece quando nenhum dos endereços de e-mail nos campos Para/Cc/Bcc coincidem com um endereço de e-mail de 'A Receber' configurado."
         strangers_not_allowed_error: "Acontece quando um utilizador tentou criar um novo tópico numa categoria em que não é membro."
         insufficient_trust_level_error: "Acontece quando um utilizador tentou criar um novo tópico numa categoria em que não tem o nível de confiança necessário."
@@ -578,7 +577,6 @@ pt:
       email_title: 'O tópico "%{title}" requer a atenção do moderador'
       email_body: "%{link}\n\n%{message}"
   flagging:
-    you_must_edit: '<p>A sua mensagem foi sinalizada pela comunidade.Por favor <a href="/my/messages"> consulte as suas mensagens</a>.</p>'
     user_must_edit: '<p>Esta mensagem foi sinalizada pela comunidade e está temporariamente oculta.</p>'
   archetypes:
     regular:
@@ -829,7 +827,6 @@ pt:
     digest_logo_url: "A imagem de logo alternativa usada no topo dos emails de sumário do seu site. Deverá ser um rectângulo largo. Não deve ser uma imagem SVG. Se deixado vazio 'logo_url' será usado."
     logo_small_url: "A pequena imagem do logótipo no canto superior esquerdo do seu sítio, deve ter uma forma quadrada, visível quando arrastado para baixo. Quando deixado em branco, um glifo de início será exibido."
     favicon_url: "Um favicon para o seu sítio, veja http://en.wikipedia.org/wiki/Favicon, para trabalhar corretamente sobre um CDN deve ser um png"
-    mobile_logo_url: "A imagem do logótipo com posição fixa utilizada no canto superior esquerdo do seu sítio móvel deve ter uma forma quadrada. Quando deixado em branco, `logo_url` será utilizado. ex: http://exemplo.com/uploads/default/logo.png"
     apple_touch_icon_url: "Ícone usado para dispositivos Apple. Tamanho recomendado é 144px por 144px."
     notification_email: "Para: endereço de email usado ao enviar emails essenciais do sistema. O domínio especificado aqui deverá ter SPF, DKIM e registos PTR inversos configurados corretamente para a chegada do email."
     email_custom_headers: "A lista delimitada por barras verticais de cabeçalhos de e-mail personalizados"
@@ -854,19 +851,12 @@ pt:
     tl2_additional_likes_per_day_multiplier: "Aumentar limite de gostos por dia para nc2 (membro) ao multiplicar por este número"
     tl3_additional_likes_per_day_multiplier: "Aumentar limite de gostos por dia para nc3 (habitual) ao multiplicar por este número"
     tl4_additional_likes_per_day_multiplier: "Aumentar limite de gostos por dia para nc4 (líder) ao multiplicar por este número"
-    num_spam_flags_to_block_new_user: "Se as publicações de um novo utilizador receberem estas tantas denúncias de num_users_to_block_new_user  diferentes utilizadores, esconder todos as suas publicações e prevenir publicação futura. 0 para desactivar."
-    num_users_to_block_new_user: "Se as publicações de um novo utilizador receberem num_spam_flags_to_block_new_user denúncias de spam de estes tantos diferentes utilizadores, esconder todos as suas publicações e prevenir publicação futura. 0 para desactivar."
-    num_tl3_flags_to_block_new_user: "Se as publicações de um novo utilizador receberem estas tantas denúncias de num_tl3_users_to_block_new_user diferentes utilizadores de nível de confiança 3, esconder todos as suas publicações e prevenir publicação futura. 0 para desactivar."
-    num_tl3_users_to_block_new_user: "Se as publicações de um novo utilizador receberem num_tl3_flags_to_block_new_user denúncias de estes tantos diferentes utilizadores de nível de confiança 3, esconder todos as suas publicações e prevenir publicação futura. 0 para desactivar."
-    notify_mods_when_user_blocked: "Se um utilizador for bloqueado de forma automática, enviar uma mensagem a todos os moderadores."
     flag_sockpuppets: "Se um novo utilizador responde a um tópico a partir do mesmo endereço IP do novo utilizador que iniciou o tópico, sinalizar ambas as mensagens como potencial spam."
     traditional_markdown_linebreaks: "Utilize tradicionais quebras de linha no Markdown, que requer dois espaços no final para uma quebra de linha."
     post_undo_action_window_mins: "Número de minutos durante o qual os utilizadores têm permissão para desfazer ações numa mensagem (gostos, sinalizações, etc)."
     must_approve_users: "O pessoal deve aprovar todas as novas contas de utilizador antes destas terem permissão para aceder ao sítio. AVISO: ativar isto para um sítio ativo irá revogar o acesso aos utilizadores existentes que não fazem parte do pessoal!"
     pending_users_reminder_delay: "Notificar moderadores se novos utilizadores estiverem à espera de aprovação por mais que esta quantidade de horas. Configurar com -1 para desativar notificações."
     maximum_session_age: "Utilizador permanecerá ligado durante n horas desde a última visita"
-    ga_tracking_code: "OBSOLETO: Google analytics (ga.js) tracking code code, eg: UA-12345678-9; see http://google.com/analytics"
-    ga_domain_name: "OBSOLETO: Google analytics (ga.js) domain name, eg: mysite.com; see http://google.com/analytics"
     ga_universal_tracking_code: "Código de acompanhamento do Google Universal Analytics (analytics.js), ex: UA-12345678-9; ver http://google.com/analytics"
     ga_universal_domain_name: "Nome de domínio do Google Universal Analytics (analytics.js), ex: omeusitio.com; ver http://google.com/analytics"
     gtm_container_id: "id de contentor do Google Tag Manager. eg: GTM-ABCDEF"
@@ -897,7 +887,6 @@ pt:
     allow_index_in_robots_txt: "Especificar em robots.txt que este sítio permite ser indexado pelos motores de pesquisa."
     email_domains_blacklist: "Lista de domínios de email que os utilizadores não podem usar para registo de contas. Exemplo: mailinator.com|trashmail.net"
     email_domains_whitelist: "Lista de domínios de email que os utilizadores DEVEM usar para registar contas. AVISO: Utilizadores com domínios de email diferentes dos listados não serão permitidos!"
-    hide_email_address_taken: "Não informar utilizadores da existência de uma conta quando estes usam o diálogo de palavra-passe esquecida. "
     log_out_strict: "Ao terminar sessão, saia de TODAS as sessões do utilizador em todos dispositivos"
     version_checks: "Fazer o ping do Discourse Hub para atualização de versões e mostrar mensagens sobre novas versões no painel de administração"
     new_version_emails: "Enviar um email para o endereço 'contact_email' quando uma nova versão do Discourse estiver disponível."
@@ -1078,9 +1067,6 @@ pt:
     num_hours_to_close_topic: "Número de horas para pausar um tópico para intervenção."
     auto_respond_to_flag_actions: "Ativar respostas automáticas ao eliminar uma bandeira."
     min_first_post_typing_time: "Quantidade mínima de tempo em milissegundos que um utilizador deve digitar durante a sua primeira mensagem, se o limite não for atingido a mensagem será automaticamente inserida na fila de aprovação. Configurar a 0 para desativar (não recomendado)"
-    auto_block_fast_typers_on_first_post: "Bloquear automaticamente utilizadores que não cumprem min_first_post_typing_time"
-    auto_block_fast_typers_max_trust_level: "Nível de confiança máximo para bloquear automaticamente escritores rápidos"
-    auto_block_first_post_regex: "Expressão regular sensível a maiúsculas e minúsculas que se passar irá fazer com que a primeira mensagem do utilizador seja bloqueada e enviada para a fila de aprovação. Exemplo: raging|a[bc]a, irá fazer com que todas as mensagens que contenham raging ou aba ou aca sejam bloqueadas primeiro. Aplicável apenas à primeira mensagem."
     reply_by_email_enabled: "Ativar respostas aos tópicos por email."
     reply_by_email_address: "Modelo para endereços emails recebidos com função resposta por email, por exemplo: %{reply_key}@resposta.exemplo.com ou resposta+%{reply_key}@exemplo.com"
     alternative_reply_by_email_addresses: "Lista de modelos alternativos para respostas via email. Exemplo: %{reply_key}@resposta.exemplo.com ou resposta+%{reply_key}@exemplo.com"
@@ -1214,8 +1200,6 @@ pt:
     default_categories_tracking: "Lista de categorias que por defeito são acompanhadas."
     default_categories_muted: "Lista de categorias que por defeito são mudas."
     default_categories_watching_first_post: "Lista de categorias em que a primeira publicação em cada novo tópico será vigiada por defeito."
-    max_user_api_reqs_per_day: "Número máximo de pedidos à API de utilizador por dia, por chave"
-    max_user_api_reqs_per_minute: "Número máximo de pedidos à API de utilizador por dia, por minuto"
     allow_user_api_keys: "Permitir geração de chaves de API de utilizador"
     allow_user_api_key_scopes: "Lista de esferas permitidas para chaves da API de utlizador"
     max_api_keys_per_user: "Número máximo de chaves de API de utilizador por utlizador"
@@ -1355,7 +1339,6 @@ pt:
     email_too_long: "O email fornecido é demasiado longo. Nomes de caixas de email não devem ter mais que 254 caracteres, e nomes de domínio não devem ter mais que 253 caracteres."
     reserved_username: "Esse nome de utilizador não é permitido."
     missing_user_field: "Não completou todos os campos de utilizador."
-    close_window: "A autenticação está completa. Feche esta janela para continuar."
     already_logged_in: "Oops, parece que tentou aceitar um convite para outro utilizador. Se não é o %{current_user}, por favor saia e tente novamente."
   user:
     no_accounts_associated: "Sem contas associadas"
@@ -1363,7 +1346,6 @@ pt:
     username:
       short: "deve ter pelo menos %{min} caracteres"
       long: "não deve ter mais que %{max} caracteres"
-      characters: "pode incluir apenas números, letras e sublinhados"
       unique: "tem que ser único"
       blank: "tem que estar preenchido"
       must_begin_with_alphanumeric_or_underscore: "tem de começar por uma letra, um número ou o carácter sublinhado"
@@ -1383,14 +1365,6 @@ pt:
       other: "%{count} sinalizações à espera de serem tratadas"
   unsubscribe_mailer:
     subject_template: "Confirme que não quer receber emails com actualizações de %{site_title}"
-  invite_mailer:
-    subject_template: "%{invitee_name} convidou-o a juntar-se a '%{topic_title}' em %{site_domain_name}"
-  custom_invite_mailer:
-    subject_template: "%{invitee_name} convidou-o para '%{topic_title}' em %{site_domain_name}"
-  invite_forum_mailer:
-    subject_template: "%{invitee_name} convidou-o a juntar-se a %{site_domain_name}"
-  custom_invite_forum_mailer:
-    subject_template: "%{invitee_name} convidou-o para %{site_domain_name}"
   invite_password_instructions:
     subject_template: "Configurar a palavra-passe para a sua conta %{site_name}"
   download_backup_mailer:
@@ -1443,34 +1417,8 @@ pt:
       [mt]: http://www.mail-tester.com/
   new_version_mailer:
     subject_template: "[%{email_prefix}] Nova versão do Discourse, disponível atualização"
-    text_body_template: |
-      Hurrah, uma nova versão do [Discourse](http://www.discourse.org) está disponível!
-
-      A sua versão: %{installed_version}
-      A nova versão: **%{new_version}**
-
-      -Atualize facilmente usando a nossa **[actualização de um-clique via navegador](%{base_url}/admin/upgrade)**
-
-      - Veja o que há de novo em [GitHub changelog](https://github.com/discourse/discourse/commits/master).
-
-      - Visite [meta.discourse.org](https://meta.discourse.org) para notícias, debates, e suporte para o Discourse.
   new_version_mailer_with_notes:
     subject_template: "[%{email_prefix}] disponível atualização"
-    text_body_template: |
-      Hurrah, uma nova versão do [Discourse](http://www.discourse.org) está disponível!
-
-      A sua versão: %{installed_version}
-      A nova versão: **%{new_version}**
-
-      -Atualize facilmente usando a nossa **[actualização de um-clique via navegador](%{base_url}/admin/upgrade)**
-
-      - Veja o que há de novo em [GitHub changelog](https://github.com/discourse/discourse/commits/master).
-
-      - Visite [meta.discourse.org](https://meta.discourse.org) para notícias, debates, e suporte para o Discourse.
-
-      ### Notas de lançamento
-
-      %{notes}
   flag_reasons:
     off_topic: "A sua mensagem foi marcada como **fora do contexto**: a comunidade sente que não se enquadra neste tópico, conforme o seu título e a sua primeira mensagem."
     inappropriate: "A sua mensagem foi sinalizada como **inapropriada**: a comunidade sente que é ofensiva, abusiva ou que é uma violação das [orientações da nossa comunidade](/guidelines)."
@@ -1570,12 +1518,6 @@ pt:
         Pedimos desculpa mas a sua mensagem de email para %{destination} (intitulada %{former_title}) não funcionou.
 
         A sua conta associada com este email não está activa. Por favor active a sua conta antes de enviar emails.
-    email_reject_blocked_user:
-      text_body_template: |+
-        Pedimos desculpa mas a sua mensagem de email para %{destination} (intitulada %{former_title}) não funcionou.
-
-        A sua conta associada com este endereço de email foi bloqueada.
-
     email_reject_empty:
       text_body_template: |
         Pedimos desculpa, mas a sua mensagem de email para %{destination} (com título%{former_title}) não funcionou.
@@ -1617,62 +1559,8 @@ pt:
         Se existe uma interface web para a sua conta de POP de email, pode precisar de iniciar sessão na web e verificar a suas configurações aí.
     too_many_spam_flags:
       subject_template: "Nova conta suspensa"
-      text_body_template: |
-        Olá,
-
-        Esta é uma mensagem automática de %{site_name} para informá-lo de que as suas publicações foram temporariamente ocultadas porque foram denunciadas pela comunidade.
-
-        Como medida precaucionária, a sua conta nova foi bloqueada de criar novas respostas ou tópicos até um membro da equipa de apoio poder rever a sua conta. Pedimos desculpa pela inconveniência.
-
-        Para orientação adicional, por favor consulte as [orientações da comunidade](%{base_url}/guidelines).
     too_many_tl3_flags:
       subject_template: "Nova conta suspensa"
-      text_body_template: |
-        Olá,
-
-        Esta é uma mensagem automática de %{site_name} para informá-lo de que a sua conta está temporariamente suspensa devido a um número elevado de denúncias pela comunidade.
-
-        Como medida precaucionária, a sua conta nova foi bloqueada de criar novas respostas ou tópicos até um membro da equipa de apoio poder rever a sua conta. Pedimos desculpa pela inconveniência.
-
-        Para orientação adicional, por favor consulte as [orientações da comunidade](%{base_url}/guidelines).
-    blocked_by_staff:
-      subject_template: "Conta temporariamente suspensa"
-      text_body_template: |
-        Olá,
-
-        Esta é uma mensagem automática de %{site_name} para informá-lo de que a sua conta está temporariamente suspensa como medida precaucionária.
-
-        Por favor continue a navegar, mas não será capaz de criar novas respostas ou tópicos até um [membro da equipa de apoio](%{base_url}/about)  poder rever a sua conta. Pedimos desculpa pela inconveniência.
-
-        Para orientação adicional, por favor consulte as [orientações da comunidade](%{base_url}/guidelines).
-    user_automatically_blocked:
-      subject_template: "Novo utilizador %{username}  bloqueado devido a denúncias da comunidade."
-      text_body_template: |
-        Esta é uma mensagem automática.
-
-        O novo utilizador [%{username}](%{user_url}) foi automaticamente bloqueado porque múltiplos utilizadores marcaram mensagem(ns) de %{username}.
-
-        Por favor [reveja as sinalizações](%{base_url}/admin/flags). Se %{username} foi incorretamente bloqueado de publicar, carregue no botão de desbloqueio em [a página de administração para este utilizador](%{user_url})
-
-        Este limite pode ser alterado através de `block_new_user` nas configurações do sítio.
-    spam_post_blocked:
-      subject_template: "Novas mensagens do novo utilizador %{username} foram bloqueadas devido a hiperligações repetidas"
-      text_body_template: |
-        Esta é uma mensagem automática.
-
-        O novo utilizador [%{username}](%{user_url}) tentou criar múltiplas mensagens com hiperligações para %{domains}, mas estas foram bloqueadas para evitar spam. O utilizador ainda pode criar novas mensagens sem hiperligação a %{domains}.
-
-        Por favor [reveja o utilizador](%{user_url}).
-
-        Isto pode ser modificado através de `newuser_spam_host_threshold` e `white_listed_spam_host_domains` nas configurações do sítio.
-    unblocked:
-      subject_template: "Conta deixou de estar suspensa"
-      text_body_template: |
-        Olá,
-
-        Esta é uma mensagem automática de %{site_name} para informar que a sua conta deixou de estar suspensa após avaliação da staff.
-
-        Pode agora voltar a responder e criar novos tópicos.
     pending_users_reminder:
       subject_template:
         one: "1 utilizador espera a aprovação"
@@ -2158,9 +2046,6 @@ pt:
         Este distintivo é concedido quando recebe o seu primeiro gosto numa publicação. Parabéns, publicou algo que os colegas membros da comunidade acham interessante, giro, ou útil!
     autobiographer:
       name: Autobiógrafo
-      description: Preencheu informação de <a href="/my/preferences">perfil</a>
-      long_description: |
-        Este distintivo é concedido por preencher <a href="/my/preferences">o seu perfil de utilizador</a> e por selecionar uma imagem de perfil. Deixar a comunidade saber mais sobre quem você é e no que está interessado torna a comunidade melhor e mais ligada. Junte-se a nós!
     anniversary:
       name: Aniversário
       description: Membro ativo há um ano, publicou pelo menos uma vez
@@ -2254,9 +2139,6 @@ pt:
         Este distintivo é concedido pela primeira vez que cita uma publicação numa resposta sua. Citar secções relevantes de publicações anteriores na sua resposta ajuda a manter as discussões coesas e focadas. Cite generosamente!
     read_guidelines:
       name: Ler Orientações
-      description: Ler as <a href="/guidelines">orientações da comunidade</a>
-      long_description: |
-        Este distintivo é concedido por <a href="/guidelines">ler as orientações da comunidade</a>. Seguir e partilhar estas simples orientações ajuda a construir uma comunidade segura, divertida e sustentável para todos. Lembre-se sempre que está outro ser humano, em muito como si, do outro lado do ecrã. Seja agradável!
     reader:
       name: Leitor
       description: Ler todas as respostas num tópico com mais de 100 respostas

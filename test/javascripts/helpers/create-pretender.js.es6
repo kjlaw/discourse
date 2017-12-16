@@ -81,12 +81,20 @@ export default function() {
     this.get('/u/eviltrout/summary.json', () => {
       return response({
         user_summary: {
-          topics: [],
-          topic_ids: [],
-          replies: [],
-          links: []
+          topic_ids: [1234],
+          replies: [{ topic_id: 1234 }],
+          links: [{ topic_id: 1234, url: 'https://eviltrout.com' }],
+          most_replied_to_users: [ { id: 333 } ],
+          most_liked_by_users: [ { id: 333 } ],
+          most_liked_users: [ { id: 333 } ],
+          badges: [ { badge_id: 444 } ]
         },
-        topics: [],
+        badges: [
+          { id: 444, count: 1 }
+        ],
+        topics: [
+          { id: 1234, title: 'cool title', url: '/t/1234/cool-title' }
+        ],
       });
     });
 
@@ -298,6 +306,10 @@ export default function() {
       return response(200, [ { id: 2222, post_number: 2222 } ]);
     });
 
+    this.get("/posts/:post_id/reply-ids.json", () => {
+      return response(200, { direct_reply_ids: [45], all_reply_ids: [45, 100] });
+    });
+
     this.post('/user_badges', () => response(200, fixturesByUrl['/user_badges']));
     this.delete('/user_badges/:badge_id', success);
 
@@ -381,6 +393,12 @@ export default function() {
       const result = parsePostData(request.requestBody);
       result.id = new Date().getTime();
       return response(200, result);
+    });
+
+    this.get('/admin/logs/search_logs.json', () => {
+      return response(200, [
+        {"term":"foobar","searches":35,"click_through":6,"unique":16}
+      ]);
     });
 
     this.get('/onebox', request => {

@@ -47,7 +47,6 @@ pl_PL:
         auto_generated_email_error: "Zdarza się, gdy \"pierwszeństwo\" nagłówka jest ustawione na: listę, śmieci, luzem lub auto odpowiedź lub gdy inny nagłówek zawiera: auto-składane, auto-odpowiadanie lub auto-generowane."
         no_body_detected_error: "Zdarza się kiedy nie może rozpakować całości wiadomości, a zawarte są w niej załączniki."
         inactive_user_error: "Zdarza się kiedy nadawca jest nie aktywny."
-        blocked_user_error: "Zdarza się kiedy nadawca jest zablokowany."
         bad_destination_address: "Zdarza się gdy żaden adres email nie pasuje do pól To/Cc/Bcc skonfigurowanych jako przychodzący adres email."
         strangers_not_allowed_error: "Zdarza się, gdy użytkownik próbuje stworzyć temat w kategorii, której nie jest członkiem."
         insufficient_trust_level_error: "Zdarza się, gdy użytkownik próbuje stworzyć temat w kategorii, której nie ma odpowiedniego poziomu zaufania.."
@@ -381,10 +380,6 @@ pl_PL:
           attributes:
             execute_at:
               in_the_past: "musi być w przyszłości"
-        translation_overrides:
-          attributes:
-            value:
-              missing_interpolation_keys: 'Brakuje następujących kluczy w szablonie: "%{keys}"'
         watched_word:
           attributes:
             word:
@@ -729,7 +724,6 @@ pl_PL:
       email_title: 'Temat "%{title}" wymaga uwagi moderatora'
       email_body: "%{link}\n\n%{message}"
   flagging:
-    you_must_edit: '<p>Twój wpis został oflagowany przez społeczność. Sprawdź <a href="/my/private-messages">swoje prywatne wiadomości</a>.</p>'
     user_must_edit: '<p>Ten wpis został oflagowany przez społeczność i został tymczasowo ukryty.</p>'
   archetypes:
     regular:
@@ -990,7 +984,6 @@ pl_PL:
     digest_logo_url: "Alternatywne logo używane w biuletynie email. Powinno mieć kształt szerokiego prostokąta. Nie powinno być obrazkiem SVG. Jeśli puste, zostanie użyta wartość z pola `logo_url`."
     logo_small_url: "Małe logo w lewym górnym rogu strony widoczne przy przewijaniu. Powinno mieć kwadratowy kształt. Jeśli zostawisz to pole puste zamiast logo pojawi się symbol strony domowej."
     favicon_url: "Favicon serwisu. Więcej informacji: http://pl.wikipedia.org/wiki/Favicon Żeby działało poprawnie poprzez CDN musi być obrazem png"
-    mobile_logo_url: "Statyczne logo widoczne w lewym górnym rogu mobilnej wersji serwisu. Powinno mieć kwadratowy kształt. Jeśli puste, zostanie użyta grafika z pola `logo_url` np.: http://example.com/uploads/default/logo.png "
     apple_touch_icon_url: "Ikona używana przez urządzenia Apple. Rekomendowany wymiar to 144px na 144px."
     notification_email: "Adres z którego wysyłane będą wszystkie istotne emaile systemowe.\nKonieczna jest poprawna konfiguracja rekordów SPF, DKIM oraz zwrotnego PTR użytej domeny."
     email_custom_headers: "A pipe-delimited list of custom email headers"
@@ -1016,11 +1009,6 @@ pl_PL:
     tl2_additional_likes_per_day_multiplier: "Zwiększ limit lajków na dzień dla tl2 (członek), mnożąc przez tę liczbę"
     tl3_additional_likes_per_day_multiplier: "Zwiększ limit lajków na dzień dla tl3 (użytkownik stały), mnożąc przez tę liczbę"
     tl4_additional_likes_per_day_multiplier: "Zwiększ limit lajków na dzień dla tl4 (lider), mnożąc przez tę liczbę"
-    num_spam_flags_to_block_new_user: "Jeżeli post nowego użytkownika otrzyma tyle spam flag od num_users_to_block_new_user różnych użytkowników, ukryj ich wszystkie posty i zablokuj możliwość tworzenia kolejnych. 0 żeby wyłączyć."
-    num_users_to_block_new_user: "Jeżeli post nowego użytkownika otrzyma num_spam_flags_to_block_new_user flag spamu od tylu różnych użytkowników, ukryj jego wszystkie posty i zablokuj możliwość pisania nowych. 0 żeby wyłączyć."
-    num_tl3_flags_to_block_new_user: "Jeżeli post nowego użytkownika otrzyma num_tl3_users_to_block_new_user flag od tylu różnych użytkowników poziomu zaufania 3, ukryj jego wszystkie posty i zablokuj możliwość pisania nowych. 0 żeby wyłączyć."
-    num_tl3_users_to_block_new_user: "Jeżeli post nowego użytkownika otrzyma num_tl3_users_to_block_new_user flag spamu od tylu różnych użytkowników poziomu zaufania 3, ukryj jego wszystkie posty i zablokuj możliwość pisania nowych. 0 żeby wyłączyć."
-    notify_mods_when_user_blocked: "If a user is automatically blocked, send a message to all moderators."
     flag_sockpuppets: "Jeśli nowy użytkownik odpowiada na dany temat z tego samego adresu IP co nowy użytkownik, który założył temat, oznacz ich posty jako potencjalny spam."
     traditional_markdown_linebreaks: "Używaj tradycyjnych znaków końca linii w Markdown, to znaczy dwóch spacji na końcu linii."
     enable_markdown_typographer: "Używaj podstawowych zasad typografii, aby poprawić czytelność poszczególnych paragrafów tekstu, zastąpienie (c)(tm) itd, z symbolami, zmniejsza liczbę znaków zapytania itd"
@@ -1028,8 +1016,6 @@ pl_PL:
     must_approve_users: "Zespół musi zaakceptować wszystkie nowe konta zanim uzyskają dostęp do serwisu. UWAGA: włączenie tego dla już udostępnionej strony sprawi, że zostanie odebrany dostęp wszystkim istniejącym użytkownikom spoza zespołu."
     pending_users_reminder_delay: "Powiadomić moderatorów jeżeli nowi użytkownicy czekali na zatwierdzenie dłużej niż his mamy godzin. Ustaw -1 aby wyłączyć powiadomienia. "
     maximum_session_age: "Użytkownik zostanie zalogowany przez n godzin od czasu ostatniej wizyty."
-    ga_tracking_code: "Identyfikator Google Universal Analytics (ga.js) tracking code code, eg: UA-12345678-9; zobacz http://google.com/analytics"
-    ga_domain_name: "Identyfikator Google Analytics (ga.js) nazwa domeny,  eg: UA-12345678-9; zobacz http://google.com/analytics"
     ga_universal_tracking_code: "Identyfikator Google Universal Analytics (analytics.js), np: UA-12345678-9; zobacz http://google.com/analytics"
     ga_universal_domain_name: "Domena dla Google Universal Analytics (analytics.js), np: mysite.com; zobacz http://google.com/analytics"
     ga_universal_auto_link_domains: "Włącz Google Universal Analytics (analytics.js) śledzenie wielu domen. Linki wychodzące do tych domen będą miały dodane id klienta. Zobacz poradnik Google's Cross-Domain Tracking."
@@ -1063,7 +1049,6 @@ pl_PL:
     allow_index_in_robots_txt: "Określ w robots.txt, że ta strona może być indeksowana przez silniki wyszukiwania."
     email_domains_blacklist: "Lista rozdzielonych pionową kreską domen e-mail, z których użytkownicy nie mogą się rejestrować. Przykład: mailinator.com|trashmail.net"
     email_domains_whitelist: "Lista rozdzielonych pionową kreską domen e-mail, z których użytkownicy MUSZĄ się rejestrować. UWAGA: Użytkownicy z domenami e-mail innymi niż wypisane nie będą dopuszczeni!"
-    hide_email_address_taken: "Nie informuj użytkowników o istnieniu konta kiedy używają dialogu zapomnianego hasła."
     log_out_strict: "Po wylogowaniu wyloguj WSZYSTKIE sesje użytkownika na wszystkich urządzeniach."
     version_checks: "Odpytuj Discourse Hub o aktualizacje i wyświetlaj wiadomości o nowej wersji w panelu /admin"
     new_version_emails: "Wyślij email na adres contact_email, kiedy nowa wersja Discourse będzie dostępna."
@@ -1257,9 +1242,6 @@ pl_PL:
     num_hours_to_close_topic: "Liczba godzin zatrzymanie tematu dla interwencji."
     auto_respond_to_flag_actions: "Włącz automatyczną odpowiedź, w czasie pozbywania się flagi."
     min_first_post_typing_time: "Minimalny czas w milisekundach, w którym użytkownik musi napisać post, jeśli próg nie zostanie osiągnięty post zostanie automatycznie dostosowany w zależności od kolejki zatwierdzania potrzeb. Ustaw 0, aby wyłączyć (nie polecane)"
-    auto_block_fast_typers_on_first_post: "Automatycznie blokuj użytkowników, którzy nie spełniają min_first_post_typing_time"
-    auto_block_fast_typers_max_trust_level: "Maksymalny poziom zaufania do blokowania użytkowników piszących zbyt szybko"
-    auto_block_first_post_regex: "Regex niewrażliwy na wielkość liter, jeśli przejdzie to pierwszy post użytkownika zostanie zablokowany i wysłany do kolejki oczekujących na akceptację. Na przykład: ragingla[bc]a, spowoduje, że wszystkie posty zawierające ranging lub aba lub aca będą blokowane w pierwszej kolejności. Ma zastosowanie tylko do pierwszego posta."
     reply_by_email_enabled: "Włącz możliwość odpowiadania na wpisy poprzez email."
     reply_by_email_address: "Template for reply by email incoming email address, for example: %{reply_key}@reply.example.com or replies+%{reply_key}@example.com"
     alternative_reply_by_email_addresses: "Lista alternatywnych szablonów do odpowiedzi przez adres email. Przykład: %{reply_key}@reply.example.com|replies+%{reply_key}@example.com"
@@ -1321,7 +1303,6 @@ pl_PL:
     suppress_digest_email_after_days: "Znieś emaile podsumowujące dla użytkowników niewidocznych na stronie przez więcej niż (n) dni."
     digest_suppress_categories: "Znieś te kategorie z emaili podsumowujących."
     disable_digest_emails: "Wyłącz podsumowania mailowe dla wszystkich użytkowników."
-    email_accent_bg_color: "Kolor wyróżniający używany jako tło niektórych elementów maili wysyłanych w trybie HTML. Wprowadź angielską nazwę koloru HTML (\"red\") lub wartość szesnastkową (\"#ff0000\")."
     email_accent_fg_color: "Kolor tekstu wyświetlanego na kolorowym tle w mailach wysyłanych w trybie HTML. Wprowadź angielską nazwę koloru HTML (\"white\") lub wartość szesnastkową (\"#ffffff\")."
     email_link_color: "Kolor linków w mailach wysyłanych w trybie HTML. Wprowadź angielską nazwę koloru HTML (\"blue\") lub wartość szesnastkową (\"#0000ff\")."
     detect_custom_avatars: "Czy sprawdzać, czy użytkownik wgrał własne zdjęcie profilowe?"
@@ -1404,8 +1385,6 @@ pl_PL:
     default_categories_tracking: "Lista kategorii śledzonych domyślnie."
     default_categories_muted: "Lista domyślnie wyciszonych kategorii."
     default_categories_watching_first_post: "Lista kategorii, w której domyślnie każdy pierwszy post w wątku będzie obserwowany."
-    max_user_api_reqs_per_day: "Maksymalna liczba zapytań o klucz API użytkownika na dzień."
-    max_user_api_reqs_per_minute: "Maksymalna liczba zapytań o klucz API użytkownika na minutę."
     allow_user_api_keys: "Pozwól na generację kluczy API użytkownika."
     allow_user_api_key_scopes: "Lista zakresów dozwolona dla kluczy API użytkownika."
     max_api_keys_per_user: "Maksymalna liczba kluczy API użytkownika na użytkownika."
@@ -1573,7 +1552,6 @@ pl_PL:
     email_too_long: "Podałeś zbyt długi adres email. Nazwa skrzynki pocztowej nie może być dłuższa niż 254 znaki, a nazwa domeny nie może zawierać więcej niż 253 znaki."
     reserved_username: "Niedozwolona nazwa użytkownika."
     missing_user_field: "Nie wypełniłeś wszystkich pól użytkownika"
-    close_window: "Uwierzytelnianie zakończone. Aby kontynuować, zamknij to okno."
     already_logged_in: "Próbujesz zaakceptować zaproszenie przeznaczone dla innego użytkownika. Jeśli %{current_user} to nie ty, wyloguj się i zaloguj ponownie."
   user:
     no_accounts_associated: "Brak powiązanych kont"
@@ -1585,7 +1563,6 @@ pl_PL:
     username:
       short: "musi zawierać co najmniej %{min} znaków"
       long: "nie może zawierać więcej niż %{max} znaków"
-      characters: "może zawierać tylko litery, cyfry i podkreślenia"
       unique: "musi być unikalna"
       blank: "musi zostać podana"
       must_begin_with_alphanumeric_or_underscore: "musi zaczynać się literą, cyfrą lub znakiem podkreślenia"
@@ -1620,72 +1597,12 @@ pl_PL:
       Jeśli nadal chcesz otrzymywać powiadomienia mailowe, po prostu zignoruj ten mail.
   invite_mailer:
     title: "Zaproś mailera"
-    subject_template: "%{invitee_name} zaprosił cię do '%{topic_title}' na %{site_domain_name}"
-    text_body_template: |
-      %{invitee_name} zaprosił cię do dyskusji
-
-      > **%{topic_title}**
-      >
-      > %{topic_excerpt}
-
-      w serwisie
-
-      > %{site_title} -- %{site_description}
-
-      Jeśli jesteś zainteresowany, kliknij w link:
-
-      %{invite_link}
   custom_invite_mailer:
     title: "Niestandardowe zaproszenie mailera"
-    subject_template: "%{invitee_name} zaprosił cię do dyskusji '%{topic_title}' w serwisie %{site_domain_name}"
-    text_body_template: |
-      %{invitee_name} zaprosił cię do dyskusji
-
-      > **%{topic_title}**
-      >
-      > %{topic_excerpt}
-
-      w serwisie
-
-      > %{site_title} -- %{site_description}
-
-      Informacja od zapraszającego:
-
-      > %{user_custom_message}
-
-      Jeśli jesteś zainteresowany, kliknij w link:
-
-      %{invite_link}
   invite_forum_mailer:
     title: "Zaproś forum mailera"
-    subject_template: "%{invitee_name} zaprosił cię do dołączenia do %{site_domain_name}"
-    text_body_template: |
-      %{invitee_name} zaprosił cię, byś dołączył do serwisu
-
-      > **%{site_title}**
-      >
-      > %{site_description}
-
-      Jeśli jesteś zainteresowany, kliknij w link:
-
-      %{invite_link}
   custom_invite_forum_mailer:
     title: "Niestandardowe zaproszenie forum mailera"
-    subject_template: "%{invitee_name} zaprosił cię, byś dołączył do serwisu %{site_domain_name}"
-    text_body_template: |
-      %{invitee_name} zaprosił cię, byś dołączył do serwisu
-
-      > **%{site_title}**
-      >
-      > %{site_description}
-
-      Informacja od zapraszającego:
-
-      > %{user_custom_message}
-
-      Jeśli jesteś zainteresowany, kliknij w link:
-
-      %{invite_link}
   invite_password_instructions:
     title: "Zaproś hasło instrukcje"
     subject_template: "Ustaw hasło dla swojego konta na %{site_name}"
@@ -1719,7 +1636,7 @@ pl_PL:
     text_body_template: |
       Proszę potwierdzić dodanie **%{target_username}**  jako administratora do twojego forum.
 
-      [Potwierdź Konto Administratora](2%{admin_confirm_url})
+      [Potwierdź Konto Administratora](%{admin_confirm_url})
   test_mailer:
     title: "Test Powiadomień"
     subject_template: "[%{site_name}] Test dostarczania poczty"
@@ -1767,35 +1684,9 @@ pl_PL:
   new_version_mailer:
     title: "Nowa wersja powiadomień"
     subject_template: "[%{site_name}] Aktualizacja do nowej wersji Discourse jest dostępna."
-    text_body_template: |
-      Pojawiła się nowa wersja [Discourse](http://www.discourse.org)!
-
-      Używasz wersji %{installed_version}
-      Nowa wersja to **%{new_version}**
-
-      - Dokonaj aktualizacji *[jednym kliknięciem przez przeglądarkę](%{base_url}/admin/upgrade)**
-
-      - Zobacz, co nowego, w [naszym changelogu na GitHubie](https://github.com/discourse/discourse/commits/master)
-
-      - Sprawdź najnowsze informacje, weź udział w dyskusji lub skorzystaj z wsparcia technicznego Discourse na stronie [meta.discourse.org](https://meta.discourse.org)
   new_version_mailer_with_notes:
     title: "Nowa wersja powiadomień z uwagami"
     subject_template: "[%{site_name}] dostępna aktualizacja"
-    text_body_template: |
-      Pojawiła się nowa wersja [Discourse](http://www.discourse.org)!
-
-      Używasz wersji %{installed_version}
-      Nowa wersja to **%{new_version}**
-
-      - Dokonaj aktualizacji *[jednym kliknięciem przez przeglądarkę](%{base_url}/admin/upgrade)**
-
-      - Zobacz, co nowego, w [naszym changelogu na GitHubie](https://github.com/discourse/discourse/commits/master)
-
-      - Sprawdź najnowsze informacje, weź udział w dyskusji lub skorzystaj z wsparcia technicznego Discourse na stronie [meta.discourse.org](https://meta.discourse.org)
-
-      ### Release notes
-
-      %{notes}
   flag_reasons:
     off_topic: "Twój post został oznaczony jako **nie na temat**: społeczność uważa, że nie pasuje do wątku, w którym został dodany, biorąc pod uwagę jego tytuł i treść pierwszego posta."
     inappropriate: "Twój wpis został oznaczony jako  **nieodpowiedni**: społeczność uznała, że zbyt agresywny lub niezgodny z [jej wytycznymi](/guidelines)."
@@ -1970,13 +1861,6 @@ pl_PL:
         Przepraszamy, ale twoja wiadomość email do %{destination}(zatytułowana %{former_title}) nie została wysłana.
 
         Twoja konto powiązane z tym adresem email nie jest aktywne. Proszę aktywować konto przed wysyłaniem emaili.
-    email_reject_blocked_user:
-      title: "Email odrzucony Użytkownik zablokowany"
-      subject_template: "[%{email_prefix}] Problem z pocztą elektroniczną - zablokowany użytkownik"
-      text_body_template: |
-        Przepraszamy, ale twoja wiadomość email do %{destination}(zatytułowana %{former_title}) nie została wysłana.
-
-        Twoje konto połączone z tym adresem email zostało zablokowane.
     email_reject_reply_user_not_matching:
       title: "Email odrzucony Użytkownik nie pasuje"
       subject_template: "[%{email_prefix}] Problem z pocztą - Nieoczekiwany adres odpowiedzi"
@@ -2096,67 +1980,9 @@ pl_PL:
     too_many_spam_flags:
       title: "Zbyt wiele spamowych flag."
       subject_template: "Nowe konto zawieszone"
-      text_body_template: |
-        Witaj,
-
-        Jest to automatyczna wiadomość z forum %{site_name} wysłana by poinformować Cię że Twoje wpisy zostały automatycznie ukryte z powodu oflagowania przez społeczność.
-
-        Jako środek zapobiegawczy, na Twoim nowym koncie zablokowano tworzenie nowych odpowiedzi i tematów do momentu gdy członek zespołu będzie mógł zweryfikować Twoje konto. Przepraszamy za niedogodności.
-
-        Dodatkowe wskazówki możesz znaleźć w naszych [wytycznych dla społeczności](%{base_url}/guidelines).
     too_many_tl3_flags:
       title: "Zbyt wiele flag TL3"
       subject_template: "Nowe konto zawieszone"
-      text_body_template: |
-        Dzień dobry,
-
-        To jest automatyczna wiadomość od%{site_name}, aby cię poinformować, że twoje konto zostało zablokowane ze względu na dużą liczbę oflagowań przez społeczność.
-
-        Jako środek zapobiegawczy, twoje nowe konto zostało zablokowane i nie ma możliwości dodawania odpowiedzi oraz nowych wątków dopóki obsługa przeglądanie twoje konto. Przepraszamy za niedogodności.
-
-        W celu uzyskania dodatkowych wskazówek, proszę przejść do naszych [wskazówek społeczności] %{base_url}/guidelines).
-    blocked_by_staff:
-      title: "Zablokowany prze moderatora"
-      subject_template: "Konto tymczasowo zawieszone"
-      text_body_template: |
-        Dzień dobry,
-
-        To jest automatyczna wiadomość od %{site_name}, aby poinformować cię, że twoje konto zostało tymczasowo zablokowane jako środek zapobiegawczy.
-
-        Możesz kontynuować przeglądanie, ale nie będzie mógł dodawać odpowiedzi lub tworzyć wątków dopóki [członek obsługi](%{base_url}/o nas)  przejrzy twoje ostatnie posty. Przepraszamy za niedogodności.
-
-        W celu uzyskania dodatkowych wskazówek, proszę przejść do naszych [wskazówek społeczności](%{base_url}/about).
-    user_automatically_blocked:
-      title: "Użytkownik Zablokowany Automatycznie"
-      subject_template: "Nowy użytkownik %{username} został zablokowany z powodu oflagowania przez społeczność"
-      text_body_template: |
-        Jest to wiadomość wysłana automatycznie.
-
-        Nowy użytkownik [%{username}](%{base_url}%{user_url}) został automatycznie zablokowany ponieważ wielu użytkowników oflagowało jego posty.
-
-        [Przejrzyj flagi](%{base_url}/admin/flags). Jeśli %{username} został mylnie zablokowany, kliknij na przycisk odblokuj na [administracyjnej stronie tego użytkownika](%{base_url}%{user_url}).
-
-        Próg blokowania może być zmieniony przez ustawienie serwisu `block_new_user`.
-    spam_post_blocked:
-      title: "Spam Zablokowany"
-      subject_template: "Posty nowego użytkownika %{username} zablokowane za powtarzanie linków"
-      text_body_template: |
-        Jest to wiadomość wysłana automatycznie.
-
-        Nowy użytkownik [%{username}](%{base_url}%{user_url}) spróbował utworzyć wiele postów z linkami do %{domains}, lecz posty te zostały zablokowane by uniknąć spamu. Użytkownik nadal może tworzyć nowe posty nie linkujące do %{domains}.
-
-        [Przejrzyj tego użytkownika](%{user_url}).
-
-        Można dokonać modyfikacji poprzez strony ustawień `newuser_spam_host_threshold` i  `white_listed_spam_host_domains'.
-    unblocked:
-      title: "Odblokowany"
-      subject_template: "Konto odblokowane"
-      text_body_template: |
-        Witaj,
-
-        Wysyłamy tę automatyczną wiadomość z %{site_name} aby poinformować Cię, że Twoje konto zostało odblokowane po interwencji zespołu.
-
-        Możesz znowu tworzyć wpisy i tematy. Dziękujemy za cierpliwość.
     pending_users_reminder:
       title: "Oczekujący użytkownicy przypomnienie"
       subject_template:
@@ -2183,12 +2009,6 @@ pl_PL:
     new_user_of_the_month:
       title: "Jesteś nowym użytkownikiem miesiąca!"
       subject_template: "Jesteś nowym użytkownikiem miesiąca!"
-      text_body_template: |
-        Gratulacje, zdobyłeś **Zdobyłeś nagrodę dla nowego użytkownika za %{month_year}**.:trophy:
-
-        Ta nagroda jest przyznawana co miesiąc dla dwóch nowych użytkowników i będzie widoczne na stale na [twojej stronie użytkownika(%{base_url}/my/badges).
-
-        Szybko zostałeś naprawdę wartościowym członkiem naszej społeczności. Dziękujemy za dołączenie, kontynuuj dobrą robotę!
   unsubscribe_link: |
     Aby zrezygnować z otrzymywania tych wiadomości e-mail, [Kliknij tutaj](%{unsubscribe_url}).
   unsubscribe_link_and_mail: |+
@@ -2387,7 +2207,6 @@ pl_PL:
       popular_posts: "Popularne wpisy"
       more_new: "Nowe dla ciebie"
       subject_template: "[%{email_prefix}] Podsumowanie"
-      unsubscribe: "To podsumowanie wysyłane jest przez %{site_link} gdy nie odwiedzasz serwisu przez jakiś czas.  Zmień swoje ustawienia email<a href='%{email_settings_url}'>  lub  zrezygnuj z tych powiadomień %{unsubscribe_link}."
       click_here: "kliknij tutaj"
       from: "%{site_name} podsumowanie"
       preheader: "Podsumowanie aktywności od Twojej ostatniej wizyty w dniu %{last_seen_at}"
@@ -2774,10 +2593,6 @@ pl_PL:
         Ta odznaka jest przyznawana, kiedy dostajesz pierwszego lajka przy poście. Gratulacje, napisałeś coś, co inni użytkownicy uznali za interesujące, fajne lub użyteczne!
     autobiographer:
       name: Autobiograf
-      description: Wypełnienie <a href="/my/preferences">profilu</a> użytkownika
-      long_description: |+
-        Ta odznaka jest przyznawana za wypełnienie <a href="/my/preferences">w twoim profilu i za wybranie zdjęcia profilowego. Pozwól lepiej się poznać i pokaż swoje zainteresowania, aby społeczność była jeszcze lepsza i silniej związana. Dołącz do nas.
-
     anniversary:
       name: Rocznica
       description: Aktywność przez rok, co najmniej jeden wpis
@@ -2871,9 +2686,6 @@ pl_PL:
 
     read_guidelines:
       name: Przeczytany przewodnik
-      description: Przeczytanie <a href="/guidelines">wytycznych społeczności</a>
-      long_description: |
-        Ta odznaka jest przyznawana za <a href="/guidelines">przeczytanie przewodników społeczności</a>. Obserwowanie tych prostych przewodników i dzielenie się nimi pomaga zbudować bezpieczną, wesołą i trwałą społeczność.
     reader:
       name: Czytelnik
       description: Przeczytanie każdego odpowiedzi w temacie z ponad 100 wpisami

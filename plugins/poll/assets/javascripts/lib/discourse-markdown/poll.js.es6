@@ -133,6 +133,11 @@ const rule = {
     let max = parseInt(attrs["max"], 10);
     let step = parseInt(attrs["step"], 10);
 
+    // infinite loop if step < 1
+    if (step < 1) {
+      step = 1;
+    }
+
     let header = [];
 
     let token = new state.Token('poll_open', 'div', 1);
@@ -276,10 +281,7 @@ const rule = {
 
 function newApiInit(helper) {
   helper.registerOptions((opts, siteSettings) => {
-    const currentUser = (opts.getCurrentUser && opts.getCurrentUser(opts.userId)) || opts.currentUser;
-    const staff = currentUser && currentUser.staff;
-
-    opts.features.poll = !!siteSettings.poll_enabled || staff;
+    opts.features.poll = !!siteSettings.poll_enabled;
     opts.pollMaximumOptions = siteSettings.poll_maximum_options;
   });
 

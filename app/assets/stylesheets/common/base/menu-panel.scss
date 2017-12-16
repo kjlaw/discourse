@@ -67,7 +67,7 @@
     .new {
       font-size: 0.8em;
       margin-left: 0.5em;
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
     }
 
   }
@@ -79,7 +79,7 @@
     margin: 5px 5px 0 8px;
     .box {margin-top: 0;}
     .badge-notification {
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
       background-color: transparent;
       display: inline;
       padding: 0;
@@ -88,7 +88,7 @@
 
   // note these topic counts only appear for anons in the category hamburger drop down
   b.topics-count {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     font-weight: normal;
     font-size: 11px;
   }
@@ -102,6 +102,10 @@
 }
 
 .search-menu {
+
+  .search-input {
+    position: relative;
+  }
 
   .search-context .show-help {
     float: right;
@@ -129,14 +133,14 @@
 
   .searching {
     position: absolute;
-    top: 0.25em;
-    right: 1.5em;
+    top: 1.15em;
+    right: 1em;
 
     .spinner {
       width: 10px;
       height: 10px;
       border-width: 2px;
-      margin: 20px 0 0 0;
+      margin: 0;
     }
   }
   // I am ghetto using this to display "Show More".. be warned
@@ -161,7 +165,7 @@
     .topic-statuses {
       float: none;
       display: inline-block;
-      color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
       margin: 0;
       .fa {
         margin: 0;
@@ -178,12 +182,14 @@
     }
 
     a {
-      display: block;
-      padding: 5px;
+      &:not(.discourse-tag) {
+        display: block;
+        padding: 5px;
+      }
       transition: all linear .15s;
 
       .user-results {
-        color: dark-light-choose(scale-color($primary, $lightness: 30%), scale-color($secondary, $lightness: 70%));
+        color: dark-light-choose($primary-high, $secondary-low);
       }
     }
 
@@ -204,16 +210,10 @@
       margin: 0.5em 0;
     }
 
-    .fa { color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%)); }
-    .icon { color: dark-light-choose(scale-color($primary, $lightness: 30%), scale-color($secondary, $lightness: 70%)); }
+    .fa { color: dark-light-choose($primary-medium, $secondary-medium); }
+    .icon { color: dark-light-choose($primary-high, $secondary-low); }
     li {
       background-color: $tertiary-low;
-      padding: 0.25em 0.5em;
-      i {
-        float: left;
-        margin-right: 5px;
-        padding-top: 2px;
-      }
 
       // This is until other languages remove the HTML from within
       // notifications. It can then be removed
@@ -227,6 +227,14 @@
       p {
         margin: 0;
         overflow: hidden;
+      }
+    }
+    li:not(.show-all) {
+      padding: 0.25em 0.5em;
+      i {
+        float: left;
+        margin-right: 5px;
+        padding-top: 2px;
       }
     }
     .is-warning {
@@ -252,8 +260,25 @@
       border-width: 2px;
       margin: 0 auto;
     }
+    .show-all .btn {
+      width: 100%;
+      padding: 2px 0;
+      color: dark-light-choose($primary-medium, $secondary-high);
+      background: blend-primary-secondary(5%);
+      &:hover {
+        color: $primary;
+        background: dark-light-diff($primary, $secondary, 90%, -80%);
+      }
+    }
     /* as a big ol' click target, don't let text inside be selected */
     @include unselectable;
+  }
+
+  .logout-link, .dismiss-link {
+    display: inline-block;
+  }
+  .dismiss-link {
+    float: right;
   }
 }
 
@@ -299,7 +324,7 @@ div.menu-links-header {
     text-align: right;
   }
   .fa, a {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
   }
 
   a {

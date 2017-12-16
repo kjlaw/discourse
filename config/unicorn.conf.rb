@@ -1,5 +1,10 @@
 # See http://unicorn.bogomips.org/Unicorn/Configurator.html
 
+if ENV["LOGSTASH_UNICORN_URI"]
+  require_relative '../lib/discourse_logstash_logger'
+  logger DiscourseLogstashLogger.logger(uri: ENV['LOGSTASH_UNICORN_URI'], type: :unicorn)
+end
+
 # enable out of band gc out of the box, it is low risk and improves perf a lot
 ENV['UNICORN_ENABLE_OOBGC'] ||= "1"
 
@@ -66,7 +71,7 @@ before_fork do |server, worker|
     I18n.t(:posts)
 
     # load up all models and schema
-    (ActiveRecord::Base.connection.tables - %w[schema_migrations]).each do |table|
+    (ActiveRecord::Base.connection.tables - %w[schema_migrations versions]).each do |table|
       table.classify.constantize.first rescue nil
     end
 
@@ -113,10 +118,14 @@ before_fork do |server, worker|
       puts "Starting up #{sidekiqs} supervised sidekiqs"
 
       require 'demon/sidekiq'
-
       if @stats_socket_dir
         Demon::Sidekiq.after_fork do
           start_stats_socket(server)
+          DiscourseEvent.trigger(:sidekiq_fork_started)
+        end
+      else
+        Demon::Sidekiq.after_fork do
+          DiscourseEvent.trigger(:sidekiq_fork_started)
         end
       end
       Demon::Sidekiq.start(sidekiqs)
@@ -217,6 +226,8 @@ end
 
 after_fork do |server, worker|
   start_stats_socket(server)
+
+  DiscourseEvent.trigger(:web_fork_started)
 
   # warm up v8 after fork, that way we do not fork a v8 context
   # it may cause issues if bg threads in a v8 isolate randomly stop

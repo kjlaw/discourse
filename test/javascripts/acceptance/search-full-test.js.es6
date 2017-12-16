@@ -136,10 +136,10 @@ QUnit.test("update category through advanced search ui", assert => {
   visit("/search");
   fillIn('.search input.full-page-search', 'none');
   click('.search-advanced-btn');
-  fillIn('.search-advanced-options .category-selector', 'faq');
-  click('.search-advanced-options .category-selector');
-  keyEvent('.search-advanced-options .category-selector', 'keydown', 8);
-  keyEvent('.search-advanced-options .category-selector', 'keydown', 9);
+
+  expandSelectKit('.search-advanced-options .category-chooser');
+  selectKitFillInFilter('faq', { selector: '.search-advanced-options .category-chooser' });
+  selectKitSelectRow(4, { selector: '.search-advanced-options .category-chooser' });
 
   andThen(() => {
     assert.ok(exists('.search-advanced-options .badge-category:contains("faq")'), 'has "faq" populated');
@@ -256,11 +256,13 @@ QUnit.test("update in filter through advanced search ui", assert => {
   visit("/search");
   fillIn('.search input.full-page-search', 'none');
   click('.search-advanced-btn');
-  selectDropdown('.search-advanced-options #s2id_in', 'bookmarks');
-  fillIn('.search-advanced-options #in', 'bookmarks');
+
+  expandSelectKit('.search-advanced-options .select-kit#in');
+  selectKitSelectRow('bookmarks', { selector: '.search-advanced-options .select-kit#in' });
+  fillIn('.search-advanced-options .select-kit#in', 'bookmarks');
 
   andThen(() => {
-    assert.ok(exists('.search-advanced-options #s2id_in .select2-choice .select2-chosen:contains("I\'ve bookmarked")'), 'has "I\'ve bookmarked" populated');
+    assert.ok(exists(selectKit('.search-advanced-options .select-kit#in').rowByName("I bookmarked").el), 'has "I bookmarked" populated');
     assert.equal(find('.search input.full-page-search').val(), "none in:bookmarks", 'has updated search term to "none in:bookmarks"');
   });
 });
@@ -269,11 +271,12 @@ QUnit.test("update status through advanced search ui", assert => {
   visit("/search");
   fillIn('.search input.full-page-search', 'none');
   click('.search-advanced-btn');
-  selectDropdown('.search-advanced-options #s2id_status', 'closed');
-  fillIn('.search-advanced-options #status', 'closed');
+  expandSelectKit('.search-advanced-options .select-kit#status');
+  selectKitSelectRow('closed', { selector: '.search-advanced-options .select-kit#status' });
+  fillIn('.search-advanced-options .select-kit#status', 'closed');
 
   andThen(() => {
-    assert.ok(exists('.search-advanced-options #s2id_status .select2-choice .select2-chosen:contains("are closed")'), 'has "are closed" populated');
+    assert.ok(exists(selectKit('.search-advanced-options .select-kit#status').rowByName("are closed").el), 'has "are closed" populated');
     assert.equal(find('.search input.full-page-search').val(), "none status:closed", 'has updated search term to "none status:closed"');
   });
 });
@@ -282,13 +285,13 @@ QUnit.test("update post time through advanced search ui", assert => {
   visit("/search");
   fillIn('.search input.full-page-search', 'none');
   click('.search-advanced-btn');
-  fillIn('#search-post-date', '2016-10-05');
-  selectDropdown('.search-advanced-options #s2id_postTime', 'after');
-  fillIn('.search-advanced-options #postTime', 'after');
+  fillIn('#search-post-date .date-picker', '2016-10-05');
+  expandSelectKit('.search-advanced-options .select-kit#postTime');
+  selectKitSelectRow('after', { selector: '.search-advanced-options .select-kit#postTime' });
+  fillIn('.search-advanced-options .select-kit#postTime', 'after');
 
   andThen(() => {
-    assert.ok(exists('.search-advanced-options #s2id_postTime .select2-choice .select2-chosen:contains("after")'), 'has "after" populated');
-    assert.equal(find('.search-advanced-options #search-post-date').val(), "2016-10-05", 'has "2016-10-05" populated');
+    assert.ok(exists(selectKit('.search-advanced-options .select-kit#postTime').rowByName("after").el), 'has "after" populated');
     assert.equal(find('.search input.full-page-search').val(), "none after:2016-10-05", 'has updated search term to "none after:2016-10-05"');
   });
 });

@@ -53,7 +53,7 @@
     }
 
     .details {
-      background: rgba($secondary, .85);
+      background: rgba($secondary, .8);
 
       blockquote {
         background-color: $secondary-low;
@@ -145,7 +145,7 @@
 
       .details {
         margin-top: 0;
-        background: rgba($secondary, .85);
+        background: rgba($secondary, .8);
 
         .bio {
           display: none;
@@ -181,21 +181,21 @@
   }
 
   .staff-counters {
-    text-align: left;
     background: $primary;
-
-    > div {
+    color: $secondary;    
+    display: flex;
+    padding: 10px;    
+    > div, > div a {
+      display: flex;
+      align-items: baseline;
+      flex: 0 1 auto;
       margin: 0 10px 0 0;
-      display: inline-block;
-      padding: 5px 0;
-      &:first-of-type {
-        padding-left: 10px;
-      }
       span {
-        padding: 1px 5px;
+        padding: 1px 6px;
         border-radius: 10px;
+        margin-right: 5px;        
       }
-    }
+    }  
 
     a {
       color: $secondary;
@@ -253,7 +253,7 @@
       }
 
       .instructions {
-        color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+      color: dark-light-choose($primary-medium, $secondary-medium);
         margin-top: 5px;
         margin-bottom: 10px;
         font-size: 80%;
@@ -320,6 +320,13 @@
 }
 
 .avatar-selector {
+  padding-bottom: 0 !important;
+  label.radio {
+    padding-left: 10px;
+  }
+  .avatar-choice {
+    min-height: 40px;
+  }
   label {
     display: inline-block;
     margin-right: 10px;
@@ -332,6 +339,9 @@
   .avatar {
     margin: 5px 10px 5px 0;
   }
+  p.error {
+    color: $danger;
+  }
 }
 
 .new-private-message {
@@ -343,7 +353,7 @@
   padding-top: 10px;
 
   li a {
-    color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 40%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
   }
 }
 
@@ -378,7 +388,7 @@
     &.linked-stat { // This makes the entire "box" (the li) clickable instead of a narrow area.
       padding: 0;
       a {
-        padding: 10px 14px;
+        padding: 10px 14px;        
         width: 100%;
         height: 100%;
         display: block;
@@ -397,6 +407,12 @@
   }
 
   .label {
+    // TODO: Remove once all languages have been translated to remove icons from
+    // their user-stat labels
+    .fa:nth-of-type(2) {
+      display: none;
+    }
+
     color: blend-primary-secondary(50%);
   }
 }
@@ -415,7 +431,7 @@
   }
 
   .topic-info {
-    color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 40%));
+    color: dark-light-choose($primary-medium, $secondary-high);
   }
 
   @media all and (max-width : 600px) {
@@ -435,11 +451,11 @@
 .links-section {
   .domain {
     font-size: 0.714em;
-    color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 40%));
+    color: dark-light-choose($primary-medium, $secondary-high);
   }
 }
 
-.likes-section {
+.summary-user-list {
   li {
     height: 40px;
   }
@@ -462,7 +478,7 @@
   }
 
   .instructions {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     margin-bottom: 10px;
     font-size: 80%;
     line-height: 1.4em;
@@ -477,7 +493,7 @@
   }
 
   .warning {
-    background-color: scale-color($danger, $lightness: 30%);
+    background-color: $danger-medium;
     padding: 5px 8px;
     color: $secondary;
     width: 520px;

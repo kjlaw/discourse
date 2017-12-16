@@ -45,8 +45,8 @@ class UserHistory < ActiveRecord::Base
                           delete_category: 27,
                           create_category: 28,
                           change_site_text: 29,
-                          block_user: 30,
-                          unblock_user: 31,
+                          silence_user: 30,
+                          unsilence_user: 31,
                           grant_admin: 32,
                           revoke_admin: 33,
                           grant_moderation: 34,
@@ -90,8 +90,8 @@ class UserHistory < ActiveRecord::Base
                         :change_category_settings,
                         :delete_category,
                         :create_category,
-                        :block_user,
-                        :unblock_user,
+                        :silence_user,
+                        :unsilence_user,
                         :grant_admin,
                         :revoke_admin,
                         :grant_moderation,
@@ -176,23 +176,23 @@ end
 #  details        :text
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  context        :string
-#  ip_address     :string
-#  email          :string
+#  context        :string(255)
+#  ip_address     :string(255)
+#  email          :string(255)
 #  subject        :text
 #  previous_value :text
 #  new_value      :text
 #  topic_id       :integer
 #  admin_only     :boolean          default(FALSE)
 #  post_id        :integer
-#  custom_type    :string
+#  custom_type    :string(255)
 #  category_id    :integer
 #
 # Indexes
 #
+#  index_staff_action_logs_on_action_and_id                  (action,id)
+#  index_staff_action_logs_on_subject_and_id                 (subject,id)
+#  index_staff_action_logs_on_target_user_id_and_id          (target_user_id,id)
 #  index_user_histories_on_acting_user_id_and_action_and_id  (acting_user_id,action,id)
-#  index_user_histories_on_action_and_id                     (action,id)
 #  index_user_histories_on_category_id                       (category_id)
-#  index_user_histories_on_subject_and_id                    (subject,id)
-#  index_user_histories_on_target_user_id_and_id             (target_user_id,id)
 #

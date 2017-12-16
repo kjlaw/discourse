@@ -20,10 +20,11 @@ import { addPostTransformCallback } from 'discourse/widgets/post-stream';
 import { attachAdditionalPanel } from 'discourse/widgets/header';
 import { registerIconRenderer, replaceIcon } from 'discourse-common/lib/icon-library';
 import { addNavItem } from 'discourse/models/nav-item';
-
+import { replaceFormatter } from 'discourse/lib/utilities';
+import { modifySelectKit } from "select-kit/mixins/plugin-api";
 
 // If you add any methods to the API ensure you bump up this number
-const PLUGIN_API_VERSION = '0.8.11';
+const PLUGIN_API_VERSION = '0.8.13';
 
 class PluginApi {
   constructor(version, container) {
@@ -441,7 +442,7 @@ class PluginApi {
    * will issue a request to `/mice.json`
    **/
   addStorePluralization(thing, plural) {
-    this.container.lookup("store:main").addPluralization(thing, plural);
+    this.container.lookup("service:store").addPluralization(thing, plural);
   }
 
   /**
@@ -569,6 +570,40 @@ class PluginApi {
     } else {
       addNavItem(item);
     }
+  }
+
+
+  /**
+   *
+   * Registers a function that will format a username when displayed. This will not
+   * be applied when the username is used as an `id` or in URL strings.
+   *
+   * Example:
+   *
+   * ```
+   * // display usernames in UPPER CASE
+   * api.formatUsername(username => username.toUpperCase());
+   *
+   * ```
+   *
+   **/
+  formatUsername(fn) {
+    replaceFormatter(fn);
+  }
+
+  /**
+  *
+  * Access SelectKit plugin api
+  *
+  * Example:
+  *
+  * modifySelectKit("topic-footer-mobile-dropdown").appendContent(() => [{
+  *   name: "discourse",
+  *   id: 1
+  * }])
+  */
+  modifySelectKit(pluginApiKey) {
+    return modifySelectKit(pluginApiKey);
   }
 }
 

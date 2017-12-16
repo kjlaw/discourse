@@ -5,6 +5,12 @@ class WebHookEvent < ActiveRecord::Base
 
   default_scope { order('created_at DESC') }
 
+  def self.purge_old
+    where(
+      'created_at < ?', SiteSetting.retain_web_hook_events_period_days.days.ago
+    ).delete_all
+  end
+
   def update_web_hook_delivery_status
     web_hook.last_delivery_status =
       case status
@@ -30,8 +36,8 @@ end
 #  response_headers :string
 #  response_body    :text
 #  duration         :integer          default(0)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 # Indexes
 #

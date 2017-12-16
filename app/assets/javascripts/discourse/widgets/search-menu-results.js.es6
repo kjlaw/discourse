@@ -5,6 +5,7 @@ import { createWidget } from 'discourse/widgets/widget';
 import { h } from 'virtual-dom';
 import { iconNode } from 'discourse-common/lib/icon-library';
 import highlightText from 'discourse/lib/highlight-text';
+import { escapeExpression, formatUsername } from 'discourse/lib/utilities';
 
 class Highlighted extends RawHtml {
   constructor(html, term) {
@@ -23,9 +24,13 @@ function createSearchResult({ type, linkField, builder }) {
 
       return attrs.results.map(r => {
         let searchResultId;
+
         if (type === "topic") {
           searchResultId = r.get('topic_id');
+        } else {
+          searchResultId = r.get('id');
         }
+
         return h('li', this.attach('link', {
           href: r.get(linkField),
           contents: () => builder.call(this, r, attrs.term),
@@ -56,7 +61,15 @@ createSearchResult({
   type: 'user',
   linkField: 'path',
   builder(u) {
-    return [ avatarImg('small', { template: u.avatar_template, username: u.username }), ' ', h('span.user-results', h('b', u.username)), ' ',  h('span.user-results', u.name ? u.name : '') ];
+    return [
+      avatarImg('small', {
+        template: u.avatar_template, username: u.username
+      }),
+      ' ',
+      h('span.user-results', h('b', formatUsername(u.username))),
+      ' ',
+      h('span.user-results', u.name ? u.name : '')
+    ];
   }
 });
 
@@ -95,7 +108,7 @@ createSearchResult({
   type: 'tag',
   linkField: 'url',
   builder(t) {
-    const tag = Handlebars.Utils.escapeExpression(t.get('id'));
+    const tag = escapeExpression(t.get('id'));
     return h('a', { attributes: { href: t.get('url') }, className: `tag-${tag} discourse-tag ${Discourse.SiteSettings.tag_style}`}, tag);
   }
 });

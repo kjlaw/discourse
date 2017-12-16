@@ -65,6 +65,9 @@ class Badge < ActiveRecord::Base
   # other consts
   AutobiographerMinBioLength = 10
 
+  # used by serializer
+  attr_accessor :has_badge
+
   def self.trigger_hash
     Hash[*(
       Badge::Trigger.constants.map { |k|
@@ -194,7 +197,7 @@ class Badge < ActiveRecord::Base
 
   def long_description
     key = "badges.#{i18n_name}.long_description"
-    I18n.t(key, default: self[:long_description] || '')
+    I18n.t(key, default: self[:long_description] || '', base_uri: Discourse.base_uri)
   end
 
   def long_description=(val)
@@ -204,7 +207,7 @@ class Badge < ActiveRecord::Base
 
   def description
     key = "badges.#{i18n_name}.description"
-    I18n.t(key, default: self[:description] || '')
+    I18n.t(key, default: self[:description] || '', base_uri: Discourse.base_uri)
   end
 
   def description=(val)
@@ -233,7 +236,7 @@ end
 # Table name: badges
 #
 #  id                :integer          not null, primary key
-#  name              :string           not null
+#  name              :string(255)      not null
 #  description       :text
 #  badge_type_id     :integer          not null
 #  grant_count       :integer          default(0), not null
@@ -241,7 +244,7 @@ end
 #  updated_at        :datetime         not null
 #  allow_title       :boolean          default(FALSE), not null
 #  multiple_grant    :boolean          default(FALSE), not null
-#  icon              :string           default("fa-certificate")
+#  icon              :string(255)      default("fa-certificate")
 #  listable          :boolean          default(TRUE)
 #  target_posts      :boolean          default(FALSE)
 #  query             :text
@@ -256,6 +259,5 @@ end
 #
 # Indexes
 #
-#  index_badges_on_badge_type_id  (badge_type_id)
-#  index_badges_on_name           (name) UNIQUE
+#  index_badges_on_name  (name) UNIQUE
 #

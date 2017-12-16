@@ -37,6 +37,7 @@ class TopicViewSerializer < ApplicationSerializer
                         :user_id,
                         :pm_with_non_human_user?,
                         :featured_link,
+                        :featured_link_root_domain,
                         :pinned_globally,
                         :pinned_at,
                         :pinned_until
@@ -114,6 +115,7 @@ class TopicViewSerializer < ApplicationSerializer
     result[:can_delete] = true if scope.can_delete?(object.topic)
     result[:can_recover] = true if scope.can_recover_topic?(object.topic)
     result[:can_remove_allowed_users] = true if scope.can_remove_allowed_users?(object.topic)
+    result[:can_remove_self_id] = scope.user.id if scope.can_remove_allowed_users?(object.topic, scope.user)
     result[:can_invite_to] = true if scope.can_invite_to?(object.topic)
     result[:can_invite_via_email] = true if scope.can_invite_via_email?(object.topic)
     result[:can_create_post] = true if scope.can_create?(Post, object.topic)
@@ -260,6 +262,10 @@ class TopicViewSerializer < ApplicationSerializer
     SiteSetting.topic_featured_link_enabled
   end
 
+  def include_featured_link_root_domain?
+    SiteSetting.topic_featured_link_enabled && object.topic.featured_link
+  end
+
   def include_unicode_title?
     !!(object.topic.title =~ /:([\w\-+]*):/)
   end
@@ -273,7 +279,7 @@ class TopicViewSerializer < ApplicationSerializer
   end
 
   def participant_count
-    object.participants.size
+    object.participant_count
   end
 
   private

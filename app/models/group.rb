@@ -185,7 +185,8 @@ class Group < ActiveRecord::Base
     end
   end
 
-  def posts_for(guardian, before_post_id = nil)
+  def posts_for(guardian, opts = nil)
+    opts ||= {}
     user_ids = group_users.map { |gu| gu.user_id }
     result = Post.includes(:user, :topic, topic: :category)
       .references(:posts, :topics, :category)
@@ -193,24 +194,35 @@ class Group < ActiveRecord::Base
       .where('topics.archetype <> ?', Archetype.private_message)
       .where(post_type: Post.types[:regular])
 
+    if opts[:category_id].present?
+      result = result.where('topics.category_id = ?', opts[:category_id].to_i)
+    end
+
     result = guardian.filter_allowed_categories(result)
-    result = result.where('posts.id < ?', before_post_id) if before_post_id
+    result = result.where('posts.id < ?', opts[:before_post_id].to_i) if opts[:before_post_id]
     result.order('posts.created_at desc')
   end
 
-  def messages_for(guardian, before_post_id = nil)
+  def messages_for(guardian, opts = nil)
+    opts ||= {}
+
     result = Post.includes(:user, :topic, topic: :category)
       .references(:posts, :topics, :category)
       .where('topics.archetype = ?', Archetype.private_message)
       .where(post_type: Post.types[:regular])
       .where('topics.id IN (SELECT topic_id FROM topic_allowed_groups WHERE group_id = ?)', self.id)
 
+    if opts[:category_id].present?
+      result = result.where('topics.category_id = ?', opts[:category_id].to_i)
+    end
+
     result = guardian.filter_allowed_categories(result)
-    result = result.where('posts.id < ?', before_post_id) if before_post_id
+    result = result.where('posts.id < ?', opts[:before_post_id].to_i) if opts[:before_post_id]
     result.order('posts.created_at desc')
   end
 
-  def mentioned_posts_for(guardian, before_post_id = nil)
+  def mentioned_posts_for(guardian, opts = nil)
+    opts ||= {}
     result = Post.joins(:group_mentions)
       .includes(:user, :topic, topic: :category)
       .references(:posts, :topics, :category)
@@ -218,8 +230,12 @@ class Group < ActiveRecord::Base
       .where(post_type: Post.types[:regular])
       .where('group_mentions.group_id = ?', self.id)
 
+    if opts[:category_id].present?
+      result = result.where('topics.category_id = ?', opts[:category_id].to_i)
+    end
+
     result = guardian.filter_allowed_categories(result)
-    result = result.where('posts.id < ?', before_post_id) if before_post_id
+    result = result.where('posts.id < ?', opts[:before_post_id].to_i) if opts[:before_post_id]
     result.order('posts.created_at desc')
   end
 
@@ -232,7 +248,12 @@ class Group < ActiveRecord::Base
 
     unless group = self.lookup_group(name)
       group = Group.new(name: name.to_s, automatic: true)
-      group.default_notification_level = 2 if AUTO_GROUPS[:moderators] == id
+
+      if AUTO_GROUPS[:moderators] == id
+        group.default_notification_level = 2
+        group.messageable_level = ALIAS_LEVELS[:everyone]
+      end
+
       group.id = id
       group.save!
     end
@@ -353,9 +374,9 @@ class Group < ActiveRecord::Base
     lookup_group(name) || refresh_automatic_group!(name)
   end
 
-  def self.search_group(name)
-    Group.where(visibility_level: visibility_levels[:public]).where(
-      "name ILIKE :term_like OR full_name ILIKE :term_like", term_like: "#{name}%"
+  def self.search_groups(name, groups: nil)
+    (groups || Group).where(
+      "name ILIKE :term_like OR full_name ILIKE :term_like", term_like: "%#{name}%"
     )
   end
 
@@ -637,17 +658,15 @@ end
 # Table name: groups
 #
 #  id                                 :integer          not null, primary key
-#  name                               :string           not null
+#  name                               :string(255)      not null
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
 #  automatic                          :boolean          default(FALSE), not null
 #  user_count                         :integer          default(0), not null
-#  mentionable_level                  :integer          default(0)
-#  messageable_level                  :integer          default(0)
 #  automatic_membership_email_domains :text
 #  automatic_membership_retroactive   :boolean          default(FALSE)
 #  primary_group                      :boolean          default(FALSE), not null
-#  title                              :string
+#  title                              :string(255)
 #  grant_trust_level                  :integer
 #  incoming_email                     :string
 #  has_messages                       :boolean          default(FALSE), not null
@@ -663,6 +682,8 @@ end
 #  public_exit                        :boolean          default(FALSE), not null
 #  public_admission                   :boolean          default(FALSE), not null
 #  membership_request_template        :text
+#  messageable_level                  :integer          default(0)
+#  mentionable_level                  :integer          default(0)
 #
 # Indexes
 #

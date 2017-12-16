@@ -444,7 +444,6 @@ th:
       admin: "{{user}} เป็นผู้ดูแลระบบ"
       moderator_tooltip: "ผู้ใช้นี้เป็นผู้ตรวจสอบ"
       admin_tooltip: "ผู้ใช้นี้เป็นผู้ดูแลระบบ"
-      blocked_tooltip: "ผู้ใช้นี้ถูกระงับ"
       suspended_notice: "ผู้ใช้นี้ถูกระงับตั้งแต่ {{date}}"
       suspended_reason: "เหตุผล:"
       github_profile: "Github"
@@ -659,10 +658,6 @@ th:
           other: "กระทู้สร้าง"
         post_count:
           other: "โพสถูกสร้าง"
-        likes_given:
-          other: "<i class='fa fa-heart'></i> ให้"
-        likes_received:
-          other: "<i class='fa fa-heart'></i> ได้รับ"
         days_visited:
           other: "วันที่ดู"
         posts_read:
@@ -743,7 +738,6 @@ th:
     first_post: โพสแรก
     mute: ปิดเสียง
     unmute: เลิกปิดเสียง
-    last_post: โพสสุดท้าย
     last_reply_lowercase: การตอบล่าสุด
     replies_lowercase:
       other: ตอบ
@@ -898,11 +892,7 @@ th:
       olist_title: "รายการลำดับ"
       ulist_title: "รายการดอกจันทร์"
       list_item: "รายการ"
-      heading_title: "หัวเรื่อง"
-      heading_text: "หัวเรื่อง"
-      hr_title: "เส้นนอน"
       help: "ช่วยเหลือการจัดรูปแบบ"
-      toggler: "ซ่อนหรือแสดงแผงตกแต่ง"
       modal_ok: "ตกลง"
       modal_cancel: "ยกเลิก"
       cant_send_pm: "ขอโทษด้วย คุณไม่สามารถส่งข้อความหา %{username} ได้"
@@ -1148,7 +1138,6 @@ th:
     post:
       reply: "<i class='fa fa-mail-forward'></i> {{replyAvatar}} {{usernameLink}}"
       reply_topic: "<i class='fa fa-mail-forward'></i> {{link}}"
-      edit: "แก้ไข {{link}} {{replyAvatar}} {{username}}"
       edit_reason: "เหตุผล:"
       post_number: "โพสต์ {{number}}"
       last_edited_on: "โพสแก้ไขล่าสุดเมื่อ"
@@ -1352,7 +1341,6 @@ th:
         no_problems: "ไม่พบปัญหา"
         moderators: 'ผู้ดูแล:'
         admins: 'ผู้ดูแลระบบ:'
-        blocked: 'ถูกบล็อก:'
         suspended: 'ถูกปิด:'
         private_messages_short: "ข้อความ"
         private_messages_title: "ข้อความ"
@@ -1381,20 +1369,11 @@ th:
         by: "โดย"
       flags:
         title: "ธง"
-        old: "เก่า"
-        active: "ใช้งาน"
         agree: "เห็นด้วย"
         agree_title: "ยืนยันว่าธงนี้ว่าถูกต้อง"
-        agree_flag_modal_title: "เห็นด้วยและ..."
-        agree_flag_hide_post: "เห็นด้วย (ซ่อนโพส + ส่งหลังไมค์)"
-        agree_flag_restore_post: "เห็นด้วย (เรียกโพสคืน)"
-        agree_flag_restore_post_title: "เรียกคืนโพสนี้"
-        agree_flag: "เห็นด้วยกับธงนี้"
         delete: "ลบ"
         delete_title: "ลบโพสที่ถูกติดป้ายแสดงไว้"
-        delete_post_defer_flag: "ลบโพสและลบธง"
         delete_post_defer_flag_title: "ลบโพส ถ้าโพสนั้นเป็นโพสแรกให้ลบหัวข้อออก"
-        delete_post_agree_flag: "ลบโพสและเห็นด้วยกับธง"
         delete_post_agree_flag_title: "ลบโพส ถ้าเป็นโพสแรกให้ลบหัวข้อออก"
         delete_flag_modal_title: "ลบและ..."
         delete_spammer: "ลบสแปมเมอร์"
@@ -1407,7 +1386,6 @@ th:
         system: "ระบบ"
         error: "มีบางอย่างผิดปกติไป"
         reply_message: "ตอบ"
-        no_results: "ไม่มีธง"
         topic_flagged: "ใน <strong>หัวข้อนี้</strong> ถูกปักธงแล้ว"
         visit_topic: "ดูหัวข้อเพื่อกระทำบางอย่าง"
       groups:
@@ -1503,7 +1481,6 @@ th:
           pending: "กำลังรอ"
           staff: 'ทีมงาน'
           suspended: 'ระงับการใช้งาน'
-          blocked: 'ถูกบล็อก'
           suspect: 'ต้องสงสัย'
         approved: "ยืนยันหรือไม่"
         approved_selected:
@@ -1520,7 +1497,6 @@ th:
           regular: 'ผู้ใช้ที่ระดับความไว้ใจ 3 (ทั่วไป)'
           leader: 'ผู้ใช้ที่ระดับความไว้ใจ 4 (ผู้นำ)'
           staff: "ทีมงาน"
-          blocked: 'ผู้ใช้งานที่ถูกบล็อก'
           suspended: 'ผู้ใช้งานที่ถูกระงับ'
           suspect: 'ผู้ใช้งานที่ต้องสงสัย'
         not_verified: "ยังไม่ได้รับการตรวจสอบ"
@@ -1531,15 +1507,12 @@ th:
         suspend_failed: "มีข้อผิดพลาดในการระงับการใช้งาน {{error}}"
         unsuspend_failed: "มีข้อผิดพลาดในเปิดการใช้งาน {{error}}"
         suspend_duration: "ระงับการใช้งานถึงเมื่อไร"
-        suspend_duration_units: "(วัน)"
         suspended_by: "ระงับการใช้งานโดย"
         delete_all_posts: "ลบโพสทั้งหมด"
-        suspend: "ระงับการใช้งาน"
-        unsuspend: "เปิดการใช้งาน"
         suspended: "ระงับการใช้งานหรือไม่"
-        blocked: "บล็อกหรือไม่"
         ip_lookup: "ค้นหา IP"
-        unblock: 'ปลดบล็อก'
+        unsuspend: 'เปิดการใช้งาน'
+        suspend: 'ระงับการใช้งาน'
         last_100_days: 'ใน 100 วันที่ผ่านมา'
         private_topics_count: หัวข้อส่วนตัว
         posts_read_count: อ่านโพส

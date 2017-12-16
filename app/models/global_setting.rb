@@ -92,7 +92,7 @@ class GlobalSetting
 
   def self.database_config
     hash = { "adapter" => "postgresql" }
-    %w{pool timeout socket host port username password replica_host replica_port}.each do |s|
+    %w{pool connect_timeout timeout socket host port username password replica_host replica_port}.each do |s|
       if val = self.send("db_#{s}")
         hash[s] = val
       end
@@ -135,6 +135,14 @@ class GlobalSetting
 
         c.freeze
       end
+  end
+
+  def self.add_default(name, default)
+    unless self.respond_to? name
+      define_singleton_method(name) do
+        default
+      end
+    end
   end
 
   class BaseProvider

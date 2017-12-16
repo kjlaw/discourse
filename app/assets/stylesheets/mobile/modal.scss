@@ -105,7 +105,7 @@
 
 .custom-message-length {
   margin: -4px 0 10px 20px;
-  color: dark-light-choose(scale-color($primary, $lightness: 30%), scale-color($secondary, $lightness: 70%));
+  color: dark-light-choose($primary-high, $secondary-low);
   font-size: 85%;
 }
 
@@ -116,6 +116,7 @@
 
 .edit-category-modal {
   .modal-body {
+    box-sizing: border-box;
     position: relative;
     height: 350px;
   }
@@ -164,17 +165,8 @@
 .alert {
   padding: 5px;
   &.alert-success {
-    background-color:  scale-color($success, $lightness: 90%);
+    background-color: $success-low;
     color: $success;
-  }
-}
-
-.delete-flag-modal, .agree-flag-modal {
-  .modal-inner-container {
-    width: 300px;
-  }
-  .btn {
-    float: none !important;
   }
 }
 

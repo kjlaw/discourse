@@ -4,6 +4,43 @@
   margin-bottom: 15px;
 }
 
+.group-post {
+  .group-post-header {
+    display: flex;
+
+    .group-post-avatar {
+      margin-right: 0.5em;
+    }
+
+    .time,
+    .delete-info {
+      color: lighten($primary, 40%);
+      font-size: 0.8em;
+    }
+
+    .group-member-info {
+      display: flex;
+      color: lighten($primary, 40%);
+    }
+  }
+
+  .group-post-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .group-post-excerpt {
+    margin: 1em 0;
+    font-size: 0.929em;
+    word-wrap: break-word;
+    color: $primary;
+  }
+
+  padding: 1em 0;
+  border-bottom: 1px solid $primary-low;
+}
+
 .group-info {
   width: 100%;
 
@@ -15,7 +52,7 @@
 
   .group-info-full-name {
     font-size: 1.2em;
-    color: dark-light-choose(scale-color($primary, $lightness: 30%), scale-color($secondary, $lightness: 70%));
+    color: dark-light-choose($primary-high, $secondary-low);
   }
 
   span {
@@ -93,7 +130,7 @@ table.group-members {
     border-bottom: 3px solid $primary-low;
     text-align: center;
     padding: 5px 0px 5px 5px;
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%));
+    color: dark-light-choose($primary-medium, $secondary-medium);
     font-weight: normal;
   }
 

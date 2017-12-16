@@ -44,6 +44,14 @@ describe UsersController do
         expect(response).not_to be_success
       end
 
+      it 'returns success when show_inactive_accounts is true and user is logged in' do
+        SiteSetting.show_inactive_accounts = true
+        log_in_user(user)
+        inactive = Fabricate(:user, active: false)
+        get :show, params: { username: inactive.username }, format: :json
+        expect(response).to be_success
+      end
+
       it "raises an error on invalid access" do
         Guardian.any_instance.expects(:can_see?).with(user).returns(false)
         get :show, params: { username: user.username }, format: :json
@@ -342,7 +350,7 @@ describe UsersController do
         )
 
         expect(response).to be_success
-        expect(response.body).to include('{"is_developer":false}')
+        expect(response.body).to include('{"is_developer":false,"admin":false}')
 
         user.reload
 
@@ -809,6 +817,24 @@ describe UsersController do
           expect(TwitterUserInfo.count).to eq(1)
         end
       end
+
+      it "returns an error when email has been changed from the validated email address" do
+        auth = session[:authentication] = {}
+        auth[:email_valid] = 'true'
+        auth[:email] = 'therealone@gmail.com'
+        post_user
+        json = JSON.parse(response.body)
+        expect(json['success']).to eq(false)
+        expect(json['message']).to be_present
+      end
+
+      it "will create the user successfully if email validation is required" do
+        auth = session[:authentication] = {}
+        auth[:email] = post_user_params[:email]
+        post_user
+        json = JSON.parse(response.body)
+        expect(json['success']).to eq(true)
+      end
     end
 
     context 'after success' do
@@ -1005,20 +1031,6 @@ describe UsersController do
           expect(inserted.custom_fields).not_to be_present
           expect(inserted.custom_fields["user_field_#{user_field.id}"]).to be_blank
         end
-      end
-    end
-
-    context "when taking over a staged account" do
-      let!(:staged) { Fabricate(:staged, email: "staged@account.com") }
-
-      it "succeeds" do
-        post :create, params: {
-          email: staged.email, username: "zogstrip", password: "P4ssw0rd$$"
-        }, format: :json
-
-        result = ::JSON.parse(response.body)
-        expect(result["success"]).to eq(true)
-        expect(User.find_by_email(staged.email).staged).to eq(false)
       end
     end
 
@@ -2130,7 +2142,7 @@ describe UsersController do
       json = JSON.parse(response.body)
 
       expect(json["user_summary"]["topic_count"]).to eq(1)
-      expect(json["user_summary"]["post_count"]).to eq(1)
+      expect(json["user_summary"]["post_count"]).to eq(0)
     end
   end
 

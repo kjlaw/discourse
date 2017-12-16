@@ -58,10 +58,12 @@ task 'posts:rebake_match', [:pattern, :type, :delay] => [:environment] do |_, ar
     exit 1
   end
 
+  search = Post.raw_match(pattern, type)
+
   rebaked = 0
   total = search.count
 
-  Post.raw_match(pattern, type).find_each do |post|
+  search.find_each do |post|
     rebake_post(post)
     print_status(rebaked += 1, total)
     sleep(delay) if delay
@@ -248,13 +250,19 @@ task 'posts:refresh_emails', [:topic_id] => [:environment] do |_, args|
   total = posts.count
 
   posts.find_each do |post|
-    receiver = Email::Receiver.new(post.raw_email)
+    begin
+      receiver = Email::Receiver.new(post.raw_email)
 
-    body, elided = receiver.select_body
-    body = receiver.add_attachments(body || '', post.user_id)
-    body << Email::Receiver.elided_html(elided) if elided.present?
+      body, elided = receiver.select_body
+      body = receiver.add_attachments(body || '', post.user_id)
+      body << Email::Receiver.elided_html(elided) if elided.present?
 
-    post.revise(Discourse.system_user, { raw: body }, skip_revision: true, skip_validations: true)
+      post.revise(Discourse.system_user, { raw: body, cook_method: Post.cook_methods[:regular] },
+                  skip_revision: true, skip_validations: true, bypass_bump: true)
+    rescue
+      puts "Failed to refresh post (topic_id: #{post.topic_id}, post_id: #{post.id})"
+    end
+
     updated += 1
 
     print_status(updated, total)

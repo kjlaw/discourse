@@ -132,7 +132,7 @@ input {
   }
 
   &.invalid {
-    background-color: dark-light-choose(scale-color($danger, $lightness: 80%), scale-color($danger, $lightness: -60%));
+    background-color: dark-light-choose($danger-low, scale-color($danger, $lightness: -60%));
   }
 
   .radio &[type="radio"],
@@ -140,6 +140,83 @@ input {
     float: left;
     margin-left: -18px;
   }
+}
+
+input,
+select,
+textarea {
+  color: $primary;
+
+  &[class*="span"] {
+    float: none;
+    margin-left: 0;
+  }
+
+  &[disabled],
+  &[readonly] {
+    cursor: not-allowed;
+    background-color: $primary-low;
+    border-color: $primary-low;
+  }
+
+  &:focus:required:invalid {
+    color: $danger;
+    border-color: $danger;
+  }
+
+  &:focus:required:invalid:focus {
+    border-color: $danger;
+    box-shadow: 0 0 6px $danger;
+  }
+}
+
+input {
+  &[type="text"],
+  &[type="password"],
+  &[type="datetime"],
+  &[type="datetime-local"],
+  &[type="date"],
+  &[type="month"],
+  &[type="time"],
+  &[type="week"],
+  &[type="number"],
+  &[type="email"],
+  &[type="url"],
+  &[type="search"],
+  &[type="tel"],
+  &[type="color"] {
+    @include appearance-none;
+    display: inline-block;
+    height: 18px;
+    padding: 4px 10px;
+    margin-bottom: 9px;
+    font-size:  1em;
+    line-height: 1.25;
+    color: $primary;
+    background-color: $secondary;
+    border: 1px solid $primary-medium;
+    border-radius: 0;
+    &:focus {
+      border-color: $tertiary;
+      box-shadow: $tertiary 0px 0px 6px 0px;
+      outline: 0;
+    }
+  }
+}
+
+textarea {
+  height: auto;
+  background-color: $secondary;
+  border: 1px solid $primary-medium;
+  &:focus {
+    border-color: $tertiary;
+    box-shadow: $tertiary 0px 0px 6px 0px;    
+    outline: 0;
+  }
+}
+
+select {
+  border: 1px solid $primary-low;  
 }
 
 // Common Classes
@@ -191,19 +268,19 @@ input {
 }
 
 // the default for table cells in topic list
-// is scale-color($primary, $lightness: 50%)
+// is $primary-medium
 // numbers get dimmer as they get colder
 .coldmap {
   &-high {
-    color: dark-light-choose(scale-color($primary, $lightness: 70%), scale-color($secondary, $lightness: 30%)) !important;
+  color: dark-light-choose($primary-low-mid, $secondary-high) !important;
   }
 
   &-med {
-    color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%)) !important;
+    color: dark-light-choose($primary-medium, $secondary-high) !important;
   }
 
   &-low {
-    color: dark-light-choose(scale-color($primary, $lightness: 50%), scale-color($secondary, $lightness: 50%)) !important;
+    color: dark-light-choose($primary-medium, $secondary-medium) !important;
   }
 }
 
@@ -233,10 +310,6 @@ input {
   &.bad {
     color: $danger;
   }
-}
-
-.d-editor-input {
-  resize: none;
 }
 
 .avatar-wrapper {

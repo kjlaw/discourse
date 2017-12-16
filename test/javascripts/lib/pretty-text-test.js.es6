@@ -8,6 +8,7 @@ QUnit.module("lib:pretty-text");
 const rawOpts = {
   siteSettings: {
     enable_emoji: true,
+    enable_mentions: true,
     emoji_set: 'emoji_one',
     highlighted_languages: 'json|ruby|javascript',
     default_code_lang: 'auto',
@@ -244,7 +245,6 @@ QUnit.test("Quotes", assert => {
 </aside>`,
                 "works with multiple lines");
 
-
   assert.cookedOptions("[quote=\"bob, post:1\"]\nmy quote\n[/quote]",
                 { topicId: 2, lookupAvatar: function() { } },
     `<aside class=\"quote\" data-post=\"1\">
@@ -270,10 +270,19 @@ QUnit.test("Quotes", assert => {
 </aside>`,
          "handles nested quotes properly");
 
+  assert.cookedOptions(`[quote="bob, post:1, topic:1"]\ntest quote\n[/quote]`, { lookupPrimaryUserGroupByPostNumber: () => "aUserGroup" },
+      `<aside class="quote group-aUserGroup" data-post="1" data-topic="1">
+<div class="title">
+<div class="quote-controls"></div>
+ bob:</div>
+<blockquote>
+<p>test quote</p>
+</blockquote>
+</aside>`,
+  "quote has group class");
 });
 
 QUnit.test("Mentions", assert => {
-
   const alwaysTrue = { mentionLookup: (function() { return "user"; }) };
 
   assert.cookedOptions("Hello @sam", alwaysTrue,
@@ -359,6 +368,12 @@ QUnit.test("Mentions", assert => {
   assert.cookedOptions("<small>a @sam c</small>", alwaysTrue,
                 "<p><small>a <a class=\"mention\" href=\"/u/sam\">@sam</a> c</small></p>",
                 "it allows mentions within HTML tags");
+});
+
+QUnit.test("Mentions - disabled", assert => {
+  assert.cookedOptions("@eviltrout",
+                { siteSettings : { enable_mentions: false }},
+                "<p>@eviltrout</p>");
 });
 
 QUnit.test("Category hashtags", assert => {
@@ -803,7 +818,8 @@ QUnit.test("enable/disable features", assert => {
 
   assert.cookedOptions('|a|\n--\n|a|', { features: {table: false} }, '');
   assert.cooked('|a|\n--\n|a|',
-`<table>
+`<div class="md-table">
+<table>
 <thead>
 <tr>
 <th>a</th>
@@ -814,7 +830,8 @@ QUnit.test("enable/disable features", assert => {
 <td>a</td>
 </tr>
 </tbody>
-</table>`);
+</table>
+</div>`);
 });
 
 QUnit.test("emoji", assert => {
