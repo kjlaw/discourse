@@ -124,7 +124,7 @@ module DiscoursePoll
     end
 
     def self.total_votes(polls)
-      polls.map { |key, value| value["voters"].to_i }.sum
+      polls.map { |key, value| value["voters"].map {|k,v| v.to_i}.sum }.sum
     end
 
     private

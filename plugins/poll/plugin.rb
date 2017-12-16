@@ -32,7 +32,7 @@ after_initialize do
   class DiscoursePoll::Poll
     class << self
 
-      def vote(post_id, poll_name, options, user)
+      def vote(post_id, poll_name, options, voter_group_id, user)
         DistributedMutex.synchronize("#{PLUGIN_NAME}-#{post_id}") do
           user_id = user.id
           post = Post.find_by(id: post_id)
@@ -63,22 +63,29 @@ after_initialize do
 
           raise StandardError.new I18n.t("poll.requires_at_least_1_valid_option") if options.empty?
 
-          poll["voters"] = poll["anonymous_voters"] || 0
-          all_options = Hash.new(0)
+          poll["voters"] = Hash.new(0)
+          all_options = Hash.new { |h, k| h[k] = Hash.new(0) }
 
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD] ||= {}
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"] ||= {}
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name] = options
+          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name] ||= {}
+          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["options"] = options
+          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["voter_group_id"] = voter_group_id
 
           post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].each do |_, user_votes|
             next unless votes = user_votes[poll_name]
-            votes.each { |option| all_options[option] += 1 }
-            poll["voters"] += 1 if (available_options & votes.to_set).size > 0
+
+            vg_id = votes["voter_group_id"]
+
+            votes["options"].each do |option|
+              all_options[option][vg_id] += 1
+            end
+
+            poll["voters"][vg_id] += 1 if (available_options & votes["options"].to_set).size > 0
           end
 
           poll["options"].each do |option|
-            anonymous_votes = option["anonymous_votes"] || 0
-            option["votes"] = all_options[option["id"]] + anonymous_votes
+            option["votes"] = all_options[option["id"]]
 
             if public_poll
               option["voter_ids"] ||= []
@@ -152,7 +159,7 @@ after_initialize do
 
         # extract polls
         parsed.css("div.poll").each do |p|
-          poll = { "options" => [], "voters" => 0 }
+          poll = { "options" => [], "voters" => Hash.new(0) }
 
           # extract attributes
           p.attributes.values.each do |attribute|
@@ -164,7 +171,7 @@ after_initialize do
           # extract options
           p.css("li[#{DATA_PREFIX}option-id]").each do |o|
             option_id = o.attributes[DATA_PREFIX + "option-id"].value || ""
-            poll["options"] << { "id" => option_id, "html" => o.inner_html, "votes" => 0 }
+            poll["options"] << { "id" => option_id, "html" => o.inner_html, "votes" => Hash.new(0) }
           end
 
           # add the poll
@@ -187,9 +194,10 @@ after_initialize do
       post_id   = params.require(:post_id)
       poll_name = params.require(:poll_name)
       options   = params.require(:options)
+      voter_group_id = params.require(:voter_group_id)
 
       begin
-        poll, options = DiscoursePoll::Poll.vote(post_id, poll_name, options, current_user)
+        poll, options = DiscoursePoll::Poll.vote(post_id, poll_name, options, voter_group_id, current_user)
         render json: { poll: poll, vote: options }
       rescue StandardError => e
         render_json_error e.message
