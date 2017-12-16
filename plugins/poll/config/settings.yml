@@ -11,9 +11,3 @@ plugins:
     default: 1
     client: true
     enum: 'TrustLevelSetting'
-  poll_voter_info_endpoint:
-    default: ''
-    client: true
-  poll_constitution_link:
-    default: ''
-    client: true

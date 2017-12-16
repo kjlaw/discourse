@@ -16,9 +16,8 @@ export default Ember.Controller.extend({
     let types = [];
 
     types.push({ name: I18n.t("poll.ui_builder.poll_type.regular"), value: regularPollType });
-    // TODO add back in once compatible
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.number"), value: numberPollType });
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.multiple"), value: multiplePollType });
+    types.push({ name: I18n.t("poll.ui_builder.poll_type.number"), value: numberPollType });
+    types.push({ name: I18n.t("poll.ui_builder.poll_type.multiple"), value: multiplePollType });
 
     return types;
   },
@@ -182,7 +181,7 @@ export default Ember.Controller.extend({
 
   _setupPoll() {
     this.setProperties({
-      pollType: 'regular',
+      pollType: null,
       publicPoll: false,
       pollOptions: '',
       pollMin: 1,

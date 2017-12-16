@@ -71,8 +71,7 @@ function initializePolls(api) {
           id: `${pollName}-${post.id}`,
           post,
           poll,
-          vote: votes[pollName] ? votes[pollName]["options"] : [],
-          voterGroupId: votes[pollName] ? votes[pollName]["voter_group_id"] : -1,
+          vote: votes[pollName] || [],
           isMultiple,
         });
         glue.appendTo(pollElem);

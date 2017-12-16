@@ -49,15 +49,11 @@ div.poll {
     vertical-align: middle;
 
     .info-number {
-      font-size: 2.5em;
+      font-size: 3.5em;
     }
 
     .info-text {
-      font-size: 1.3em;
-    }
-
-    .info-group {
-      font-size: 1.5em;
+      font-size: 1.7em;
     }
   }
 
@@ -89,35 +85,9 @@ div.poll {
     text-align: center;
   }
 
-  .poll-voter-group-item {
-    width: 40%;
-    height: 40px;
-    line-height: 40px;
-    margin: 10px;
-    float: left;
-    cursor: pointer;
-    text-align: center;
-    background: dark-light-diff($primary, $secondary, 90%, -65%);
-
-    &:hover {
-      background: dark-light-diff($primary, $secondary, 65%, -75%);
-      color: #fff;
-    }
-  }
-
   .results {
 
     .option {
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .voter-group {
-      width: 100%;
-      display: inline-block;
-      font-size: 20px;
-      font-weight: bold;
-      padding-top: 20px;
       padding-bottom: 5px;
       p {
         margin: 0;
@@ -136,16 +106,12 @@ div.poll {
     }
 
     .bar {
-      height: 40px;
-      display: inline-block;
-      float: left;
-      background: dark-light-diff($primary, $secondary, 50%, -25%);
+      height: 10px;
+      background: dark-light-diff($primary, $secondary, 50%, -25%);;
     }
 
-    .chosen {
-      -webkit-box-shadow:inset 0px 0px 0px 5px $option-background;
-      -moz-box-shadow:inset 0px 0px 0px 5px $option-background;
-      box-shadow:inset 0px 0px 0px 5px $option-background;
+    .chosen .bar {
+      background: $tertiary;
     }
   }
 
