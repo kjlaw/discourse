@@ -47,10 +47,10 @@ bootsnap-load-path-cache
 bootsnap-compile-cache/
 
 # Ignore plugins except for the bundled ones.
-/plugins/*
+#/plugins/*
 !/plugins/emoji/
 !/plugins/lazyYT/
-!/plugins/poll/
+#!/plugins/poll/
 !/plugins/discourse-details/
 !/plugins/discourse-nginx-performance-report
 !/plugins/discourse-narrative-bot
