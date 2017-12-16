@@ -67,7 +67,7 @@ function initializePolls(api) {
       if (poll) {
         const isMultiple = poll.get('type') === 'multiple';
 
-        const glue = new WidgetGlue('discourse-poll', register, {
+        const glue = new WidgetGlue('daemo-poll', register, {
           id: `${pollName}-${post.id}`,
           post,
           poll,

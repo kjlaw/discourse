@@ -1,19 +1,19 @@
 plugins:
-  poll_enabled:
+  daemo_poll_enabled:
     default: true
     client: true
-  poll_maximum_options:
+  daemo_poll_maximum_options:
     default: 20
     client: true
-  poll_edit_window_mins:
+  daemo_poll_edit_window_mins:
     default: 5
-  poll_minimum_trust_level_to_create:
+  daemo_poll_minimum_trust_level_to_create:
     default: 1
     client: true
     enum: 'TrustLevelSetting'
-  poll_voter_info_endpoint:
+  daemo_poll_voter_info_endpoint:
     default: ''
     client: true
-  poll_constitution_link:
+  daemo_poll_constitution_link:
     default: ''
     client: true

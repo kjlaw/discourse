@@ -4,7 +4,7 @@ import showModal from 'discourse/lib/show-modal';
 
 function initializePollUIBuilder(api) {
   api.modifyClass('controller:composer', {
-    @computed('siteSettings.poll_enabled', 'siteSettings.poll_minimum_trust_level_to_create')
+    @computed('siteSettings.daemo_poll_enabled', 'siteSettings.daemo_poll_minimum_trust_level_to_create')
     canBuildPoll(pollEnabled, minimumTrustLevel) {
       return pollEnabled &&
              this.currentUser &&
@@ -25,7 +25,7 @@ function initializePollUIBuilder(api) {
     return {
       action: 'showPollBuilder',
       icon: 'bar-chart-o',
-      label: 'poll.ui_builder.title',
+      label: 'daemo_poll.ui_builder.title',
       condition: 'canBuildPoll'
     };
   });

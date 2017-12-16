@@ -1,7 +1,7 @@
-{{#d-modal-body title="poll.ui_builder.title" class="poll-ui-builder"}}
+{{#d-modal-body title="daemo_poll.ui_builder.title" class="poll-ui-builder"}}
   <form class="poll-ui-builder-form form-horizontal">
     <div class="input-group">
-      <label class="input-group-label">{{i18n 'poll.ui_builder.poll_type.label'}}</label>
+      <label class="input-group-label">{{i18n 'daemo_poll.ui_builder.poll_type.label'}}</label>
       {{combo-box content=pollTypes
                   value=pollType
                   valueAttribute="value"}}
@@ -9,7 +9,7 @@
 
     {{#if showMinMax}}
       <div class="input-group">
-        <label class="input-group-label">{{i18n 'poll.ui_builder.poll_config.min'}}</label>
+        <label class="input-group-label">{{i18n 'daemo_poll.ui_builder.poll_config.min'}}</label>
         {{input type='number'
                 value=pollMin
                 valueAttribute="value"
@@ -19,7 +19,7 @@
 
 
       <div class="input-group">
-        <label class="input-group-label">{{i18n 'poll.ui_builder.poll_config.max'}}</label>
+        <label class="input-group-label">{{i18n 'daemo_poll.ui_builder.poll_config.max'}}</label>
         {{input type='number'
                 value=pollMax
                 valueAttribute="value"
@@ -28,7 +28,7 @@
 
       {{#if isNumber}}
         <div class="input-group">
-          <label class="input-group-label">{{i18n 'poll.ui_builder.poll_config.step'}}</label>
+          <label class="input-group-label">{{i18n 'daemo_poll.ui_builder.poll_config.step'}}</label>
           {{input type='number'
                   value=pollStep
                   valueAttribute="value"
@@ -43,13 +43,13 @@
     <!-- <div class="input-group">
       <label>
         {{input type='checkbox' checked=publicPoll}}
-        {{i18n "poll.ui_builder.poll_public.label"}}
+        {{i18n "daemo_poll.ui_builder.poll_public.label"}}
       </label>
     </div> -->
 
     {{#unless isNumber}}
       <div class="input-group">
-        <label>{{i18n 'poll.ui_builder.poll_options.label'}}</label>
+        <label>{{i18n 'daemo_poll.ui_builder.poll_options.label'}}</label>
         {{input-tip validation=minNumOfOptionsValidation}}
         {{textarea value=pollOptions}}
       </div>
@@ -58,5 +58,5 @@
 {{/d-modal-body}}
 
 <div class="modal-footer">
-  {{d-button action="insertPoll" icon="bar-chart-o" class='btn-primary' label='poll.ui_builder.insert' disabled=disableInsert}}
+  {{d-button action="insertPoll" icon="bar-chart-o" class='btn-primary' label='daemo_poll.ui_builder.insert' disabled=disableInsert}}
 </div>

@@ -16,14 +16,14 @@
 
 en:
   site_settings:
-    poll_enabled: "Allow polls?"
-    poll_maximum_options: "Maximum number of options allowed in a poll."
-    poll_edit_window_mins: "Number of minutes after post creation during which polls can be edited."
-    poll_minimum_trust_level_to_create: "Define the minimum trust level needed to create polls."
-    poll_voter_info_endpoint: "Endpoint to retrieve voter group information."
-    poll_constitution_link: "Link to Daemo Constitution."
+    daemo_poll_enabled: "Allow polls?"
+    daemo_poll_maximum_options: "Maximum number of options allowed in a poll."
+    daemo_poll_edit_window_mins: "Number of minutes after post creation during which polls can be edited."
+    daemo_poll_minimum_trust_level_to_create: "Define the minimum trust level needed to create polls."
+    daemo_poll_voter_info_endpoint: "Endpoint to retrieve voter group information."
+    daemo_poll_constitution_link: "Link to Daemo Constitution."
 
-  poll:
+  daemo_poll:
     multiple_polls_without_name: "There are multiple polls without a name. Use the '<code>name</code>' attribute to uniquely identify your polls."
     multiple_polls_with_same_name: "There are multiple polls with the same name: <strong>%{name}</strong>. Use the '<code>name</code>' attribute to uniquely identify your polls."
 

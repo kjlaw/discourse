@@ -15,10 +15,10 @@ export default Ember.Controller.extend({
   pollTypes(regularPollType, numberPollType, multiplePollType) {
     let types = [];
 
-    types.push({ name: I18n.t("poll.ui_builder.poll_type.regular"), value: regularPollType });
+    types.push({ name: I18n.t("daemo_poll.ui_builder.poll_type.regular"), value: regularPollType });
     // TODO add back in once compatible
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.number"), value: numberPollType });
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.multiple"), value: multiplePollType });
+    // types.push({ name: I18n.t("daemo_poll.ui_builder.poll_type.number"), value: numberPollType });
+    // types.push({ name: I18n.t("daemo_poll.ui_builder.poll_type.multiple"), value: multiplePollType });
 
     return types;
   },
@@ -65,7 +65,7 @@ export default Ember.Controller.extend({
     if (isMultiple) {
       this.set("pollMax", this.get("pollOptionsCount"));
     } else if (isNumber) {
-      this.set("pollMax", this.siteSettings.poll_maximum_options);
+      this.set("pollMax", this.siteSettings.daemo_poll_maximum_options);
     }
   },
 
@@ -76,7 +76,7 @@ export default Ember.Controller.extend({
     if (isMultiple) {
       return this._comboboxOptions(1, count + 1);
     } else if (isNumber) {
-      return this._comboboxOptions(1, this.siteSettings.poll_maximum_options + 1);
+      return this._comboboxOptions(1, this.siteSettings.daemo_poll_maximum_options + 1);
     }
   },
 
@@ -92,7 +92,7 @@ export default Ember.Controller.extend({
       if (pollStepInt < 1) {
         pollStepInt = 1;
       }
-      return this._comboboxOptions(pollMinInt + 1, pollMinInt + (this.siteSettings.poll_maximum_options * pollStepInt));
+      return this._comboboxOptions(pollMinInt + 1, pollMinInt + (this.siteSettings.daemo_poll_maximum_options * pollStepInt));
     }
   },
 
@@ -146,7 +146,7 @@ export default Ember.Controller.extend({
     let options = { ok: true };
 
     if (pollMin >= pollMax) {
-      options = { failed: true, reason: I18n.t("poll.ui_builder.help.invalid_values") };
+      options = { failed: true, reason: I18n.t("daemo_poll.ui_builder.help.invalid_values") };
     }
 
     return InputValidation.create(options);
@@ -157,7 +157,7 @@ export default Ember.Controller.extend({
     let options = { ok: true };
 
     if (pollStep < 1) {
-      options = { failed: true, reason: I18n.t("poll.ui_builder.help.min_step_value") };
+      options = { failed: true, reason: I18n.t("daemo_poll.ui_builder.help.min_step_value") };
     }
 
     return InputValidation.create(options);
@@ -168,7 +168,7 @@ export default Ember.Controller.extend({
     let options = { ok: true };
 
     if (disableInsert) {
-      options = { failed: true, reason: I18n.t("poll.ui_builder.help.options_count") };
+      options = { failed: true, reason: I18n.t("daemo_poll.ui_builder.help.options_count") };
     }
 
     return InputValidation.create(options);

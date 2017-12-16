@@ -20,7 +20,7 @@ function fetchVoters(payload) {
     if (error) {
       popupAjaxError(error);
     } else {
-      bootbox.alert(I18n.t('poll.error_while_fetching_voters'));
+      bootbox.alert(I18n.t('daemo_poll.error_while_fetching_voters'));
     }
   });
 }
@@ -293,7 +293,7 @@ createWidget('discourse-poll-number-results', {
 
     const voters = poll.voters;
     const average = voters === 0 ? 0 : round(totalScore / voters, -2);
-    const averageRating = I18n.t("poll.average_rating", { average });
+    const averageRating = I18n.t("daemo_poll.average_rating", { average });
     const results = [h('div.poll-results-number-rating',
                        new RawHtml({ html: `<span>${averageRating}</span>` }))];
 
@@ -331,7 +331,7 @@ createWidget('discourse-poll-container', {
                       h('a', {
                           className: 'no-track-link',
                           attributes: {
-                            href: this.siteSettings.poll_constitution_link,
+                            href: this.siteSettings.daemo_poll_constitution_link,
                             target: '_blank'
                           }
                         },
@@ -374,16 +374,16 @@ createWidget('discourse-poll-info', {
     if (max > 0) {
       if (min === max) {
         if (min > 1) {
-          return I18n.t("poll.multiple.help.x_options", { count: min });
+          return I18n.t("daemo_poll.multiple.help.x_options", { count: min });
         }
       } else if (min > 1) {
         if (max < options) {
-          return I18n.t("poll.multiple.help.between_min_and_max_options", { min, max });
+          return I18n.t("daemo_poll.multiple.help.between_min_and_max_options", { min, max });
         } else {
-          return I18n.t("poll.multiple.help.at_least_min_options", { count: min });
+          return I18n.t("daemo_poll.multiple.help.at_least_min_options", { count: min });
         }
       } else if (max <= options) {
-        return I18n.t("poll.multiple.help.up_to_max_options", { count: max });
+        return I18n.t("daemo_poll.multiple.help.up_to_max_options", { count: max });
       }
     }
   },
@@ -397,7 +397,7 @@ createWidget('discourse-poll-info', {
       result.push(h('p', [h('span.info-group', getVoterGroupName(k))]));
       result.push(h('p', [
                        h('span.info-number', count.toString()),
-                       h('span.info-text', I18n.t('poll.voters', { count }))
+                       h('span.info-text', I18n.t('daemo_poll.voters', { count }))
                      ]));
 
       if (attrs.isMultiple) {
@@ -409,7 +409,7 @@ createWidget('discourse-poll-info', {
 
           result.push(h('p', [
                         h('span.info-number', totalVotes.toString()),
-                        h('span.info-text', I18n.t("poll.total_votes", { count: totalVotes }))
+                        h('span.info-text', I18n.t("daemo_poll.total_votes", { count: totalVotes }))
                       ]));
         }
       }
@@ -423,7 +423,7 @@ createWidget('discourse-poll-info', {
     }
 
     if (!attrs.showResults && attrs.poll.get('public')) {
-      result.push(h('p', I18n.t('poll.public.title')));
+      result.push(h('p', I18n.t('daemo_poll.public.title')));
     }
 
     return result;
@@ -444,8 +444,8 @@ createWidget('discourse-poll-buttons', {
       const castVotesDisabled = !attrs.canCastVotes;
       results.push(this.attach('button', {
         className: `btn cast-votes ${castVotesDisabled ? '' : 'btn-primary'}`,
-        label: 'poll.cast-votes.label',
-        title: 'poll.cast-votes.title',
+        label: 'daemo_poll.cast-votes.label',
+        title: 'daemo_poll.cast-votes.title',
         disabled: castVotesDisabled,
         action: 'castVotes'
       }));
@@ -462,8 +462,8 @@ createWidget('discourse-poll-buttons', {
     if (attrs.showResults) {
       results.push(this.attach('button', {
         className: 'btn toggle-results',
-        label: 'poll.hide-results.label',
-        title: 'poll.hide-results.title',
+        label: 'daemo_poll.hide-results.label',
+        title: 'daemo_poll.hide-results.title',
         icon: 'eye-slash',
         disabled: hideResultsDisabled,
         action: 'toggleResults'
@@ -471,8 +471,8 @@ createWidget('discourse-poll-buttons', {
     } else {
       results.push(this.attach('button', {
         className: 'btn toggle-results',
-        label: 'poll.show-results.label',
-        title: 'poll.show-results.title',
+        label: 'daemo_poll.show-results.label',
+        title: 'daemo_poll.show-results.title',
         icon: 'eye',
         disabled: numVoters === 0,
         action: 'toggleResults'
@@ -487,16 +487,16 @@ createWidget('discourse-poll-buttons', {
       if (isClosed) {
         results.push(this.attach('button', {
           className: 'btn toggle-status',
-          label: 'poll.open.label',
-          title: 'poll.open.title',
+          label: 'daemo_poll.open.label',
+          title: 'daemo_poll.open.title',
           icon: 'unlock-alt',
           action: 'toggleStatus'
         }));
       } else {
         results.push(this.attach('button', {
           className: 'btn toggle-status btn-danger',
-          label: 'poll.close.label',
-          title: 'poll.close.title',
+          label: 'daemo_poll.close.label',
+          title: 'daemo_poll.close.title',
           icon: 'lock',
           action: 'toggleStatus'
         }));
@@ -583,7 +583,7 @@ export default createWidget('discourse-poll', {
     const isClosed = poll.get('status') === 'closed';
 
     bootbox.confirm(
-      I18n.t(isClosed ? "poll.open.confirm" : "poll.close.confirm"),
+      I18n.t(isClosed ? "daemo_poll.open.confirm" : "daemo_poll.close.confirm"),
       I18n.t("no_value"),
       I18n.t("yes_value"),
       confirmed => {
@@ -605,7 +605,7 @@ export default createWidget('discourse-poll', {
             if (error) {
               popupAjaxError(error);
             } else {
-              bootbox.alert(I18n.t("poll.error_while_toggling_status"));
+              bootbox.alert(I18n.t("daemo_poll.error_while_toggling_status"));
             }
           }).finally(() => {
             state.loading = false;
@@ -669,7 +669,7 @@ export default createWidget('discourse-poll', {
       if (error) {
         popupAjaxError(error);
       } else {
-        bootbox.alert(I18n.t("poll.error_while_casting_votes"));
+        bootbox.alert(I18n.t("daemo_poll.error_while_casting_votes"));
       }
     }).finally(() => {
       state.loading = false;
@@ -682,7 +682,7 @@ export default createWidget('discourse-poll', {
     var self = this;
     $.ajax({
         type: 'GET',
-        url: this.siteSettings.poll_voter_info_endpoint,
+        url: this.siteSettings.daemo_poll_voter_info_endpoint,
         xhrFields: {
           withCredentials: true
         },
@@ -701,7 +701,7 @@ export default createWidget('discourse-poll', {
           }
         },
         error: function() {
-          bootbox.alert(I18n.t("poll.error_while_fetching_voter_group"));
+          bootbox.alert(I18n.t("daemo_poll.error_while_fetching_voter_group"));
         }
      });
   },

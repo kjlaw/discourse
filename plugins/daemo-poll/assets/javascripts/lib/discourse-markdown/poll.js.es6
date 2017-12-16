@@ -16,16 +16,16 @@ function getHelpText(count, min, max) {
   if (max > 0) {
     if (min === max) {
       if (min > 1) {
-        help = I18n.t("poll.multiple.help.x_options", { count: min });
+        help = I18n.t("daemo_poll.multiple.help.x_options", { count: min });
       }
     } else if (min > 1) {
       if (max < count) {
-        help = I18n.t("poll.multiple.help.between_min_and_max_options", { min: min, max: max });
+        help = I18n.t("daemo_poll.multiple.help.between_min_and_max_options", { min: min, max: max });
       } else {
-        help = I18n.t("poll.multiple.help.at_least_min_options", { count: min });
+        help = I18n.t("daemo_poll.multiple.help.at_least_min_options", { count: min });
       }
     } else if (max <= count) {
-      help = I18n.t("poll.multiple.help.up_to_max_options", { count: max });
+      help = I18n.t("daemo_poll.multiple.help.up_to_max_options", { count: max });
     }
   }
 
@@ -219,7 +219,7 @@ const rule = {
     token.block = false;
     token.attrs = [['class', 'info-text']];
     token = state.push('text', '', 0);
-    token.content = I18n.t("poll.voters", { count: 0 });
+    token.content = I18n.t("daemo_poll.voters", { count: 0 });
     state.push('span_close', 'span', -1);
 
     state.push('paragraph_close', 'p', -1);
@@ -238,7 +238,7 @@ const rule = {
     if (attributes[DATA_PREFIX + 'public'] === 'true') {
       state.push('paragraph_open', 'p', 1);
       token = state.push('text', '', 0);
-      token.content = I18n.t('poll.public.title');
+      token.content = I18n.t('daemo_poll.public.title');
       state.push('paragraph_close', 'p', -1);
     }
 
@@ -253,11 +253,11 @@ const rule = {
       token.block = false;
       token.attrs = [
         ['class', 'button cast-votes'],
-        ['title', I18n.t('poll.cast-votes.title')]
+        ['title', I18n.t('daemo_poll.cast-votes.title')]
       ];
 
       token = state.push('text', '', 0);
-      token.content = I18n.t('poll.cast-votes.label');
+      token.content = I18n.t('daemo_poll.cast-votes.label');
 
       state.push('link_close', 'a', -1);
     }
@@ -266,11 +266,11 @@ const rule = {
     token.block = false;
     token.attrs = [
       ['class', 'button toggle-results'],
-      ['title', I18n.t('poll.show-results.title')]
+      ['title', I18n.t('daemo_poll.show-results.title')]
     ];
 
     token = state.push('text', '', 0);
-    token.content = I18n.t("poll.show-results.label");
+    token.content = I18n.t("daemo_poll.show-results.label");
 
     state.push('link_close', 'a', -1);
 
@@ -281,8 +281,8 @@ const rule = {
 
 function newApiInit(helper) {
   helper.registerOptions((opts, siteSettings) => {
-    opts.features.poll = !!siteSettings.poll_enabled;
-    opts.pollMaximumOptions = siteSettings.poll_maximum_options;
+    opts.features.poll = !!siteSettings.daemo_poll_enabled;
+    opts.pollMaximumOptions = siteSettings.daemo_poll_maximum_options;
   });
 
   helper.registerPlugin(md => {

@@ -17,7 +17,7 @@
 
 en:
   js:
-    poll:
+    daemo_poll:
       voters:
         one: "voter"
         other: "voters"

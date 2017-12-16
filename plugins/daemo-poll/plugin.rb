@@ -39,29 +39,29 @@ after_initialize do
 
           # post must not be deleted
           if post.nil? || post.trashed?
-            raise StandardError.new I18n.t("poll.post_is_deleted")
+            raise StandardError.new I18n.t("daemo_poll.post_is_deleted")
           end
 
           # topic must not be archived
           if post.topic.try(:archived)
-            raise StandardError.new I18n.t("poll.topic_must_be_open_to_vote")
+            raise StandardError.new I18n.t("daemo_poll.topic_must_be_open_to_vote")
           end
 
           polls = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD]
 
-          raise StandardError.new I18n.t("poll.no_polls_associated_with_this_post") if polls.blank?
+          raise StandardError.new I18n.t("daemo_poll.no_polls_associated_with_this_post") if polls.blank?
 
           poll = polls[poll_name]
 
-          raise StandardError.new I18n.t("poll.no_poll_with_this_name", name: poll_name) if poll.blank?
-          raise StandardError.new I18n.t("poll.poll_must_be_open_to_vote") if poll["status"] != "open"
+          raise StandardError.new I18n.t("daemo_poll.no_poll_with_this_name", name: poll_name) if poll.blank?
+          raise StandardError.new I18n.t("daemo_poll.poll_must_be_open_to_vote") if poll["status"] != "open"
           public_poll = (poll["public"] == "true")
 
           # remove options that aren't available in the poll
           available_options = poll["options"].map { |o| o["id"] }.to_set
           options.select! { |o| available_options.include?(o) }
 
-          raise StandardError.new I18n.t("poll.requires_at_least_1_valid_option") if options.empty?
+          raise StandardError.new I18n.t("daemo_poll.requires_at_least_1_valid_option") if options.empty?
 
           poll["voters"] = Hash.new(0)
           all_options = Hash.new { |h, k| h[k] = Hash.new(0) }
@@ -119,25 +119,25 @@ after_initialize do
 
           # post must not be deleted
           if post.nil? || post.trashed?
-            raise StandardError.new I18n.t("poll.post_is_deleted")
+            raise StandardError.new I18n.t("daemo_poll.post_is_deleted")
           end
 
           # topic must not be archived
           if post.topic.try(:archived)
-            raise StandardError.new I18n.t("poll.topic_must_be_open_to_toggle_status")
+            raise StandardError.new I18n.t("daemo_poll.topic_must_be_open_to_toggle_status")
           end
 
           user = User.find_by(id: user_id)
 
           # either staff member or OP
           unless user_id == post.user_id || user.try(:staff?)
-            raise StandardError.new I18n.t("poll.only_staff_or_op_can_toggle_status")
+            raise StandardError.new I18n.t("daemo_poll.only_staff_or_op_can_toggle_status")
           end
 
           polls = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD]
 
-          raise StandardError.new I18n.t("poll.no_polls_associated_with_this_post") if polls.blank?
-          raise StandardError.new I18n.t("poll.no_poll_with_this_name", name: poll_name) if polls[poll_name].blank?
+          raise StandardError.new I18n.t("daemo_poll.no_polls_associated_with_this_post") if polls.blank?
+          raise StandardError.new I18n.t("daemo_poll.no_poll_with_this_name", name: poll_name) if polls[poll_name].blank?
 
           polls[poll_name]["status"] = status
 
@@ -376,7 +376,7 @@ after_initialize do
     else
       post_url = "#{Discourse.base_url}#{post.url}"
       fragment.css(".poll, [data-poll-name]").each do |poll|
-        poll.replace "<p><a href='#{post_url}'>#{I18n.t("poll.email.link_to_poll")}</a></p>"
+        poll.replace "<p><a href='#{post_url}'>#{I18n.t("daemo_poll.email.link_to_poll")}</a></p>"
       end
     end
   end
