@@ -14,7 +14,7 @@ PLUGIN_NAME ||= "discourse_poll".freeze
 DATA_PREFIX ||= "data-poll-".freeze
 
 after_initialize do
-  module ::DiscoursePoll
+  module ::DaemoPoll
     DEFAULT_POLL_NAME ||= "poll".freeze
     POLLS_CUSTOM_FIELD ||= "polls".freeze
     VOTES_CUSTOM_FIELD ||= "polls-votes".freeze
@@ -25,11 +25,11 @@ after_initialize do
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
-      isolate_namespace DiscoursePoll
+      isolate_namespace DaemoPoll
     end
   end
 
-  class DiscoursePoll::Poll
+  class DaemoPoll::Poll
     class << self
 
       def vote(post_id, poll_name, options, voter_group_id, user)
@@ -47,7 +47,7 @@ after_initialize do
             raise StandardError.new I18n.t("poll.topic_must_be_open_to_vote")
           end
 
-          polls = post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD]
+          polls = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD]
 
           raise StandardError.new I18n.t("poll.no_polls_associated_with_this_post") if polls.blank?
 
@@ -66,13 +66,13 @@ after_initialize do
           poll["voters"] = Hash.new(0)
           all_options = Hash.new { |h, k| h[k] = Hash.new(0) }
 
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD] ||= {}
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"] ||= {}
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name] ||= {}
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["options"] = options
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["voter_group_id"] = voter_group_id
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD] ||= {}
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]["#{user_id}"] ||= {}
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name] ||= {}
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["options"] = options
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]["#{user_id}"][poll_name]["voter_group_id"] = voter_group_id
 
-          post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].each do |_, user_votes|
+          post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD].each do |_, user_votes|
             next unless votes = user_votes[poll_name]
 
             vg_id = votes["voter_group_id"]
@@ -98,7 +98,7 @@ after_initialize do
             end
           end
 
-          post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD] = polls
+          post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD] = polls
           post.save_custom_fields(true)
 
           payload = { post_id: post_id, polls: polls }
@@ -134,7 +134,7 @@ after_initialize do
             raise StandardError.new I18n.t("poll.only_staff_or_op_can_toggle_status")
           end
 
-          polls = post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD]
+          polls = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD]
 
           raise StandardError.new I18n.t("poll.no_polls_associated_with_this_post") if polls.blank?
           raise StandardError.new I18n.t("poll.no_poll_with_this_name", name: poll_name) if polls[poll_name].blank?
@@ -185,7 +185,7 @@ after_initialize do
 
   require_dependency "application_controller"
 
-  class DiscoursePoll::PollsController < ::ApplicationController
+  class DaemoPoll::PollsController < ::ApplicationController
     requires_plugin PLUGIN_NAME
 
     before_action :ensure_logged_in, except: [:voters]
@@ -197,7 +197,7 @@ after_initialize do
       voter_group_id = params.require(:voter_group_id)
 
       begin
-        poll, options = DiscoursePoll::Poll.vote(post_id, poll_name, options, voter_group_id, current_user)
+        poll, options = DaemoPoll::Poll.vote(post_id, poll_name, options, voter_group_id, current_user)
         render json: { poll: poll, vote: options }
       rescue StandardError => e
         render_json_error e.message
@@ -211,7 +211,7 @@ after_initialize do
       user_id   = current_user.id
 
       begin
-        poll = DiscoursePoll::Poll.toggle_status(post_id, poll_name, status, user_id)
+        poll = DaemoPoll::Poll.toggle_status(post_id, poll_name, status, user_id)
         render json: { poll: poll }
       rescue StandardError => e
         render_json_error e.message
@@ -225,7 +225,7 @@ after_initialize do
       post = Post.find_by(id: post_id)
       raise Discourse::InvalidParameters.new("post_id is invalid") if !post
 
-      poll = post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD][poll_name]
+      poll = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD][poll_name]
       raise Discourse::InvalidParameters.new("poll_name is invalid") if !poll
 
       voter_limit = (params[:voter_limit] || 25).to_i
@@ -253,7 +253,7 @@ after_initialize do
         user_ids.flatten!
         user_ids.uniq!
 
-        poll_votes = post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]
+        poll_votes = post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]
 
         result = {}
 
@@ -290,14 +290,14 @@ after_initialize do
     end
   end
 
-  DiscoursePoll::Engine.routes.draw do
+  DaemoPoll::Engine.routes.draw do
     put "/vote" => "polls#vote"
     put "/toggle_status" => "polls#toggle_status"
     get "/voters" => 'polls#voters'
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscoursePoll::Engine, at: "/polls"
+    mount ::DaemoPoll::Engine, at: "/polls"
   end
 
   Post.class_eval do
@@ -310,7 +310,7 @@ after_initialize do
       polls = self.polls
 
       DistributedMutex.synchronize("#{PLUGIN_NAME}-#{post.id}") do
-        post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD] = polls
+        post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD] = polls
         post.save_custom_fields(true)
       end
     end
@@ -320,18 +320,18 @@ after_initialize do
     # only care when raw has changed!
     return unless self.raw_changed? || force
 
-    validator = DiscoursePoll::PollsValidator.new(self)
+    validator = DaemoPoll::PollsValidator.new(self)
     return unless (polls = validator.validate_polls)
 
     if !polls.empty?
-      validator = DiscoursePoll::PostValidator.new(self)
+      validator = DaemoPoll::PostValidator.new(self)
       return unless validator.validate_post
     end
 
     # are we updating a post?
     if self.id.present?
       DistributedMutex.synchronize("#{PLUGIN_NAME}-#{self.id}") do
-        DiscoursePoll::PollsUpdater.update(self, polls)
+        DaemoPoll::PollsUpdater.update(self, polls)
       end
     else
       self.polls = polls
@@ -343,7 +343,7 @@ after_initialize do
   NewPostManager.add_handler(1) do |manager|
     post = Post.new(raw: manager.args[:raw])
 
-    if !DiscoursePoll::PollsValidator.new(post).validate_polls
+    if !DaemoPoll::PollsValidator.new(post).validate_polls
       result = NewPostResult.new(:poll, false)
 
       post.errors.full_messages.each do |message|
@@ -363,11 +363,11 @@ after_initialize do
     end
   end
 
-  register_post_custom_field_type(DiscoursePoll::POLLS_CUSTOM_FIELD, :json)
-  register_post_custom_field_type(DiscoursePoll::VOTES_CUSTOM_FIELD, :json)
+  register_post_custom_field_type(DaemoPoll::POLLS_CUSTOM_FIELD, :json)
+  register_post_custom_field_type(DaemoPoll::VOTES_CUSTOM_FIELD, :json)
 
   topic_view_post_custom_fields_whitelister do |user|
-    user ? [DiscoursePoll::POLLS_CUSTOM_FIELD, DiscoursePoll::VOTES_CUSTOM_FIELD] : [DiscoursePoll::POLLS_CUSTOM_FIELD]
+    user ? [DaemoPoll::POLLS_CUSTOM_FIELD, DaemoPoll::VOTES_CUSTOM_FIELD] : [DaemoPoll::POLLS_CUSTOM_FIELD]
   end
 
   on(:reduce_cooked) do |fragment, post|
@@ -383,13 +383,13 @@ after_initialize do
 
   # tells the front-end we have a poll for that post
   on(:post_created) do |post|
-    next if post.is_first_post? || post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD].blank?
+    next if post.is_first_post? || post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD].blank?
     MessageBus.publish("/polls/#{post.topic_id}",                          post_id: post.id,
-                                                                           polls: post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD])
+                                                                           polls: post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD])
   end
 
   add_to_serializer(:post, :polls, false) do
-    polls = post_custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD].dup
+    polls = post_custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD].dup
 
     polls.each do |_, poll|
       poll["options"].each do |option|
@@ -398,16 +398,16 @@ after_initialize do
     end
   end
 
-  add_to_serializer(:post, :include_polls?) { post_custom_fields.present? && post_custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD].present? }
+  add_to_serializer(:post, :include_polls?) { post_custom_fields.present? && post_custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD].present? }
 
   add_to_serializer(:post, :polls_votes, false) do
-    post_custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]["#{scope.user.id}"]
+    post_custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]["#{scope.user.id}"]
   end
 
   add_to_serializer(:post, :include_polls_votes?) do
     return unless scope.user
     return unless post_custom_fields.present?
-    return unless post_custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].present?
-    post_custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD].has_key?("#{scope.user.id}")
+    return unless post_custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD].present?
+    post_custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD].has_key?("#{scope.user.id}")
   end
 end

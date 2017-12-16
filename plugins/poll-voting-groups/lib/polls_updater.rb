@@ -1,10 +1,10 @@
-module DiscoursePoll
+module DaemoPoll
   class PollsUpdater
     VALID_POLLS_CONFIGS = %w{type min max public}.map(&:freeze)
 
     def self.update(post, polls)
       # load previous polls
-      previous_polls = post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD] || {}
+      previous_polls = post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD] || {}
 
       # extract options
       current_option_ids = extract_option_ids(polls)
@@ -58,7 +58,7 @@ module DiscoursePoll
 
           # when the # of options has changed, reset all the votes
           if polls[poll_name]["options"].size != previous_polls[poll_name]["options"].size
-            PostCustomField.where(post_id: post.id, name: DiscoursePoll::VOTES_CUSTOM_FIELD).destroy_all
+            PostCustomField.where(post_id: post.id, name: DaemoPoll::VOTES_CUSTOM_FIELD).destroy_all
             post.clear_custom_fields
             next
           end
@@ -77,7 +77,7 @@ module DiscoursePoll
             option["votes"] = previous_option["votes"]
 
             if previous_option["id"] != option["id"]
-              if votes_fields = post.custom_fields[DiscoursePoll::VOTES_CUSTOM_FIELD]
+              if votes_fields = post.custom_fields[DaemoPoll::VOTES_CUSTOM_FIELD]
                 votes_fields.each do |key, value|
                   next unless value[poll_name]
                   index = value[poll_name].index(previous_option["id"])
@@ -97,7 +97,7 @@ module DiscoursePoll
         end
 
         # immediately store the polls
-        post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD] = polls
+        post.custom_fields[DaemoPoll::POLLS_CUSTOM_FIELD] = polls
         post.save_custom_fields(true)
 
         # publish the changes
@@ -135,7 +135,7 @@ module DiscoursePoll
 
       if previous_polls["public"].nil? && current_poll["public"] == "true"
         error =
-          if poll_name == DiscoursePoll::DEFAULT_POLL_NAME
+          if poll_name == DaemoPoll::DEFAULT_POLL_NAME
             I18n.t("poll.default_cannot_be_made_public")
           else
             I18n.t("poll.named_cannot_be_made_public", name: poll_name)

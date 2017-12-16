@@ -1,4 +1,4 @@
-module DiscoursePoll
+module DaemoPoll
   class PostValidator
     def initialize(post)
       @post = post
