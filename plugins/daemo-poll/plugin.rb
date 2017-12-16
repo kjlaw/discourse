@@ -1,4 +1,4 @@
-# name: poll
+# name: daemo-poll
 # about: Official poll plugin for Discourse
 # version: 0.9
 # authors: Vikhyat Korrapati (vikhyat), Régis Hanol (zogstrip)
@@ -9,7 +9,7 @@ register_asset "stylesheets/common/poll-ui-builder.scss"
 register_asset "stylesheets/desktop/poll.scss", :desktop
 register_asset "stylesheets/mobile/poll.scss", :mobile
 
-PLUGIN_NAME ||= "discourse_poll".freeze
+PLUGIN_NAME ||= "daemo-poll".freeze
 
 DATA_PREFIX ||= "data-poll-".freeze
 
@@ -19,9 +19,9 @@ after_initialize do
     POLLS_CUSTOM_FIELD ||= "polls".freeze
     VOTES_CUSTOM_FIELD ||= "polls-votes".freeze
 
-    autoload :PostValidator, "#{Rails.root}/plugins/poll/lib/post_validator"
-    autoload :PollsValidator, "#{Rails.root}/plugins/poll/lib/polls_validator"
-    autoload :PollsUpdater, "#{Rails.root}/plugins/poll/lib/polls_updater"
+    autoload :PostValidator, "#{Rails.root}/plugins/daemo-poll/lib/post_validator"
+    autoload :PollsValidator, "#{Rails.root}/plugins/daemo-poll/lib/polls_validator"
+    autoload :PollsUpdater, "#{Rails.root}/plugins/daemo-poll/lib/polls_updater"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
