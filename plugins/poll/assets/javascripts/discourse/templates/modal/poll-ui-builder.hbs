@@ -47,6 +47,13 @@
       </label>
     </div> -->
 
+    <div class="input-group">
+      <label>
+        {{input type='checkbox' checked=voterGroups}}
+        {{i18n "poll.ui_builder.voter_groups.label"}}
+      </label>
+    </div>
+
     {{#unless isNumber}}
       <div class="input-group">
         <label>{{i18n 'poll.ui_builder.poll_options.label'}}</label>

@@ -1,6 +1,6 @@
 module DiscoursePoll
   class PollsUpdater
-    VALID_POLLS_CONFIGS = %w{type min max public}.map(&:freeze)
+    VALID_POLLS_CONFIGS = %w{type min max public groups}.map(&:freeze)
 
     def self.update(post, polls)
       # load previous polls

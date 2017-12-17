@@ -90,3 +90,5 @@ en:
           label: Show who voted
         poll_options:
           label: Enter one poll option per line
+        voter_groups:
+          label: "Separate voters into groups (requester, worker, etc.)"

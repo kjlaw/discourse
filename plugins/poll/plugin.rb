@@ -1,8 +1,6 @@
 # name: poll
-# about: Official poll plugin for Discourse
-# version: 0.9
-# authors: Vikhyat Korrapati (vikhyat), Régis Hanol (zogstrip)
-# url: https://github.com/discourse/discourse/tree/master/plugins/poll
+# about: modified from official poll plugin for Discourse (not currently compatible with official poll plugin)
+# url: https://github.com/crowdresearch/voting-plugin
 
 register_asset "stylesheets/common/poll.scss"
 register_asset "stylesheets/common/poll-ui-builder.scss"

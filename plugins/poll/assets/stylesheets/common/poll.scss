@@ -49,11 +49,15 @@ div.poll {
     vertical-align: middle;
 
     .info-number {
-      font-size: 2.5em;
+      font-size: 3.5em;
     }
 
     .info-text {
-      font-size: 1.3em;
+      font-size: 1.5em;
+    }
+
+    .info-number-groups {
+      font-size: 2.5em;
     }
 
     .info-group {
@@ -108,6 +112,13 @@ div.poll {
   .results {
 
     .option {
+      padding-bottom: 5px;
+      p {
+        margin: 0;
+      }
+    }
+
+    .option-groups {
       font-weight: bold;
       text-align: center;
     }
@@ -136,13 +147,22 @@ div.poll {
     }
 
     .bar {
+      height: 10px;
+      background: dark-light-diff($primary, $secondary, 50%, -25%);;
+    }
+
+    .chosen .bar {
+      background: $tertiary;
+    }
+
+    .bar-groups {
       height: 40px;
       display: inline-block;
       float: left;
       background: dark-light-diff($primary, $secondary, 50%, -25%);
     }
 
-    .chosen {
+    .chosen-groups {
       -webkit-box-shadow:inset 0px 0px 0px 5px $option-background;
       -moz-box-shadow:inset 0px 0px 0px 5px $option-background;
       box-shadow:inset 0px 0px 0px 5px $option-background;

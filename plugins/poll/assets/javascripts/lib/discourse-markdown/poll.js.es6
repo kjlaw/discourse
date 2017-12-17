@@ -2,7 +2,7 @@
 
 const DATA_PREFIX = "data-poll-";
 const DEFAULT_POLL_NAME = "poll";
-const WHITELISTED_ATTRIBUTES = ["type", "name", "min", "max", "step", "order", "status", "public"];
+const WHITELISTED_ATTRIBUTES = ["type", "name", "min", "max", "step", "order", "status", "public", "groups"];
 
 function getHelpText(count, min, max) {
 

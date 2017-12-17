@@ -45,6 +45,14 @@ function getColors(numColors) {
   return colors;
 }
 
+function sumValues(object) {
+  var sum = 0;
+  for (var p in object) {
+    sum += object[p];
+  }
+  return sum;
+}
+
 createWidget('discourse-poll-option', {
   tagName: 'li',
 
@@ -203,42 +211,89 @@ createWidget('discourse-poll-standard-results', {
   html(attrs, state) {
     const { poll } = attrs;
     const options = poll.get('options');
+    const displayVoterGroups = poll.get('groups');
 
     if (options) {
       const voters = poll.get('voters');
       const isPublic = poll.get('public');
 
-      var percentages = {};
-      var rounded = {};
-      for (var k in voters) {
-        percentages[k] = voters[k] === 0 ?
-          Array(options.length).fill(0) :
-          options.map(o => k in o.votes ? 100 * o.votes[k] / voters[k] : 0);
+      if (displayVoterGroups) {
+        var percentages = {};
+        var rounded = {};
+        for (var k in voters) {
+          percentages[k] = voters[k] === 0 ?
+            Array(options.length).fill(0) :
+            options.map(o => k in o.votes ? 100 * o.votes[k] / voters[k] : 0);
 
-        rounded[k] = attrs.isMultiple ? percentages[k].map(Math.floor) : evenRound(percentages[k]);
-      }
+          rounded[k] = attrs.isMultiple ? percentages[k].map(Math.floor) : evenRound(percentages[k]);
+        }
 
-      const colors = getColors(options.length);
-      const contents = [];
-      for (var k in voters) {
-        contents.push(h('div.voter-group',
-                       h('p', getVoterGroupName(k))
-                     ));
-        contents.push(h('div.bar-back', options.map((option, idx) => {
-          const chosen = (attrs.vote || []).includes(option.id) && k == attrs.voterGroupId;
-          const per = rounded[k][idx].toString();
+        const colors = getColors(options.length);
+        const contents = [];
+        for (var k in voters) {
+          contents.push(h('div.voter-group',
+                         h('p', getVoterGroupName(k))
+                       ));
+          contents.push(h('div.bar-back', options.map((option, idx) => {
+            const chosen = (attrs.vote || []).includes(option.id) && k == attrs.voterGroupId;
+            const per = rounded[k][idx].toString();
 
-          return h('div.bar', {
-              className: `${chosen ? 'chosen' : ''}`, 
-              attributes: {
-                style: `width:${per}%; background: ${colors[idx]}`,
+            return h('div.bar-groups', {
+                className: `${chosen ? 'chosen-groups' : ''}`, 
+                attributes: {
+                  style: `width:${per}%; background: ${colors[idx]}`,
+                },
               },
-            },
-            h('p.option', `${per > 0 ? option.html + ' ' + per + '%' : ''}`));
-        })));
+              h('p.option-groups', `${per > 0 ? option.html + ' ' + per + '%' : ''}`));
+          })));
+        }
+        return contents;
+
+      } else {
+
+        var totalVoters = sumValues(voters);
+
+        const ordered = _.clone(options).sort((a, b) => {
+          const aVotes = sumValues(a.votes);
+          const bVotes = sumValues(b.votes);
+          if (aVotes < bVotes) {
+            return 1;
+          } else if (aVotes === bVotes) {
+            if (a.html < b.html) {
+              return -1;
+            } else {
+              return 1;
+            }
+          } else {
+            return -1;
+          }
+        });
+
+        const percentages = totalVoters === 0 ?
+          Array(ordered.length).fill(0) :
+          ordered.map(o => 100 * sumValues(o.votes) / totalVoters);
+
+        const rounded = attrs.isMultiple ? percentages.map(Math.floor) : evenRound(percentages);
+
+        return ordered.map((option, idx) => {
+          const contents = [];
+          const per = rounded[idx].toString();
+          const chosen = (attrs.vote || []).includes(option.id);
+
+          contents.push(h('div.option',
+                         h('p', [ h('span.percentage', `${per}%`), optionHtml(option) ])
+                       ));
+
+          contents.push(h('div.bar-back',
+                         h('div.bar', { attributes: { style: `width:${per}%` }})
+                       ));
+
+          return h('li', { className: `${chosen ? 'chosen' : ''}` }, contents);
+        });
+
       }
 
-      return contents;
+
 
       // TODO add back in ability to view who has voted on what option
 
@@ -324,45 +379,62 @@ createWidget('discourse-poll-container', {
       return this.attach(`discourse-poll-${type}-results`, attrs);
     }
 
-    if (attrs.voterGroupId == -1) {
-      const contents = [];
-      contents.push(h('p', [
-                      'Oh no! You are not eligible to vote. Only active users are eligible to vote. See the ',
-                      h('a', {
-                          className: 'no-track-link',
-                          attributes: {
-                            href: this.siteSettings.poll_constitution_link,
-                            target: '_blank'
-                          }
-                        },
-                        'Daemo Constitution'),
-                      ' for more information.'
-                      ]));
-      return contents;
-    } else if (attrs.voterGroupId == 2) {
-      const voterGroups = [0, 1];
-      const contents = [];
-      contents.push(h('p', 'Choose the group you wish to represent in this poll:'));
-      contents.push(h('div', voterGroups.map(groupId => {
-        return this.attach('discourse-poll-voter-group', {
-          groupId
-        });
-      })));
-      return contents;
-    }
+    const displayVoterGroups = poll.get('groups');
 
-    const options = poll.get('options');
-    if (options) {
-      const contents = [];
-      contents.push(h('p', 'Voting as ' + getVoterGroupName(attrs.voterGroupId) + ':'));
-      contents.push(h('ul', options.map(option => {
-        return this.attach('discourse-poll-option', {
-          option,
-          isMultiple: attrs.isMultiple,
-          vote: attrs.vote
-        });
-      })));
-      return contents;
+    if (!displayVoterGroups) {
+      const options = poll.get('options');
+      if (options) {
+        return h('ul', options.map(option => {
+          return this.attach('discourse-poll-option', {
+            option,
+            isMultiple: attrs.isMultiple,
+            vote: attrs.vote
+          });
+        }));
+      }
+    } else {
+      if (attrs.voterGroupId == -1) {
+        const contents = [];
+        contents.push(h('p', [
+                        'Oh no! You are not eligible to vote. Only active users are eligible to vote. See the ',
+                        h('a', {
+                            className: 'no-track-link',
+                            attributes: {
+                              href: this.siteSettings.poll_constitution_link,
+                              target: '_blank'
+                            }
+                          },
+                          'Daemo Constitution'),
+                        ' for more information.'
+                        ]));
+        return contents;
+
+      } else if (attrs.voterGroupId == 2) {
+        const voterGroupIds = [0, 1];
+        const contents = [];
+        contents.push(h('p', 'Choose the group you wish to represent in this poll:'));
+        contents.push(h('div', voterGroupIds.map(groupId => {
+          return this.attach('discourse-poll-voter-group', {
+            groupId
+          });
+        })));
+        return contents;
+
+      } else {
+        const options = poll.get('options');
+        if (options) {
+          const contents = [];
+          contents.push(h('p', 'Voting as ' + getVoterGroupName(attrs.voterGroupId) + ':'));
+          contents.push(h('ul', options.map(option => {
+            return this.attach('discourse-poll-option', {
+              option,
+              isMultiple: attrs.isMultiple,
+              vote: attrs.vote
+            });
+          })));
+          return contents;
+        }
+      }
     }
   }
 });
@@ -391,18 +463,45 @@ createWidget('discourse-poll-info', {
   html(attrs) {
     const { poll } = attrs;
     const voters = poll.get('voters');
+    const displayVoterGroups = poll.get('groups');
     const result = [];
-    for (var k in voters) {
-      const count = voters[k];
-      result.push(h('p', [h('span.info-group', getVoterGroupName(k))]));
-      result.push(h('p', [
+
+    if (displayVoterGroups) {
+      for (var k in voters) {
+        const count = voters[k];
+        result.push(h('p', [h('span.info-group', getVoterGroupName(k))]));
+        result.push(h('p', [
+                         h('span.info-number-groups', count.toString()),
+                         h('span.info-text', I18n.t('poll.voters', { count }))
+                       ]));
+
+        if (attrs.isMultiple) {
+          if (attrs.showResults) {
+            const options = poll.get('options');
+            const totalVotes = poll.get('options').reduce((total, o) => {
+              return total + (k in o.votes ? parseInt(o.votes[k], 10) : 0);
+            }, 0);
+
+            result.push(h('p', [
+                          h('span.info-number', totalVotes.toString()),
+                          h('span.info-text', I18n.t("poll.total_votes", { count: totalVotes }))
+                        ]));
+          }
+        }
+      }
+    } else {
+      var count = 0;
+      for (var k in voters) {
+        count += voters[k];
+      }
+
+      result.push([h('p', [
                        h('span.info-number', count.toString()),
                        h('span.info-text', I18n.t('poll.voters', { count }))
-                     ]));
+                     ])]);
 
       if (attrs.isMultiple) {
         if (attrs.showResults) {
-          const options = poll.get('options');
           const totalVotes = poll.get('options').reduce((total, o) => {
             return total + (k in o.votes ? parseInt(o.votes[k], 10) : 0);
           }, 0);

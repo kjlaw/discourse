@@ -16,9 +16,9 @@ export default Ember.Controller.extend({
     let types = [];
 
     types.push({ name: I18n.t("poll.ui_builder.poll_type.regular"), value: regularPollType });
-    // TODO add back in once compatible
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.number"), value: numberPollType });
-    // types.push({ name: I18n.t("poll.ui_builder.poll_type.multiple"), value: multiplePollType });
+    // TODO number & multiple do not work for polls with voter groups
+    types.push({ name: I18n.t("poll.ui_builder.poll_type.number"), value: numberPollType });
+    types.push({ name: I18n.t("poll.ui_builder.poll_type.multiple"), value: multiplePollType });
 
     return types;
   },
@@ -102,8 +102,8 @@ export default Ember.Controller.extend({
     return this._comboboxOptions(1, (parseInt(pollMax) || 1) + 1);
   },
 
-  @computed("isNumber", "showMinMax", "pollType", "publicPoll", "pollOptions", "pollMin", "pollMax", "pollStep")
-  pollOutput(isNumber, showMinMax, pollType, publicPoll, pollOptions, pollMin, pollMax, pollStep) {
+  @computed("isNumber", "showMinMax", "pollType", "publicPoll", "voterGroups", "pollOptions", "pollMin", "pollMax", "pollStep")
+  pollOutput(isNumber, showMinMax, pollType, publicPoll, voterGroups, pollOptions, pollMin, pollMax, pollStep) {
     let pollHeader = '[poll';
     let output = '';
 
@@ -123,6 +123,7 @@ export default Ember.Controller.extend({
     if (pollMax) pollHeader += ` max=${pollMax}`;
     if (isNumber) pollHeader += ` step=${step}`;
     if (publicPoll) pollHeader += ' public=true';
+    if (voterGroups) pollHeader += ' groups=true';
     pollHeader += ']';
     output += `${pollHeader}\n`;
 
@@ -184,6 +185,7 @@ export default Ember.Controller.extend({
     this.setProperties({
       pollType: 'regular',
       publicPoll: false,
+      voterGroups: false,
       pollOptions: '',
       pollMin: 1,
       pollMax: null,
